@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Помощник по безопасности</title>
+<title>HEFEST — помощник по безопасности</title>
 <style>
   :root{
     --bg:#0f1419; --panel:#1a2230; --panel2:#222c3a; --line:#2b3647;
@@ -21,7 +21,9 @@
   .top{display:flex;align-items:center;gap:14px;margin-bottom:14px;flex-wrap:wrap}
   .logo{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;
     background:linear-gradient(150deg,#23344f,#15202f);border:1px solid var(--line);color:var(--orange);flex:none}
-  h1{font-size:25px;margin:0;font-weight:700;letter-spacing:.2px}
+  .brand{display:flex;flex-direction:column;gap:1px;line-height:1.05}
+  h1{font-size:25px;margin:0;font-weight:800;letter-spacing:2px}
+  .brand-sub{font-size:12.5px;color:var(--muted);font-weight:500;letter-spacing:.4px}
   .status{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
   .dot{width:9px;height:9px;border-radius:50%;background:var(--muted);flex:none}
   .dot.ok{background:var(--green);box-shadow:0 0 10px #3ecf8e88}.dot.off{background:var(--red);box-shadow:0 0 10px #ff6b6b88}
@@ -89,8 +91,8 @@
 <body>
 <div class="wrap">
   <div class="top">
-    <span class="logo" aria-hidden="true"><svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 6v6c0 5 3.5 8 8 10 4.5-2 8-5 8-10V6l-8-4z"/><path d="M9 12l2 2 4-4"/></svg></span>
-    <h1>Помощник по безопасности</h1>
+    <span class="logo" aria-hidden="true"><svg width="29" height="29" viewBox="0 0 24 24" fill="currentColor"><path d="M18.5 1.8l.6 1.6 1.6.6-1.6.6-.6 1.6-.6-1.6-1.6-.6 1.6-.6z"/><path d="M2 9.5 5 7.5h15v2h-6v2l3 4.5v1.5H7V16l3-4.5v-2H2z"/></svg></span>
+    <div class="brand"><h1>HEFEST</h1><span class="brand-sub">помощник по промышленной безопасности</span></div>
     <div class="status" aria-live="polite"><span class="dot" id="dot"></span><span id="st">проверка связи…</span></div>
   </div>
   <p class="lead">Подскажет всё об опасном веществе и что делать при аварии — простыми словами, со ссылкой на

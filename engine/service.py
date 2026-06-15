@@ -24,7 +24,7 @@ try:
 except (FileNotFoundError, OSError):
     rd_zone = None
 
-app = FastAPI(title="SDS Safety Assistant", version="1.0")
+app = FastAPI(title="HEFEST — SDS Safety Assistant", version="1.0")
 # CORS: UI (emergency.html) может открываться как file:// или с другого порта.
 # Внутренний on-prem инструмент -> allow-all допустимо (контур закрыт).
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
