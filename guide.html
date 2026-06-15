@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Инструкция — Помощник по безопасности  ·  HEFEST</title>
+<style>
+  :root{
+    --bg:#0f1419; --panel:#1a2230; --panel2:#222c3a; --line:#2b3647;
+    --txt:#eef2f7; --muted:#a8b3c2;
+    --blue:#5b9dff; --blue-d:#2563eb; --orange:#f9a23b; --red:#ff6b6b; --green:#3ecf8e; --amber:#ffce6b;
+    --r:14px; --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1100px 480px at 80% -10%,#122036,transparent 60%),var(--bg);
+    color:var(--txt);font:15px/1.6 var(--sans);-webkit-font-smoothing:antialiased;min-height:100dvh}
+  .wrap{max-width:840px;margin:0 auto;padding:30px 18px 90px}
+  .top{display:flex;align-items:center;gap:13px;margin-bottom:6px}
+  .logo{width:42px;height:42px;border-radius:11px;display:grid;place-items:center;
+    background:linear-gradient(145deg,#1b263b,#0f1722);border:1px solid var(--line);color:var(--orange);flex:none}
+  h1{font-size:22px;margin:0;font-weight:700}
+  .lead{color:var(--muted);font-size:14px;margin:4px 0 24px}
+  .lead a{color:var(--blue);text-decoration:none}
+
+  /* содержание */
+  .toc{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+  .toc a{font-size:13px;color:#c4cfdc;background:var(--panel);border:1px solid var(--line);
+    border-radius:999px;padding:6px 13px;text-decoration:none;transition:border-color .15s,background .15s}
+  .toc a:hover{border-color:var(--blue);background:var(--panel2)}
+
+  section{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
+    padding:22px 22px 18px;margin-bottom:16px;scroll-margin-top:16px}
+  section h2{font-size:17px;margin:0 0 4px;display:flex;align-items:center;gap:10px}
+  section h2 .n{width:26px;height:26px;border-radius:8px;background:#14233c;border:1px solid #1e3354;
+    color:var(--blue);display:grid;place-items:center;font-size:13px;font-family:var(--mono);flex:none}
+  section.warn h2 .n{background:#2a1c0d;border-color:#4a3315;color:var(--orange)}
+  .what{color:var(--muted);font-size:13.5px;margin:0 0 14px}
+
+  .steps{margin:0 0 14px;padding-left:0;list-style:none;counter-reset:s}
+  .steps li{position:relative;padding:5px 0 5px 26px;font-size:14px}
+  .steps li:before{counter-increment:s;content:counter(s);position:absolute;left:0;top:5px;
+    width:18px;height:18px;border-radius:50%;background:var(--panel2);border:1px solid var(--line);
+    font-size:11px;font-family:var(--mono);display:grid;place-items:center;color:var(--muted)}
+
+  .ex{background:#0e1622;border:1px solid var(--line);border-radius:10px;padding:13px 15px;margin:10px 0}
+  .ex .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:6px}
+  .ex .io{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;margin:4px 0}
+  .ex .io .tag{flex:none;font-family:var(--mono);font-size:11px;padding:2px 8px;border-radius:6px;margin-top:1px}
+  .ex .io .tag.q{background:#14233c;border:1px solid #1e3354;color:#8fb8ff}
+  .ex .io .tag.a{background:#13301f;border:1px solid #1f5236;color:#6ee7a8}
+  .ex .io code{font-family:var(--mono);font-size:13px;color:#eef2f7;background:var(--panel2);padding:1px 6px;border-radius:5px}
+  .ex .io{flex-wrap:wrap}
+  .ex .io .res{color:#c8d2de;min-width:0;overflow-wrap:anywhere}
+  .ex .io code{overflow-wrap:anywhere}
+
+  .tip{font-size:12.5px;line-height:1.5;color:#cdd6e2;background:var(--panel2);
+    border-left:3px solid var(--blue);border-radius:0 8px 8px 0;padding:9px 12px;margin-top:10px;overflow:hidden}
+  .tip.warn{border-left-color:var(--amber);color:#f3dca8}
+  .tip svg{float:left;margin:2px 9px 0 0}
+  .badge{display:inline-block;font-family:var(--mono);font-size:11px;padding:1px 7px;border-radius:5px;
+    background:#3a2e12;border:1px solid #5a4920;color:#fbd56b}
+  b.red{color:#ff9b9b}b.green{color:#6ee7a8}b.amber{color:#fbd56b}
+
+  .foot{margin-top:24px;font-size:12.5px;color:var(--muted);line-height:1.6;text-align:center}
+  .foot a{color:var(--blue);text-decoration:none}
+  @media print{body{background:#fff;color:#000}section{break-inside:avoid;border-color:#ccc}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <span class="logo" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span>
+    <div><h1>Инструкция с примерами</h1></div>
+  </div>
+  <div class="lead">Как пользоваться помощником по безопасности. Откройте <a href="home.html">главную</a> —
+    индикатор справа сверху должен быть зелёным («система на связи»). Если красный — впишите адрес
+    <code>http://127.0.0.1:8000</code> в поле «адрес системы» внизу страницы.</div>
+
+  <div class="toc">
+    <a href="#poisk">Поиск и ответ</a>
+    <a href="#avar">Аварийные карточки</a>
+    <a href="#sovm">Совместимость хранения</a>
+    <a href="#znaki">Знаки опасности</a>
+    <a href="#zona">Зона заражения</a>
+    <a href="#dann">Состояние данных</a>
+    <a href="#dover">Про достоверность</a>
+  </div>
+
+  <!-- 1 -->
+  <section id="poisk">
+    <h2><span class="n">1</span>Поиск и ответ</h2>
+    <p class="what">Задайте вопрос обычными словами или найдите вещество и нужный раздел паспорта.
+      Страница «Поиск и ответ» на главной.</p>
+    <ul class="steps">
+      <li>Выберите режим: <b>«Спросить»</b> (получить ответ) или <b>«Поиск»</b> (список разделов).</li>
+      <li>Впишите вопрос или название вещества и нажмите кнопку.</li>
+      <li>При необходимости укажите завод — ответ ограничится его веществами.</li>
+    </ul>
+    <div class="ex">
+      <div class="lbl">Пример — режим «Спросить»</div>
+      <div class="io"><span class="tag q">вопрос</span><span class="res"><code>какие средства защиты нужны при работе с аммиаком</code></span></div>
+      <div class="io"><span class="tag a">ответ</span><span class="res">Связный ответ + ссылки на разделы паспорта (СИЗ, первая помощь), на которых он основан.</span></div>
+    </div>
+    <div class="ex">
+      <div class="lbl">Пример — режим «Поиск»</div>
+      <div class="io"><span class="tag q">запрос</span><span class="res"><code>первая помощь при отравлении хлором</code></span></div>
+      <div class="io"><span class="tag a">найдено</span><span class="res">Вверху — <b>хлор</b>, раздел «Меры первой помощи», с цитатой и ссылкой на паспорт.</span></div>
+    </div>
+    <div class="tip"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      Поиск идёт <b>по смыслу</b>, а не по точному совпадению слов — можно спрашивать своими словами.</div>
+  </section>
+
+  <!-- 2 -->
+  <section id="avar" class="warn">
+    <h2><span class="n">2</span>Аварийные карточки</h2>
+    <p class="what">Быстрая карточка для реагирования на аварию: номер ООН, класс ДОПОГ, первая помощь,
+      средства защиты. Плитка «Аварийные карточки».</p>
+    <ul class="steps">
+      <li>Впишите вещество (есть подсказки при вводе).</li>
+      <li>Получите карточку: красная полоса = АХОВ, зелёная = опасный груз, но не токсичное облако.</li>
+    </ul>
+    <div class="ex">
+      <div class="lbl">Пример</div>
+      <div class="io"><span class="tag q">вещество</span><span class="res"><code>фосген</code></span></div>
+      <div class="io"><span class="tag a">карточка</span><span class="res"><b class="red">АХОВ</b> · ООН 1076 · класс 2.3 · первая помощь и СИЗ из паспорта.</span></div>
+    </div>
+    <div class="tip warn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+      Если у вещества нет паспортных мер, карточка покажет <span class="badge">типовое по группе</span> — это общие меры по химической группе, их нужно сверить с паспортом.</div>
+  </section>
+
+  <!-- 3 -->
+  <section id="sovm" class="warn">
+    <h2><span class="n">3</span>Совместимость хранения</h2>
+    <p class="what">Проверка, можно ли хранить два вещества рядом. Страница «Операции и хранение» → вкладка «Совместимость».</p>
+    <ul class="steps">
+      <li>Впишите два вещества (А и Б) и нажмите «Проверить совместимость».</li>
+      <li>Прочитайте вердикт и причину; ниже — выдержки из раздела «Стабильность» обоих паспортов.</li>
+    </ul>
+    <div class="ex">
+      <div class="lbl">Примеры</div>
+      <div class="io"><span class="tag q">А + Б</span><span class="res"><code>гипохлорит натрия</code> + <code>соляная кислота</code></span></div>
+      <div class="io"><span class="tag a">вердикт</span><span class="res"><b class="red">НЕЛЬЗЯ ВМЕСТЕ</b> — выделение газообразного хлора (Cl₂).</span></div>
+      <div class="io" style="margin-top:10px"><span class="tag q">А + Б</span><span class="res"><code>серная кислота</code> + <code>гидроксид натрия</code></span></div>
+      <div class="io"><span class="tag a">вердикт</span><span class="res"><b class="red">НЕЛЬЗЯ ВМЕСТЕ</b> — бурная реакция кислоты со щёлочью.</span></div>
+      <div class="io" style="margin-top:10px"><span class="tag q">А + Б</span><span class="res"><code>толуол</code> + <code>метанол</code></span></div>
+      <div class="io"><span class="tag a">вердикт</span><span class="res"><b class="green">СОВМЕСТИМЫ</b> — известных несовместимостей между группами нет.</span></div>
+    </div>
+    <div class="tip"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      Цвет вердикта: <b class="red">красный</b> — нельзя, <b class="amber">жёлтый</b> — осторожно/разносить, <b class="green">зелёный</b> — совместимы.</div>
+  </section>
+
+  <!-- 4 -->
+  <section id="znaki" class="warn">
+    <h2><span class="n">4</span>Знаки опасности</h2>
+    <p class="what">Знаки опасности (международная система СГС) и сигнальное слово. Вкладка «Знаки опасности».</p>
+    <ul class="steps">
+      <li>Впишите вещество и нажмите «Показать знаки опасности».</li>
+      <li>Получите набор знаков-ромбов и слово <b>«Опасно»</b> или <b>«Осторожно»</b>.</li>
+    </ul>
+    <div class="ex">
+      <div class="lbl">Пример</div>
+      <div class="io"><span class="tag q">вещество</span><span class="res"><code>аммиак</code></span></div>
+      <div class="io"><span class="tag a">знаки</span><span class="res">5 знаков (воспламеняющееся, газ под давлением, коррозия, острая токсичность, опасно для среды) + <b class="red">Опасно</b>.</span></div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section id="zona" class="warn">
+    <h2><span class="n">5</span>Зона заражения (АХОВ)</h2>
+    <p class="what">Прогноз глубины зоны заражения при выбросе по методике гражданской обороны (РД 52.04.253-90).
+      Вкладка «Зона АХОВ».</p>
+    <ul class="steps">
+      <li>Выберите вещество из списка (11 АХОВ с проверенными коэффициентами).</li>
+      <li>Введите массу выброса (т), скорость ветра, температуру, устойчивость воздуха, время и тип разлива.</li>
+      <li>Нажмите «Рассчитать зону».</li>
+    </ul>
+    <div class="ex">
+      <div class="lbl">Пример</div>
+      <div class="io"><span class="tag q">ввод</span><span class="res"><code>хлор</code> · 40 т · ветер 1 м/с · 0 °C · изотермия</span></div>
+      <div class="io"><span class="tag a">результат</span><span class="res">Глубина зоны ≈ <b>15 км</b> + раскладка по первичному/вторичному облаку и коэффициентам.</span></div>
+    </div>
+    <div class="tip warn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+      Это <b>прогноз</b> по типовой методике (пометка «требует проверки»), а не утверждённый расчёт объекта. Вещества вне перечня методики система честно не считает.</div>
+  </section>
+
+  <!-- 6 -->
+  <section id="dann">
+    <h2><span class="n">6</span>Состояние данных</h2>
+    <p class="what">Сколько веществ имеют полные паспортные сведения, а где пока только типовые меры. Вкладка «Состояние данных».</p>
+    <div class="ex">
+      <div class="lbl">Что показывает</div>
+      <div class="io"><span class="tag a">полнота</span><span class="res"><b class="green">из паспорта</b> — полные сведения; <b class="amber">типовое</b> — общие меры по группе (нужна сверка).</span></div>
+      <div class="io"><span class="tag a">пробелы</span><span class="res">Какие поля и у скольких веществ нужно дозаполнить по первоисточнику.</span></div>
+      <div class="io"><span class="tag a">журнал</span><span class="res">История запросов — кто что искал (для контроля).</span></div>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section id="dover" class="warn">
+    <h2><span class="n">7</span>Про достоверность — важно</h2>
+    <p class="what">Цена ошибки в химбезопасности — здоровье людей. Поэтому система честно помечает,
+      чему можно доверять.</p>
+    <div class="ex">
+      <div class="io"><span class="tag a">паспорт</span><span class="res">Данные из паспорта вещества — основной источник.</span></div>
+      <div class="io"><span class="tag a">пометки</span><span class="res"><span class="badge">требует проверки</span> и <span class="badge">типовое по группе</span> — нужно сверить с официальным первоисточником перед применением.</span></div>
+    </div>
+    <div class="tip warn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+      Система никогда не выдаёт типовые меры за паспортные и не придумывает нормативные значения — если данных нет, она об этом говорит.</div>
+  </section>
+
+  <div class="foot">
+    <a href="home.html">← на главную</a> · можно распечатать (Ctrl/Cmd+P) и повесить у рабочего места
+  </div>
+</div>
+</body>
+</html>

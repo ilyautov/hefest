@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="260" height="56" viewBox="0 0 260 56" role="img" aria-label="HEFEST — промышленная безопасность">
+  <title>HEFEST</title>
+  <g fill="#f9a23b" transform="translate(4,4) scale(2)">
+    <path d="M18.5 1.8l.6 1.6 1.6.6-1.6.6-.6 1.6-.6-1.6-1.6-.6 1.6-.6z"/>
+    <path d="M2 9.5 5 7.5h15v2h-6v2l3 4.5v1.5H7V16l3-4.5v-2H2z"/>
+  </g>
+  <text x="60" y="30" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="26" font-weight="700" letter-spacing="2" fill="#f9a23b">HEFEST</text>
+  <text x="61" y="46" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="10.5" letter-spacing="1.2" fill="#8a93a3">ПРОМЫШЛЕННАЯ БЕЗОПАСНОСТЬ</text>
+</svg>

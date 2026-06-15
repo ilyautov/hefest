@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HEFEST — помощник по безопасности</title>
+<style>
+  :root{
+    --bg:#0f1419; --panel:#1a2230; --panel2:#222c3a; --line:#2b3647;
+    --txt:#eef2f7; --muted:#a8b3c2;
+    --accent:#5b9dff; --accent-d:#3d7ee8; --orange:#f9a23b; --red:#ff6b6b; --green:#3ecf8e; --amber:#ffce6b;
+    --r:18px; --r-sm:12px;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Inter,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1100px 560px at 78% -14%,#1c2c44,transparent 60%),var(--bg);
+    color:var(--txt);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;min-height:100dvh}
+  .wrap{max-width:980px;margin:0 auto;padding:38px 20px 90px}
+
+  /* шапка */
+  .top{display:flex;align-items:center;gap:14px;margin-bottom:14px;flex-wrap:wrap}
+  .logo{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;
+    background:linear-gradient(150deg,#23344f,#15202f);border:1px solid var(--line);color:var(--orange);flex:none}
+  .brand{display:flex;flex-direction:column;gap:1px;line-height:1.05}
+  h1{font-size:25px;margin:0;font-weight:800;letter-spacing:2px}
+  .brand-sub{font-size:12.5px;color:var(--muted);font-weight:500;letter-spacing:.4px}
+  .status{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--muted);flex:none}
+  .dot.ok{background:var(--green);box-shadow:0 0 10px #3ecf8e88}.dot.off{background:var(--red);box-shadow:0 0 10px #ff6b6b88}
+  .lead{color:var(--muted);font-size:16.5px;margin:4px 0 26px;max-width:720px}
+  .lead b{color:var(--txt);font-weight:600}
+
+  /* показатели */
+  .metrics{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:34px}
+  .m{flex:1;min-width:140px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r-sm);padding:15px 18px}
+  .m .v{font-size:25px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.3px}
+  .m .v.b{color:var(--accent)}.m .v.o{color:var(--orange)}.m .v.g{color:var(--green)}
+  .m .l{font-size:13px;color:var(--muted);margin-top:4px;line-height:1.4}
+
+  /* заголовок раздела */
+  .shead{display:flex;align-items:baseline;gap:10px;margin:0 0 14px}
+  .shead h2{font-size:15px;margin:0;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted)}
+  .shead .hint{font-size:13.5px;color:var(--muted)}
+
+  /* крупные карточки-действия (оператор) */
+  .primary{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px;margin-bottom:38px}
+  a.big{display:flex;flex-direction:column;text-decoration:none;color:inherit;background:var(--panel);
+    border:1px solid var(--line);border-radius:var(--r);padding:24px;min-height:170px;position:relative;
+    transition:border-color .15s,transform .08s,background .15s}
+  a.big:hover{border-color:var(--accent);background:var(--panel2);transform:translateY(-3px)}
+  a.big:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+  a.big.danger:hover{border-color:var(--orange)}
+  .big .ic{width:50px;height:50px;border-radius:14px;display:grid;place-items:center;margin-bottom:16px;
+    background:#16294a;border:1px solid #25416e;color:var(--accent)}
+  .big.danger .ic{background:#3a2412;border-color:#5e3a17;color:var(--orange)}
+  .big h3{font-size:20px;margin:0 0 7px;font-weight:700}
+  .big p{font-size:15px;color:var(--muted);margin:0;line-height:1.5}
+  .big .go{margin-top:auto;padding-top:16px;font-size:15px;font-weight:600;color:var(--accent);display:flex;align-items:center;gap:7px}
+  .big.danger .go{color:var(--orange)}
+
+  /* раздел для специалистов */
+  details.spec{background:transparent;border:1px solid var(--line);border-radius:var(--r);padding:0;margin-bottom:24px;overflow:hidden}
+  details.spec>summary{list-style:none;cursor:pointer;padding:18px 22px;display:flex;align-items:center;gap:12px;
+    font-size:16px;font-weight:600;color:var(--txt);background:var(--panel)}
+  details.spec>summary::-webkit-details-marker{display:none}
+  details.spec>summary:hover{background:var(--panel2)}
+  details.spec>summary:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+  .summary-sub{font-weight:400;font-size:14px;color:var(--muted);margin-left:2px}
+  .chev{margin-left:auto;color:var(--muted);transition:transform .2s}
+  details.spec[open] .chev{transform:rotate(180deg)}
+  .spec-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;padding:6px 18px 20px}
+  a.tile{display:block;text-decoration:none;color:inherit;background:var(--panel2);border:1px solid var(--line);
+    border-radius:var(--r-sm);padding:17px 18px;transition:border-color .15s,transform .08s}
+  a.tile:hover{border-color:var(--accent);transform:translateY(-2px)}
+  a.tile:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+  .tile .th{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+  .tile .ti{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;flex:none;
+    background:#16294a;border:1px solid #25416e;color:var(--accent)}
+  .tile.warn .ti{background:#3a2412;border-color:#5e3a17;color:var(--orange)}
+  .tile h4{font-size:15.5px;margin:0;font-weight:600}
+  .tile p{font-size:13.5px;color:var(--muted);margin:0;line-height:1.5}
+
+  .foot{margin-top:18px;font-size:14px;color:var(--muted);line-height:1.7}
+  .foot a{color:var(--accent);text-decoration:none}
+  .foot a:hover{text-decoration:underline}
+  .foot .docs{margin-top:8px;display:flex;gap:8px 16px;flex-wrap:wrap}
+  .foot .warnword{color:var(--amber);font-weight:600}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <span class="logo" aria-hidden="true"><svg width="29" height="29" viewBox="0 0 24 24" fill="currentColor"><path d="M18.5 1.8l.6 1.6 1.6.6-1.6.6-.6 1.6-.6-1.6-1.6-.6 1.6-.6z"/><path d="M2 9.5 5 7.5h15v2h-6v2l3 4.5v1.5H7V16l3-4.5v-2H2z"/></svg></span>
+    <div class="brand"><h1>HEFEST</h1><span class="brand-sub">помощник по промышленной безопасности</span></div>
+    <div class="status" aria-live="polite"><span class="dot" id="dot"></span><span id="st">проверка связи…</span></div>
+  </div>
+  <p class="lead">Подскажет всё об опасном веществе и что делать при аварии — простыми словами, со ссылкой на
+    <b>паспорт безопасности</b>. Работает <b>на компьютере предприятия</b>, данные никуда не уходят.</p>
+
+  <div class="metrics">
+    <div class="m"><div class="v b" id="m-subs">2&nbsp;597</div><div class="l">веществ в базе</div></div>
+    <div class="m"><div class="v g">94%</div><div class="l">точность подбора нужного вещества</div></div>
+    <div class="m"><div class="v o">11</div><div class="l">опасных веществ с расчётом зоны эвакуации</div></div>
+    <div class="m"><div class="v" id="m-eng" style="color:var(--txt)">локально</div><div class="l">без интернета и облака</div></div>
+  </div>
+
+  <!-- ОСНОВНОЕ: что нужно каждый день -->
+  <div class="shead"><h2>Каждый день</h2><span class="hint">три действия, которые нужны чаще всего</span></div>
+  <div class="primary">
+    <a class="big" href="console.html">
+      <span class="ic" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+      <h3>Спросить</h3>
+      <p>Задайте вопрос обычными словами — например «первая помощь при отравлении хлором». Ответ соберётся из паспортов со ссылками на разделы.</p>
+      <span class="go">Открыть <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    </a>
+    <a class="big" href="substance.html">
+      <span class="ic" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v6.5L4 18a2 2 0 0 0 1.7 3h12.6a2 2 0 0 0 1.7-3L14 8.5V2"/><path d="M8.5 2h7M7 14h10"/></svg></span>
+      <h3>Узнать о веществе</h3>
+      <p>Класс опасности, предельная концентрация (ПДК), знаки опасности, средства защиты и первая помощь — всё про одно вещество на одном экране.</p>
+      <span class="go">Открыть <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    </a>
+    <a class="big danger" href="emergency.html">
+      <span class="ic" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 1 21h22z"/><path d="M12 9v5M12 17h.01"/></svg></span>
+      <h3>Авария</h3>
+      <p>Что делать прямо сейчас: первая помощь, средства защиты, зона эвакуации. Короткая карточка для быстрого реагирования.</p>
+      <span class="go">Открыть <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    </a>
+  </div>
+
+  <!-- ДЛЯ СПЕЦИАЛИСТОВ: свёрнуто, чтобы не перегружать -->
+  <details class="spec">
+    <summary>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+      Для инженеров ОТ/ПБ и руководства <span class="summary-sub">— реестр, хранение, готовность, ГОСТ, обучение</span>
+      <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </summary>
+    <div class="spec-grid">
+      <a class="tile warn" href="safety.html">
+        <div class="th"><span class="ti" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 6v6c0 5 3.5 8 8 10 4.5-2 8-5 8-10V6l-8-4z"/></svg></span><h4>Хранение и совместимость</h4></div>
+        <p>Что нельзя ставить рядом, знаки опасности, расчёт зоны заражения.</p>
+      </a>
+      <a class="tile" href="registry.html">
+        <div class="th"><span class="ti" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v18H3z"/><path d="M3 9h18M3 15h18M9 3v18"/></svg></span><h4>Реестр по заводам</h4></div>
+        <p>Вещества каждого завода и опасные пары для хранения. Выгрузка в Excel/1С.</p>
+      </a>
+      <a class="tile" href="label.html">
+        <div class="th"><span class="ti" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13.5V7a2 2 0 0 0-2-2h-6.5a2 2 0 0 0-1.4.6l-7 7a2 2 0 0 0 0 2.8l5.5 5.5a2 2 0 0 0 2.8 0l7-7a2 2 0 0 0 .6-1.4z"/><path d="M7.5 7.5h.01"/></svg></span><h4>Этикетки и QR-код</h4></div>
+        <p>Печать этикетки на тару: знаки, класс, ПДК и QR на карточку первой помощи.</p>
+      </a>
+      <a class="tile" href="quiz.html">
+        <div class="th"><span class="ti" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.1 9a3 3 0 1 1 4 2.8c-.8.4-1.6 1.1-1.6 2.2"/><path d="M12 17h.01"/><circle cx="12" cy="12" r="10"/></svg></span><h4>Обучение персонала</h4></div>
+        <p>Короткий инструктаж по веществу. Вопросы из паспорта, без выдумок.</p>
+      </a>
+      <a class="tile" href="readiness.html">
+        <div class="th"><span class="ti" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg></span><h4>Готовность к внедрению</h4></div>
+        <p>Сколько веществ подтверждено экспертом, что ещё требует проверки.</p>
+      </a>
+      <a class="tile" href="reviews.html">
+        <div class="th"><span class="ti" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span><h4>Качество ответов</h4></div>
+        <p>Проверка: верно ли система достала раздел паспорта. Эксперт подписывает оценку.</p>
+      </a>
+      <a class="tile" href="gost.html">
+        <div class="th"><span class="ti" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6"/></svg></span><h4>Соответствие ГОСТ 30333</h4></div>
+        <p>Карта 16 разделов паспорта и реестр нормативки с пометкой устаревших редакций.</p>
+      </a>
+    </div>
+  </details>
+
+  <input type="hidden" id="base" value="http://127.0.0.1:8000">
+  <div class="foot">
+    Данные с пометкой <span class="warnword">«требует проверки»</span> сверяйте с первоисточником — цена ошибки = здоровье. Работает локально (152-ФЗ / КИИ).
+    <div class="docs">
+      <a href="guide.html"><b><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Инструкция с примерами</b></a>
+      <a href="/doc/О-СИСТЕМЕ.md">О системе</a>
+      <a href="/doc/АРХИТЕКТУРА.md">Архитектура</a>
+      <a href="/doc/СООТВЕТСТВИЕ-ГОСТ-ФЗ.md">Соответствие ГОСТ и ФЗ</a>
+      <a href="/doc/ВЛАДЕЛЬЦУ-полная-дока.md">Документация владельцу</a>
+      <a href="/doc/WORKLOG.md">История работ</a>
+    </div>
+  </div>
+</div>
+<script>
+  const $=id=>document.getElementById(id);
+  const base=()=>{const el=$('base');const v=el?el.value.replace(/\/+$/,''):'';return location.protocol.indexOf('http')===0?location.origin:v;};
+  async function health(){
+    try{const d=await(await fetch(base()+'/health',{signal:AbortSignal.timeout(4000)})).json();
+      $('dot').className='dot ok';$('st').textContent='система на связи';
+      if(d.substances)$('m-subs').innerHTML=(d.substances).toLocaleString('ru');
+      $('m-eng').textContent='локально';
+    }catch(e){$('dot').className='dot off';$('st').textContent='нет связи с системой';}
+  }
+  health();
+</script>
+</body>
+</html>

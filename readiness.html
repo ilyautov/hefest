@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Готовность к внедрению — экспертная верификация  ·  HEFEST</title>
+<style>
+  :root{
+    --bg:#0f1419; --panel:#1a2230; --panel2:#222c3a; --line:#2b3647;
+    --txt:#eef2f7; --muted:#a8b3c2;
+    --blue:#5b9dff; --blue-d:#2563eb; --orange:#f9a23b; --red:#ff6b6b; --green:#3ecf8e; --amber:#ffce6b;
+    --r:14px; --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1200px 520px at 75% -12%,#13233c,transparent 62%),var(--bg);
+    color:var(--txt);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;min-height:100dvh}
+  .wrap{max-width:900px;margin:0 auto;padding:34px 18px 80px}
+  .top{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+  a.back{color:var(--muted);text-decoration:none;font-size:13px;font-family:var(--sans)}
+  a.back:hover{color:var(--blue)}
+  h1{font-size:23px;margin:0;font-weight:700}
+  .status{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);font-family:var(--sans)}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+  .dot.ok{background:var(--green)}.dot.off{background:var(--red)}
+  .lead{color:var(--muted);font-size:14.5px;margin:8px 0 24px;max-width:720px;line-height:1.55}
+
+  .big{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:24px;margin-bottom:18px}
+  .pct{font-family:var(--mono);font-size:46px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+  .pct+small{display:block;font-size:14px;color:var(--muted);font-weight:600;margin-top:6px}
+  .pbar{height:12px;border-radius:7px;background:#1b2433;overflow:hidden;margin:16px 0 8px}
+  .pbar i{display:block;height:100%;background:linear-gradient(90deg,var(--green),#0e9f6e);transition:width .6s ease}
+  .pcap{font-size:13px;color:var(--muted)}
+
+  .metrics{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:18px}
+  .m{flex:1;min-width:150px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:15px 17px}
+  .m .v{font-family:var(--mono);font-size:26px;font-weight:700;font-variant-numeric:tabular-nums}
+  .m .v.g{color:var(--green)}.m .v.a{color:var(--amber)}.m .v.r{color:var(--red)}
+  .m .l{font-size:12px;color:var(--muted);margin-top:4px}
+
+  .sec{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin-bottom:16px}
+  .sec h2{font-size:15px;margin:0 0 12px;font-weight:600;display:flex;align-items:center;gap:8px}
+  .sec ol{margin:0;padding-left:20px}.sec li{margin-bottom:8px;color:var(--muted);line-height:1.5}.sec li b{color:var(--txt)}
+  .sign{margin-top:12px;font-family:var(--mono);font-size:12px;color:#b9c6d6;background:#0d1420;border:1px solid var(--line);
+    border-radius:9px;padding:11px 13px;overflow-x:auto;white-space:pre}
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid #1b2433}
+  th{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:600}
+  td .who{font-weight:600}.td-mut{color:var(--muted);font-family:var(--mono);font-size:12px}
+  .empty{color:var(--muted);font-size:13.5px;padding:6px 0}
+  .vbadge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-family:var(--mono);padding:4px 10px;border-radius:7px;
+    border:1px solid rgba(251,191,36,.35);background:rgba(251,191,36,.06);color:var(--amber)}
+  .cfg{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:20px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .cfg input{background:var(--panel);border:1px solid var(--line);border-radius:7px;color:var(--txt);padding:6px 9px;font:12px var(--mono);min-width:200px}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="back" href="home.html">← на главную</a>
+    <h1>Готовность к внедрению</h1>
+    <div class="status" aria-live="polite"><span class="dot" id="dot"></span><span id="st">проверка…</span></div>
+  </div>
+  <div class="lead">Экспертная верификация — это подтверждение значений по веществу ответственным специалистом
+    предприятия (инженер ОТ/ПБ, эколог). До подписи данные помечены «требует проверки». Этот экран показывает
+    прогресс: что уже подтверждено и кем. Первоисточник во всех случаях — действующий паспорт безопасности.</div>
+
+  <div class="big">
+    <div><span class="pct" id="pct">—</span><small>готовности</small></div>
+    <div class="pbar"><i id="pbar" style="width:0%"></i></div>
+    <div class="pcap" id="pcap">загрузка…</div>
+  </div>
+
+  <div class="metrics">
+    <div class="m"><div class="v" id="m-total">—</div><div class="l">всего веществ в базе</div></div>
+    <div class="m"><div class="v g" id="m-ver">—</div><div class="l">подтверждено экспертом</div></div>
+    <div class="m"><div class="v a" id="m-rev">—</div><div class="l">требует проверки</div></div>
+    <div class="m"><div class="v r" id="m-rej">—</div><div class="l">отклонено (есть ошибка)</div></div>
+  </div>
+
+  <div class="sec">
+    <h2>Как подтвердить вещество</h2>
+    <ol>
+      <li><b>Сверьте значения</b> (класс, ПДК, первая помощь, СИЗ, хранение) с действующим паспортом безопасности.</li>
+      <li><b>Поставьте подпись</b> — она фиксирует, кто и когда подтвердил. Через интерфейс или запросом:</li>
+    </ol>
+    <div class="sign">curl -X POST {BASE}/verify -H "Content-Type: application/json" \
+  -d '{"substance":"хлор","status":"verified","by":"ФИО","role":"инженер по ОТ/ПБ","fields":["pdk_mgm3","first_aid"]}'</div>
+  </div>
+
+  <div class="sec">
+    <h2>Подтверждённые вещества <span id="rcount" style="color:var(--muted);font-weight:400"></span></h2>
+    <div id="recs"><div class="empty">Загрузка…</div></div>
+  </div>
+
+  <input type="hidden" id="base" value="http://127.0.0.1:8000"><!-- адрес берётся автоматически из location.origin; поле скрыто, чтобы не пугать нетех. пользователя -->
+</div>
+<script>
+  const $=id=>document.getElementById(id);
+  const base=()=>{const v=$('base').value.replace(/\/+$/,'');return location.protocol.indexOf('http')===0?location.origin:v;};
+  const esc=s=>String(s==null?'':s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+  const STAT={verified:'✓ подтверждено',rejected:'✕ отклонено',needs_review:'⚠ требует проверки'};
+
+  async function load(){
+    let d;
+    try{ d=await(await fetch(base()+'/verification',{signal:AbortSignal.timeout(5000)})).json();
+      $('dot').className='dot ok';$('st').textContent='система на связи'; }
+    catch(e){ $('dot').className='dot off';$('st').textContent='нет связи'; $('pcap').textContent='нет связи с системой'; return; }
+
+    const pct=d.verified_pct!=null?d.verified_pct:0;
+    $('pct').textContent=pct+'%';
+    $('pct').style.color = pct>=80?'var(--green)':pct>0?'var(--amber)':'var(--muted)';
+    $('pbar').style.width=Math.max(pct,1)+'%';
+    $('pcap').textContent=`${(d.verified||0).toLocaleString('ru')} из ${(d.total||0).toLocaleString('ru')} веществ подтверждены экспертом`;
+    $('m-total').textContent=(d.total||0).toLocaleString('ru');
+    $('m-ver').textContent=(d.verified||0).toLocaleString('ru');
+    $('m-rev').textContent=(d.needs_review||0).toLocaleString('ru');
+    $('m-rej').textContent=(d.rejected||0).toLocaleString('ru');
+    const sg=document.querySelector('.sign'); sg.textContent=sg.textContent.replace('{BASE}',base());
+
+    const recs=(d.records||[]).filter(r=>r.status!=='needs_review');
+    $('rcount').textContent=recs.length?`(${recs.length})`:'';
+    if(!recs.length){
+      $('recs').innerHTML='<div class="empty">Пока ни одно вещество не подтверждено экспертом. До внедрения это нормально — подписи ставит ответственный завода (см. выше). Значок <span class="vbadge">⚠ требует проверки</span> стоит на всех веществах.</div>';
+      return;
+    }
+    $('recs').innerHTML=`<table><thead><tr><th>Вещество</th><th>Статус</th><th>Кто подтвердил</th><th>Когда</th></tr></thead><tbody>`+
+      recs.map(r=>`<tr>
+        <td><a href="substance.html?name=${encodeURIComponent(r.name)}" style="color:var(--blue);text-decoration:none">${esc(r.name)}</a></td>
+        <td>${esc(STAT[r.status]||r.status)}</td>
+        <td><span class="who">${esc(r.by||'—')}</span>${r.role?'<div class="td-mut">'+esc(r.role)+'</div>':''}</td>
+        <td class="td-mut">${esc((r.at||'').slice(0,10))}</td>
+      </tr>`).join('')+`</tbody></table>`;
+  }
+  $('base').addEventListener('change',load); load();
+</script>
+</body>
+</html>

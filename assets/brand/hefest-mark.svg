@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="#f9a23b" role="img" aria-label="HEFEST">
+  <title>HEFEST</title>
+  <!-- искра горна -->
+  <path d="M18.5 1.8l.6 1.6 1.6.6-1.6.6-.6 1.6-.6-1.6-1.6-.6 1.6-.6z"/>
+  <!-- наковальня -->
+  <path d="M2 9.5 5 7.5h15v2h-6v2l3 4.5v1.5H7V16l3-4.5v-2H2z"/>
+</svg>
