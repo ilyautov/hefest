@@ -36,3 +36,6 @@ arch-doc.png
 # Хранятся вне VCS; при необходимости — Git LFS
 engine/*.pdf
 engine/*.htm.html
+
+# --- Локальное состояние Claude Code ---
+.claude/
