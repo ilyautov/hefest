@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Качество выдачи — сверка ответов с паспортами</title>
+<style>
+  :root{
+    --bg:#0f1419; --panel:#1a2230; --panel2:#222c3a; --line:#2b3647;
+    --txt:#eef2f7; --muted:#a8b3c2;
+    --blue:#5b9dff; --blue-d:#2563eb; --orange:#f9a23b; --red:#ff6b6b; --green:#3ecf8e; --amber:#ffce6b;
+    --r:14px; --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1200px 520px at 75% -12%,#13233c,transparent 62%),var(--bg);
+    color:var(--txt);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;min-height:100dvh}
+  .wrap{max-width:900px;margin:0 auto;padding:34px 18px 80px}
+  .top{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+  a.back{color:var(--muted);text-decoration:none;font-size:13px;font-family:var(--sans)}
+  a.back:hover{color:var(--blue)}
+  h1{font-size:23px;margin:0;font-weight:700}
+  .status{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);font-family:var(--sans)}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+  .dot.ok{background:var(--green)}.dot.off{background:var(--red)}
+  .lead{color:var(--muted);font-size:14.5px;margin:8px 0 24px;max-width:730px;line-height:1.55}
+  .lead b{color:var(--txt)}
+
+  .big{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:24px;margin-bottom:18px}
+  .pct{font-family:var(--mono);font-size:46px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+  .pct+small{display:block;font-size:14px;color:var(--muted);font-weight:600;margin-top:6px}
+  .pbar{height:12px;border-radius:7px;background:#1b2433;overflow:hidden;margin:16px 0 8px}
+  .pbar i{display:block;height:100%;background:linear-gradient(90deg,var(--green),#0e9f6e);transition:width .6s ease}
+  .pcap{font-size:13px;color:var(--muted)}
+
+  .metrics{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:18px}
+  .m{flex:1;min-width:140px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:15px 17px}
+  .m .v{font-family:var(--mono);font-size:26px;font-weight:700;font-variant-numeric:tabular-nums}
+  .m .v.g{color:var(--green)}.m .v.a{color:var(--amber)}.m .v.r{color:var(--red)}.m .v.b{color:var(--blue)}
+  .m .l{font-size:12px;color:var(--muted);margin-top:4px}
+
+  .sec{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin-bottom:16px}
+  .sec h2{font-size:15px;margin:0 0 12px;font-weight:600;display:flex;align-items:center;gap:8px}
+  .sec ol{margin:0;padding-left:20px}.sec li{margin-bottom:8px;color:var(--muted);line-height:1.5}.sec li b{color:var(--txt)}
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid #1b2433;vertical-align:top}
+  th{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:600}
+  td .who{font-weight:600}.td-mut{color:var(--muted);font-family:var(--mono);font-size:12px}
+  .vd{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-family:var(--mono);padding:3px 9px;border-radius:7px;border:1px solid}
+  .vd.correct{color:var(--green);border-color:rgba(52,211,153,.4);background:rgba(52,211,153,.08)}
+  .vd.partial{color:var(--amber);border-color:rgba(251,191,36,.35);background:rgba(251,191,36,.07)}
+  .vd.incorrect{color:var(--red);border-color:rgba(239,68,68,.4);background:rgba(239,68,68,.08)}
+  .tag{font-size:11px;font-family:var(--mono);padding:2px 7px;border-radius:6px;border:1px solid var(--line);color:var(--muted);margin-right:4px}
+  .empty{color:var(--muted);font-size:13.5px;padding:6px 0;line-height:1.55}
+  .qcell{max-width:300px}
+  .cfg{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:20px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .cfg input{background:var(--panel);border:1px solid var(--line);border-radius:7px;color:var(--txt);padding:6px 9px;font:12px var(--mono);min-width:200px}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="back" href="home.html">← на главную</a>
+    <h1>Качество выдачи</h1>
+    <div class="status" aria-live="polite"><span class="dot" id="dot"></span><span id="st">проверка…</span></div>
+  </div>
+  <div class="lead">Это <b>сверка ответов системы с паспортами безопасности</b> — отдельно от проверки данных вещества.
+    Специалист оценивает каждую выдачу: правильно ли система <b>нашла</b> нужный раздел паспорта
+    и <b>собрала</b> из него ответ, и полезен ли результат. Так копится журнал качества —
+    для доверия и для настройки системы. Принцип: <b>ответ — удобство, паспорт — истина.</b></div>
+
+  <div class="big">
+    <div><span class="pct" id="pct">—</span><small>выдач оценены как «верно»</small></div>
+    <div class="pbar"><i id="pbar" style="width:0%"></i></div>
+    <div class="pcap" id="pcap">загрузка…</div>
+  </div>
+
+  <div class="metrics">
+    <div class="m"><div class="v b" id="m-total">—</div><div class="l">всего оценок выдачи</div></div>
+    <div class="m"><div class="v g" id="m-ok">—</div><div class="l">верно</div></div>
+    <div class="m"><div class="v a" id="m-part">—</div><div class="l">частично</div></div>
+    <div class="m"><div class="v r" id="m-bad">—</div><div class="l">неверно</div></div>
+  </div>
+  <div class="metrics">
+    <div class="m"><div class="v r" id="m-irr">—</div><div class="l">источников «не в тему» (ошибки поиска)</div></div>
+    <div class="m"><div class="v r" id="m-dm">—</div><div class="l">данные не сошлись с паспортом</div></div>
+    <div class="m"><div class="v g" id="m-use">—</div><div class="l">отмечены «полезно»</div></div>
+  </div>
+
+  <div class="sec">
+    <h2>Как оценить выдачу</h2>
+    <ol>
+      <li>В <b><a href="console.html" style="color:var(--blue);text-decoration:none">консоли</a></b> задайте вопрос и получите ответ.</li>
+      <li>Разверните <b>текст из паспорта</b> под каждым источником — это точная цитата раздела. Сверьте сами.</li>
+      <li>Отметьте каждый источник <b>«релевантен / не в тему»</b>, оцените выдачу <b>верно / частично / неверно</b>,
+          поставьте подпись. Анонимные оценки не принимаются.</li>
+    </ol>
+  </div>
+
+  <div class="sec">
+    <h2>Последние оценки <span id="rcount" style="color:var(--muted);font-weight:400"></span></h2>
+    <div id="recs"><div class="empty">Загрузка…</div></div>
+  </div>
+
+  <input type="hidden" id="base" value="http://127.0.0.1:8000"><!-- адрес берётся автоматически из location.origin; поле скрыто, чтобы не пугать нетех. пользователя -->
+</div>
+<script>
+  const $=id=>document.getElementById(id);
+  const base=()=>{const v=$('base').value.replace(/\/+$/,'');return location.protocol.indexOf('http')===0?location.origin:v;};
+  const esc=s=>String(s==null?'':s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+  const VD={correct:'✓ верно',partial:'◐ частично',incorrect:'✕ неверно'};
+
+  async function load(){
+    let d;
+    try{ d=await(await fetch(base()+'/reviews',{signal:AbortSignal.timeout(5000)})).json();
+      $('dot').className='dot ok';$('st').textContent='система на связи'; }
+    catch(e){ $('dot').className='dot off';$('st').textContent='нет связи'; $('pcap').textContent='нет связи с системой'; return; }
+
+    const pct=d.correct_pct!=null?d.correct_pct:0;
+    $('pct').textContent=(d.total?pct:0)+'%';
+    $('pct').style.color = !d.total?'var(--muted)':pct>=80?'var(--green)':pct>=50?'var(--amber)':'var(--red)';
+    $('pbar').style.width=Math.max(d.total?pct:0,1)+'%';
+    $('pcap').textContent=d.total?`${d.correct||0} из ${d.total} оценённых выдач признаны верными`:'оценок пока нет';
+    $('m-total').textContent=d.total||0;
+    $('m-ok').textContent=d.correct||0;
+    $('m-part').textContent=d.partial||0;
+    $('m-bad').textContent=d.incorrect||0;
+    $('m-irr').textContent=d.irrelevant_sources||0;
+    $('m-dm').textContent=d.data_mismatch||0;
+    $('m-use').textContent=d.useful_yes||0;
+
+    const recs=d.records||[];
+    $('rcount').textContent=recs.length?`(${recs.length})`:'';
+    if(!recs.length){
+      $('recs').innerHTML='<div class="empty">Оценок выдачи пока нет. Это нормально до начала эксплуатации — '+
+        'специалисты ставят их по ходу работы в <a href="console.html" style="color:var(--blue);text-decoration:none">консоли</a>. '+
+        'Каждая оценка подписывается (кто/когда) и попадает сюда.</div>';
+      return;
+    }
+    $('recs').innerHTML=`<table><thead><tr><th>Вопрос</th><th>Выдача</th><th>Отметки</th><th>Кто</th><th>Когда</th></tr></thead><tbody>`+
+      recs.map(r=>{
+        const tags=[];
+        if(r.data_ok===false)tags.push('<span class="tag">данные ≠ паспорт</span>');
+        if(r.useful===true)tags.push('<span class="tag">полезно</span>');
+        const irr=(r.sources||[]).filter(s=>s.relevant===false).length;
+        if(irr)tags.push(`<span class="tag">${irr} не в тему</span>`);
+        const q=r.question||'';
+        return `<tr>
+          <td class="qcell">${esc(q.length>110?q.slice(0,110)+'…':q)}${r.note?'<div class="td-mut">'+esc(r.note)+'</div>':''}</td>
+          <td><span class="vd ${esc(r.verdict)}">${esc(VD[r.verdict]||r.verdict)}</span></td>
+          <td>${tags.join('')||'<span class="td-mut">—</span>'}</td>
+          <td><span class="who">${esc(r.by||'—')}</span>${r.role?'<div class="td-mut">'+esc(r.role)+'</div>':''}</td>
+          <td class="td-mut">${esc((r.at||'').slice(0,10))}</td>
+        </tr>`;
+      }).join('')+`</tbody></table>`;
+  }
+  $('base').addEventListener('change',load); load();
+</script>
+</body>
+</html>

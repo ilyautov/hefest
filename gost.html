@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Соответствие ГОСТ 30333 — карта 16 разделов и реестр нормативки</title>
+<style>
+  :root{
+    --bg:#0f1419; --panel:#1a2230; --panel2:#222c3a; --line:#2b3647;
+    --txt:#eef2f7; --muted:#a8b3c2;
+    --blue:#5b9dff; --orange:#f9a23b; --red:#ff6b6b; --green:#3ecf8e; --amber:#ffce6b;
+    --r:14px; --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1200px 520px at 75% -12%,#13233c,transparent 62%),var(--bg);
+    color:var(--txt);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;min-height:100dvh}
+  .wrap{max-width:960px;margin:0 auto;padding:34px 18px 80px}
+  .top{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+  a.back{color:var(--muted);text-decoration:none;font-size:13px;font-family:var(--sans)}
+  a.back:hover{color:var(--blue)}
+  h1{font-size:23px;margin:0;font-weight:700}
+  .status{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);font-family:var(--sans)}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+  .dot.ok{background:var(--green)}.dot.off{background:var(--red)}
+  .lead{color:var(--muted);font-size:14.5px;margin:8px 0 20px;max-width:760px}
+  .lead b{color:var(--txt)}
+  .warn{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.3);border-radius:10px;
+    padding:11px 14px;font-size:13px;color:var(--amber);margin-bottom:20px}
+  .warn b{color:var(--txt)}
+
+  .metrics{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:18px}
+  .m{flex:1;min-width:150px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:15px 17px}
+  .m .v{font-family:var(--mono);font-size:26px;font-weight:700;font-variant-numeric:tabular-nums}
+  .m .v.g{color:var(--green)}.m .v.a{color:var(--amber)}.m .v.r{color:var(--red)}.m .v.b{color:var(--blue)}
+  .m .l{font-size:12px;color:var(--muted);margin-top:4px}
+
+  .sec{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin-bottom:16px}
+  .sec h2{font-size:15px;margin:0 0 4px;font-weight:600}
+  .sec .sub{font-size:12.5px;color:var(--muted);margin-bottom:14px}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-bottom:14px}
+  .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:middle}
+  .lg-full{background:var(--green)}.lg-part{background:var(--amber)}.lg-corp{background:var(--blue)}.lg-gap{background:#3a4456}
+
+  .row{display:flex;align-items:center;gap:12px;margin-bottom:9px}
+  .row .num{font-family:var(--mono);font-size:12px;color:var(--muted);width:22px;text-align:right;flex:none}
+  .row .nm{font-size:13px;width:215px;flex:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .bar{flex:1;height:16px;border-radius:5px;overflow:hidden;display:flex;background:#141c28;min-width:120px}
+  .bar span{display:block;height:100%}
+  .bar .s-full{background:var(--green)}.bar .s-part{background:var(--amber)}
+  .bar .s-corp{background:var(--blue)}.bar .s-gap{background:#3a4456}
+  .row .pc{font-family:var(--mono);font-size:12px;color:var(--muted);width:48px;text-align:right;flex:none;font-variant-numeric:tabular-nums}
+
+  #reg{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid #1b2433;vertical-align:top}
+  th{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:600}
+  .st{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-family:var(--mono);padding:2px 8px;border-radius:6px;border:1px solid}
+  .st.current{color:var(--green);border-color:rgba(52,211,153,.4);background:rgba(52,211,153,.08)}
+  .st.superseded{color:var(--red);border-color:rgba(239,68,68,.4);background:rgba(239,68,68,.08)}
+  .st.verify{color:var(--amber);border-color:rgba(251,191,36,.35);background:rgba(251,191,36,.07)}
+  .st.historic{color:var(--blue);border-color:rgba(59,130,246,.35);background:rgba(59,130,246,.07)}
+  .gov{color:var(--muted);font-size:12px;margin-top:3px}
+  .repl{font-family:var(--mono);font-size:11.5px;color:var(--amber)}
+  .chk{display:flex;gap:11px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #1b2433}
+  .chk:last-child{border-bottom:none}
+  .chk .mk{flex:none;width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+  .chk .mk.ok{background:rgba(52,211,153,.12);color:var(--green);border:1px solid rgba(52,211,153,.4)}
+  .chk .mk.no{background:rgba(251,191,36,.1);color:var(--amber);border:1px solid rgba(251,191,36,.4)}
+  .chk .ct{font-size:13.5px;font-weight:600}
+  .chk .claw{font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-left:7px;font-weight:400}
+  .chk .cd{font-size:12px;color:var(--muted);margin-top:2px;line-height:1.45}
+  .cfg{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:20px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .cfg input{background:var(--panel);border:1px solid var(--line);border-radius:7px;color:var(--txt);padding:6px 9px;font:12px var(--mono);min-width:200px}
+  @media(max-width:560px){
+    .row{gap:8px}
+    .row .nm{width:auto;flex:1;min-width:0}
+    .bar{flex:none;width:84px;min-width:84px}
+    .row .pc{width:40px}
+  }
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="back" href="home.html">← на главную</a>
+    <h1>Соответствие ГОСТ 30333</h1>
+    <div class="status" aria-live="polite"><span class="dot" id="dot"></span><span id="st">проверка…</span></div>
+  </div>
+  <div class="lead">ГОСТ 30333 задаёт жёсткую структуру паспорта безопасности из <b>16 разделов</b>. Здесь видно,
+    <b>чем каждый раздел закрыт</b> по всей номенклатуре: своим слоем данных (с указанием источника), частично, только
+    полнотекстовым поиском по паспорту, или это <b>честный пробел</b>. Ниже — реестр нормативки с пометкой
+    <b>устаревших редакций</b>. Принцип: нормативку не выдумываем; формулировки названий 16 разделов — точные цитаты
+    п. 5.1 ГОСТ 30333-2022 (сверены по двум источникам с полным текстом стандарта).</div>
+
+  <div class="warn" id="titlewarn" style="display:none">⚠ <b>Формулировки названий 16 разделов</b> взяты из вторичных
+    источников и подлежат финальной сверке с оригиналом <b>ГОСТ 30333-2022</b> (PDF) перед поставкой. Структура (состав и
+    порядок разделов) — стандарт СГС, подтверждена.</div>
+
+  <div class="metrics">
+    <div class="m"><div class="v b" id="m-subs">—</div><div class="l">веществ в базе</div></div>
+    <div class="m"><div class="v g" id="m-std">—</div><div class="l">структура (ГОСТ 30333-2022)</div></div>
+    <div class="m"><div class="v a" id="m-acts">—</div><div class="l">актов в реестре нормативки</div></div>
+    <div class="m"><div class="v r" id="m-old">—</div><div class="l">устаревших ссылок (аудит)</div></div>
+  </div>
+
+  <div class="sec">
+    <h2>Покрытие 16 разделов паспорта по всей базе</h2>
+    <div class="sub">Доля веществ, у которых раздел закрыт тем или иным источником.</div>
+    <div class="legend">
+      <span><i class="lg-full"></i>свой слой данных</span>
+      <span><i class="lg-part"></i>частично / типовое</span>
+      <span><i class="lg-corp"></i>только корпус (поиск по паспорту)</span>
+      <span><i class="lg-gap"></i>пробел</span>
+    </div>
+    <div id="rows"><div class="lead">Загрузка…</div></div>
+  </div>
+
+  <div class="sec">
+    <h2>ФЗ-контур: само-проверка соответствия</h2>
+    <div class="sub">Снимок конфигурации рантайма под 152-ФЗ / 187-ФЗ (КИИ) / 116-ФЗ. Факты, не обещания —
+      финальная аттестация на стороне ИБ-службы заказчика.</div>
+    <div id="checks"><div class="lead">Загрузка…</div></div>
+  </div>
+
+  <div class="sec">
+    <h2>Реестр нормативки: версии и статус</h2>
+    <div class="sub">Единый источник правды по редакциям. <span class="st superseded">заменён</span> — ссылка устарела;
+      <span class="st verify">сверить</span> — статус подтвердить по первоисточнику.</div>
+    <div id="reg"><div class="lead">Загрузка…</div></div>
+  </div>
+
+  <input type="hidden" id="base" value="http://127.0.0.1:8000"><!-- адрес берётся автоматически из location.origin; поле скрыто, чтобы не пугать нетех. пользователя -->
+</div>
+<script>
+  const $=id=>document.getElementById(id);
+  const base=()=>{const v=$('base').value.replace(/\/+$/,'');return location.protocol.indexOf('http')===0?location.origin:v;};
+  const esc=s=>String(s==null?'':s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+  const ST={current:'действует',superseded:'заменён',verify:'сверить',historic:'историч.'};
+
+  async function load(){
+    let g,n;
+    try{
+      g=await(await fetch(base()+'/gost/summary',{signal:AbortSignal.timeout(15000)})).json();
+      n=await(await fetch(base()+'/normative',{signal:AbortSignal.timeout(8000)})).json();
+      $('dot').className='dot ok';$('st').textContent='система на связи';
+    }catch(e){ $('dot').className='dot off';$('st').textContent='нет связи'; $('rows').innerHTML='<div class="lead">Нет связи с системой.</div>'; return; }
+
+    const tot=g.substances||0;
+    $('m-subs').textContent=tot;
+    $('m-std').textContent='✓';
+    $('m-acts').textContent=(n.register||[]).length;
+    const old=(n.audit&&n.audit.outdated_refs)||0;
+    $('m-old').textContent=old;
+    $('m-old').className='v '+(old?'r':'g');
+    if(g.title_needs_review) $('titlewarn').style.display='';
+
+    // 16-разделов полосы
+    $('rows').innerHTML=(g.sections||[]).map(s=>{
+      const f=s.full||0,p=s.partial||0,c=s.corpus||0,gp=s.gap||0;
+      const w=x=>tot?(x/tot*100):0;
+      const cov=Math.round(w(f)+w(p)); // «закрыто структурно» = full+partial
+      return `<div class="row">
+        <div class="num">${s.n}</div>
+        <div class="nm" title="${esc(s.short)}">${esc(s.short)}</div>
+        <div class="bar" role="img" aria-label="раздел ${s.n}: закрыто ${cov}%">
+          <span class="s-full" style="width:${w(f)}%"></span>
+          <span class="s-part" style="width:${w(p)}%"></span>
+          <span class="s-corp" style="width:${w(c)}%"></span>
+          <span class="s-gap"  style="width:${w(gp)}%"></span>
+        </div>
+        <div class="pc">${cov}%</div>
+      </div>`;
+    }).join('');
+
+    // ФЗ-контур (само-проверка)
+    try{
+      const sc=await(await fetch(base()+'/compliance/selfcheck',{signal:AbortSignal.timeout(8000)})).json();
+      $('checks').innerHTML=(sc.checks||[]).map(c=>
+        `<div class="chk"><div class="mk ${c.ok?'ok':'no'}">${c.ok?'✓':'!'}</div>`+
+        `<div><div class="ct">${esc(c.title)}<span class="claw">${esc(c.law)}</span></div>`+
+        `<div class="cd">${esc(c.detail)}</div></div></div>`
+      ).join('')+`<div class="sub" style="margin-top:11px;margin-bottom:0">${esc(sc.note||'')}</div>`;
+    }catch(e){ $('checks').innerHTML='<div class="lead">само-проверка недоступна</div>'; }
+
+    // реестр нормативки
+    const reg=(n.register||[]).slice().sort((a,b)=>{
+      const ord={superseded:0,verify:1,historic:2,current:3};
+      return (ord[a.status]??9)-(ord[b.status]??9);
+    });
+    $('reg').innerHTML=`<table><thead><tr><th>Акт</th><th>Статус</th><th>Регулирует</th></tr></thead><tbody>`+
+      reg.map(a=>{
+        const repl=a.replaced_by?`<div class="repl">→ ${esc(a.replaced_by)}</div>`:'';
+        return `<tr>
+          <td><b>${esc(a.id)}</b><div class="gov">${esc(a.title)}</div></td>
+          <td><span class="st ${esc(a.status)}">${esc(ST[a.status]||a.status)}</span>${repl}</td>
+          <td class="gov" style="color:var(--muted)">${esc(a.governs||'')}</td>
+        </tr>`;
+      }).join('')+`</tbody></table>`;
+  }
+  $('base').addEventListener('change',load); load();
+</script>
+</body>
+</html>
