@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Карточка вещества — всё об опасности</title>
+<style>
+  :root{
+    --bg:#0f1419; --panel:#1a2230; --panel2:#222c3a; --line:#2b3647;
+    --txt:#eef2f7; --muted:#a8b3c2;
+    --blue:#5b9dff; --blue-d:#2563eb; --orange:#f9a23b; --red:#ff6b6b; --green:#3ecf8e; --amber:#ffce6b;
+    --r:14px; --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1200px 520px at 75% -12%,#13233c,transparent 62%),var(--bg);
+    color:var(--txt);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;min-height:100dvh}
+  .wrap{max-width:880px;margin:0 auto;padding:32px 18px 80px}
+  .top{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+  a.back{color:var(--muted);text-decoration:none;font-size:13px;font-family:var(--sans)}
+  a.back:hover{color:var(--blue)}
+  h1{font-size:23px;margin:0;font-weight:700}
+  .status{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);font-family:var(--sans)}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+  .dot.ok{background:var(--green)}.dot.off{background:var(--red)}
+  .pick{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:14px 0 22px}
+  input.q{background:var(--panel);border:1px solid var(--line);border-radius:9px;color:var(--txt);
+    padding:11px 13px;font:15px var(--sans);min-width:300px;flex:1}
+  .btn{cursor:pointer;background:var(--panel);border:1px solid var(--line);border-radius:9px;color:var(--txt);
+    padding:11px 15px;font:14px var(--sans);font-weight:600}
+  .btn:hover{border-color:var(--blue);background:var(--panel2)}
+  .btn.pr{background:var(--blue);border-color:var(--blue);color:#fff}.btn.pr:hover{background:var(--blue-d)}
+  datalist{display:none}
+  .err{color:#ff8d8d;font-size:14px;margin:10px 0;display:none}
+
+  .hdr{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin-bottom:16px}
+  .hdr .nm{font-size:24px;font-weight:800;line-height:1.15}
+  .hdr .frm{font-family:var(--mono);font-size:13px;color:var(--muted);margin-top:4px}
+  .syn{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px}
+  .syn .s{font-size:12px;background:var(--panel2);border:1px solid var(--line);color:var(--muted);padding:3px 9px;border-radius:6px}
+  .resolved{font-size:12px;color:var(--amber);margin-top:8px}
+  .vbadge{display:inline-flex;align-items:center;gap:7px;margin-top:11px;font-size:12px;font-family:var(--mono);
+    padding:5px 11px;border-radius:7px;border:1px solid var(--line)}
+  .vbadge .vd{width:8px;height:8px;border-radius:50%;flex:none}
+  .vbadge.ver{background:rgba(52,211,153,.08);border-color:rgba(52,211,153,.4);color:var(--green)}
+  .vbadge.ver .vd{background:var(--green)}
+  .vbadge.rev{background:rgba(251,191,36,.07);border-color:rgba(251,191,36,.35);color:var(--amber)}
+  .vbadge.rev .vd{background:var(--amber)}
+  .vbadge.rej{background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.4);color:var(--red)}
+  .vbadge.rej .vd{background:var(--red)}
+  .disclaimer{margin-top:18px;padding:11px 14px;border-radius:9px;background:var(--panel);border:1px solid var(--line);
+    border-left:3px solid var(--amber);font-size:11.5px;color:var(--muted);line-height:1.55}
+  .disclaimer b{color:var(--txt)}
+  .examples{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:-10px 0 22px}
+  .examples .lbl{font-size:12.5px;color:var(--muted);margin-right:2px}
+  .chip{cursor:pointer;font-size:13.5px;background:var(--panel);border:1px solid var(--line);color:var(--txt);
+    padding:0 14px;height:38px;border-radius:9px;display:inline-flex;align-items:center;transition:border-color .15s,background .15s}
+  .chip:hover{border-color:var(--blue);background:var(--panel2)}
+  .chip:focus-visible{outline:3px solid #5b9dffaa;outline-offset:2px}
+  .intro{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:22px 24px;margin-bottom:16px}
+  .intro h2{font-size:17px;margin:0 0 15px;font-weight:700}
+  .intro ol{margin:0;padding-left:22px}
+  .intro li{margin-bottom:10px;color:var(--muted);line-height:1.55}
+  .intro li b{color:var(--txt)}
+  .intro .hint{margin-top:14px;font-size:12.5px;color:var(--muted)}
+  .legend{margin-bottom:16px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+  .legend summary{cursor:pointer;padding:13px 18px;font-size:13.5px;font-weight:600;list-style:none;display:flex;align-items:center;gap:9px}
+  .legend summary::-webkit-details-marker{display:none}
+  .legend summary::before{content:"?";display:grid;place-items:center;width:21px;height:21px;border-radius:50%;
+    background:var(--panel2);border:1px solid var(--line);color:var(--blue);font-size:12px;font-weight:700;flex:none}
+  .legend .lbody{padding:2px 18px 16px;font-size:13px;line-height:1.55}
+  .legend dt{color:var(--txt);font-weight:600;margin-top:11px}
+  .legend dd{margin:2px 0 0;color:var(--muted)}
+
+  .tiles{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px}
+  .tile{flex:1;min-width:120px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+  .tile .k{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:5px}
+  .tile .v{font-family:var(--mono);font-size:19px;font-weight:700;font-variant-numeric:tabular-nums}
+  .tile.danger{background:#1e1414;border-color:#5a2626}.tile.danger .v{color:#ff9b9b}
+
+  .sec{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px 20px;margin-bottom:16px;display:none}
+  .sec h2{font-size:14px;margin:0 0 13px;font-weight:600;display:flex;align-items:center;gap:8px}
+  .sec h2 .ic{color:var(--orange)}
+
+  .pics{display:flex;flex-wrap:wrap;gap:14px}
+  .picto{width:80px;text-align:center}
+  .picwrap{display:block;width:60px;height:60px;margin:0 auto 5px}
+  .ghsimg{width:60px;height:60px;display:block}
+  .diamond{width:58px;height:58px;margin:0 auto 5px;position:relative;display:grid;place-items:center}
+  .diamond:before{content:"";position:absolute;inset:0;background:#fff;border:3px solid var(--red);transform:rotate(45deg);border-radius:6px}
+  .diamond svg{position:relative;color:#0f1419;width:28px;height:28px}
+  .picto .pl{font-size:10.5px;color:var(--muted);line-height:1.25}
+  .sig{display:inline-block;font-weight:700;padding:5px 13px;border-radius:8px;background:#3a1518;color:#ff8d8d;border:1px solid #5a2025;margin-bottom:12px}
+  .hcodes{margin-top:14px;border-top:1px solid #1c2533;padding-top:12px}
+  .hcodes .ht{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:9px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .hcodes .src{font-family:var(--mono);font-size:10px;color:#7fb0ff;border:1px solid #244468;background:#13243a;padding:1px 7px;border-radius:5px}
+  .hcode{display:flex;gap:10px;padding:6px 0;font-size:13.5px;border-top:1px solid #161f2c}
+  .hcode:first-child{border-top:none}
+  .hcode .c{flex:none;font-family:var(--mono);font-weight:700;color:#ff9b9b;width:46px}
+  .xcheck{margin-top:10px;font-size:12px;padding:8px 11px;border-radius:8px}
+  .xcheck.ok{background:#10261a;border:1px solid #1d4a32;color:#7ce0a8}
+  .xcheck.diff{background:#1c1810;border:1px solid #5a4920;color:#fbd56b}
+
+  .flags{display:flex;flex-direction:column;gap:8px}
+  .flag{display:flex;gap:10px;align-items:flex-start;border-radius:9px;padding:9px 12px;border:1px solid}
+  .flag.high{background:#1e1414;border-color:#5a2626}.flag.medium{background:#1c1810;border-color:#5a4920}
+  .flag .c{flex:none;font-family:var(--mono);font-weight:700;width:22px;text-align:center;color:var(--amber)}
+  .flag .b{font-size:13.5px}.flag .b .l{font-weight:600}.flag .b .m{color:var(--muted);font-size:12.5px}
+
+  .idlh{background:#1e1414;border:1px solid #5a2626;border-radius:10px;padding:11px 14px;display:flex;gap:11px;align-items:baseline;flex-wrap:wrap}
+  .idlh .big{font-family:var(--mono);font-size:20px;font-weight:700;color:#ff9b9b}
+  .idlh .ex{font-size:12.5px;color:#fcd9a0;flex:1;min-width:200px}
+  .physchem .row{padding:12px 0;border-bottom:1px solid #182230}
+  .physchem .row:last-child{border-bottom:none}
+  .physchem .pl{font-size:13.5px;color:#cfe3f5;font-weight:600;line-height:1.45}
+  .physchem .pw{font-size:11.5px;color:var(--amber);font-weight:400}
+  .physchem .pv{font-family:var(--mono);font-size:13px;color:#e6edf5;margin-top:7px;display:flex;flex-direction:column;gap:7px;line-height:1.5;overflow-wrap:anywhere}
+  .physchem .pv>span{display:block}
+  .physchem .pv .src{display:block;font-family:var(--sans);font-size:11px;color:#7d8aa0;margin:2px 0 0}
+  .env{display:flex;gap:11px;flex-wrap:wrap}
+  .env .box{flex:1;min-width:230px;background:#0d1620;border:1px solid #1d3326;border-radius:10px;padding:11px 13px}
+  .env .box.water{border-color:#1a2c3d}
+  .env .t{font-size:12px;color:#8fd6a8;font-weight:600;margin-bottom:7px}
+  .env .box.water .t{color:#86c3e8}
+  .env .kv{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;padding:3px 0;border-bottom:1px solid #16202c}
+  .env .kv:last-of-type{border-bottom:none}
+  .env .kv .k{color:#9fb0c5}
+  .env .kv .v{font-family:var(--mono);color:#e6edf5;text-align:right}
+  .env .prohib{color:#ff9b9b;font-weight:600;font-size:12.5px;margin-top:6px}
+  .env .ntag{font-family:var(--mono);font-size:9.5px;color:var(--amber);border:1px solid #5a4920;background:#3a2e12;padding:1px 5px;border-radius:5px;font-weight:600;vertical-align:1px}
+  .env .src{font-size:11px;color:#7d8aa0;margin-top:7px}
+  .tr-forms{margin:9px 0;background:#0d1620;border:1px solid #233447;border-radius:9px;padding:9px 12px}
+  .tr-forms .tt{font-size:12px;color:#9fb0c5;margin-bottom:5px}
+  .tr-forms .tf{font-family:var(--mono);font-size:12.5px;color:#e6edf5;padding:2px 0}
+  .tr-lab{font-size:12.5px;color:#cfe3f5;margin:7px 0}
+  .tr-lab .tt{color:#9fb0c5;margin-right:4px}
+  .tr-lab .hint{color:#86c3e8;font-size:11.5px}
+
+  .erg-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:4px}
+  .erg-box{background:var(--panel2);border:1px solid #244468;border-radius:9px;padding:9px 11px}
+  .erg-box .t{font-size:11px;color:var(--muted);margin-bottom:5px}
+  .erg-box .r{font-size:13px;font-family:var(--mono);line-height:1.7}.erg-box .r b{color:#cfe2ff}
+
+  .fields .f{border-top:1px solid #1c2533;padding:11px 0;display:flex;gap:12px}
+  .fields .f:first-child{border-top:none;padding-top:0}
+  .fields .f .k{flex:none;width:150px;color:var(--muted);font-size:13px}
+  .fields .f .v{font-size:14px}
+  .grp{display:inline-block;font-size:12px;color:var(--muted);background:var(--panel2);border:1px solid var(--line);padding:2px 9px;border-radius:6px;margin:2px 4px 2px 0}
+  .bt{font-family:var(--mono);font-size:10px;color:#fbd56b;border:1px solid #5a4920;background:#3a2e12;padding:1px 6px;border-radius:5px;margin-left:6px}
+  .note{font-size:11.5px;color:var(--muted);margin-top:10px;line-height:1.5}
+
+  .gmeta{font-size:12.5px;color:var(--muted);margin-bottom:12px}
+  .gmeta b{color:var(--txt)}
+  .gleg{display:flex;gap:13px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-bottom:12px}
+  .gleg i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:5px;vertical-align:middle}
+  .gmap{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}
+  .gi{display:flex;gap:9px;align-items:flex-start;background:var(--panel2);border:1px solid var(--line);border-left-width:3px;border-radius:8px;padding:8px 11px}
+  .gi .gn{font-family:var(--mono);font-size:11px;color:var(--muted);flex:none;width:18px;text-align:right;padding-top:1px}
+  .gi .gtx{flex:1;min-width:0}
+  .gi .gt{font-size:12.5px;font-weight:600;color:#dde7f2}
+  .gi .gf{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.4;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+  .gi.full{border-left-color:var(--green)}.gi.partial{border-left-color:var(--amber)}
+  .gi.corpus{border-left-color:var(--blue)}.gi.gap{border-left-color:#4a5468}
+  .gi .gsrc{font-family:var(--mono);font-size:10px;color:#7d8aa0;margin-top:3px}
+  .gwarn{font-size:11px;color:var(--amber);margin-top:11px;line-height:1.5}
+  @media(max-width:560px){.gmap{grid-template-columns:1fr}}
+
+  .wlist{margin:0 0 10px;padding-left:18px}
+  .wlist li{font-size:13px;color:#dde7f2;margin-bottom:6px;line-height:1.45}
+  .wgrp{font-size:11.5px;color:var(--muted);margin-bottom:10px}
+  .wframe{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin-bottom:4px}
+  .wf{display:flex;gap:10px;padding:4px 0;border-bottom:1px solid #182230;font-size:12px}
+  .wf:last-child{border-bottom:none}
+  .wf .wk{flex:none;width:170px;color:#cfe3f5;font-weight:600}
+  .wf .wv{flex:1;color:var(--muted)}
+  @media(max-width:560px){.wf{flex-direction:column;gap:2px}.wf .wk{width:auto}}
+
+  .acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+  .acts a{text-decoration:none;color:var(--blue);background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:9px 14px;font-size:13px;font-weight:600}
+  .acts a:hover{border-color:var(--blue);background:var(--panel2)}
+  .cfg{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:24px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .cfg input{background:var(--panel);border:1px solid var(--line);border-radius:7px;color:var(--txt);padding:6px 9px;font:12px var(--mono);min-width:200px}
+  @media(max-width:560px){.erg-grid{grid-template-columns:1fr}.fields .f .k{width:110px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <h1>Карточка вещества</h1>
+    <div class="status"><span class="dot" id="dot"></span><span id="st">проверка…</span></div>
+  </div>
+  <div style="margin:-2px 0 0"><a class="back" href="home.html">← на главную</a></div>
+  <div class="pick">
+    <input class="q" id="q" list="names" placeholder="название вещества или синоним (например, хлор, оксиран)" autocomplete="off">
+    <datalist id="names"></datalist>
+    <button class="btn pr" id="go">Показать</button>
+  </div>
+  <div class="examples" id="ex"><span class="lbl">Примеры:</span></div>
+  <div id="err" class="err"></div>
+
+  <div id="intro" class="intro">
+    <h2>Что это и как пользоваться</h2>
+    <ol>
+      <li><b>Введите название вещества</b> в поле выше или нажмите пример. Понимает и синонимы — «оксиран» найдёт «окись этилена».</li>
+      <li><b>Получите всё на одном экране:</b> класс опасности, ПДК, острый порог IDLH, знаки опасности, первая помощь, СИЗ, хранение, действия при аварии.</li>
+      <li><b>Смотрите на пометки.</b> «⚠ Требует проверки» = значение ещё не подтверждено экспертом завода. Первоисточник всегда — паспорт безопасности.</li>
+    </ol>
+    <div class="hint">Не нашли вещество? Проверьте написание или выберите из подсказок поля. Если его нет в базе — система честно об этом скажет, а не выдумает.</div>
+  </div>
+
+  <div id="out" style="display:none">
+    <div class="hdr">
+      <div class="nm" id="o-name"></div>
+      <div class="frm" id="o-frm"></div>
+      <div class="resolved" id="o-resolved" style="display:none"></div>
+      <div id="o-vbadge"></div>
+      <div class="syn" id="o-syn"></div>
+    </div>
+    <div class="tiles" id="o-tiles"></div>
+
+    <details class="legend">
+      <summary>Что значат термины и пометки</summary>
+      <dl class="lbody">
+        <dt>Класс опасности (1–4)</dt><dd>по ГОСТ 12.1.007: 1 — чрезвычайно опасное, 4 — малоопасное.</dd>
+        <dt>ПДК рабочей зоны</dt><dd>предельно допустимая концентрация в воздухе, мг/м³ (ГН/СанПиН 1.2.3685-21). Выше неё работать без защиты нельзя.</dd>
+        <dt>IDLH — острый порог</dt><dd>концентрация, немедленно опасная для жизни: выше неё без изолирующего СИЗ — гибель за минуты (справочно, NIOSH).</dd>
+        <dt>«⚠ Требует проверки» / «✓ Подтверждено экспертом»</dt><dd>подтвердил ли значение ответственный ОТ/ПБ завода. До подписи сверяйте с паспортом.</dd>
+      </dl>
+    </details>
+
+    <div class="sec" id="s-ghs"><h2><span class="ic">⚠</span> Знаки опасности (СГС)</h2><div id="o-sig"></div><div class="pics" id="o-pics"></div><div id="o-hcodes"></div></div>
+    <div class="sec" id="s-idlh"><h2><span class="ic">☠</span> Острый порог (IDLH)</h2><div class="idlh" id="o-idlh"></div></div>
+    <div class="sec" id="s-flags"><h2><span class="ic">⚑</span> Особые отметки СанПиН 1.2.3685-21</h2><div class="flags" id="o-flags"></div></div>
+    <div class="sec" id="s-phys"><h2><svg class="ic" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--orange);vertical-align:-2px"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg> Физико-химические свойства (пожарная безопасность, хранение)</h2><div class="physchem" id="o-phys"></div></div>
+    <div class="sec" id="s-env"><h2><span class="ic" style="color:var(--green)">≈</span> Экологические ПДК: атмосфера населённых мест / вода</h2><div id="o-env"></div></div>
+    <div class="sec" id="s-erg"><h2><span class="ic">⚑</span> <span id="erg-title">Транспорт / аварийное реагирование</span></h2><div id="o-erg"></div></div>
+    <div class="sec" id="s-ops"><h2><span class="ic" style="color:var(--green)">✚</span> Первая помощь, СИЗ, хранение</h2><div class="fields" id="o-ops"></div></div>
+    <div class="sec" id="s-grp"><h2><span class="ic" style="color:var(--blue)">▦</span> Группы совместимости хранения</h2><div id="o-grp"></div></div>
+    <div class="sec" id="s-waste"><h2><span class="ic" style="color:var(--green)">♺</span> Удаление отходов (раздел 13 ГОСТ 30333)</h2><div id="o-waste"></div></div>
+    <div class="sec" id="s-gost"><h2><span class="ic" style="color:var(--blue)">▤</span> Соответствие ГОСТ 30333: карта 16 разделов паспорта <a href="gost.html" style="font-size:12px;font-weight:400;color:var(--muted);text-decoration:none;margin-left:6px">дашборд →</a></h2><div id="o-gost"></div></div>
+
+    <div class="acts" id="o-acts"></div>
+    <div class="disclaimer">
+      <b>Система поддержки принятия решений.</b> Первоисточник — действующий паспорт безопасности (ГОСТ 30333)
+      и нормативы (ГН/СанПиН 1.2.3685-21). Значения с пометкой «требует проверки» не подтверждены экспертом
+      предприятия; международные данные (IDLH/NIOSH, GHS/PubChem, ERG) — справочные, не заменяют расчёт по РД.
+      Решения по охране труда и реагированию принимает ответственный специалист.
+    </div>
+  </div>
+
+  <input type="hidden" id="base" value="http://127.0.0.1:8000"><!-- адрес берётся автоматически из location.origin; поле скрыто, чтобы не пугать нетех. пользователя -->
+</div>
+<script>
+  const $=id=>document.getElementById(id);
+  const base=()=>{const v=$('base').value.replace(/\/+$/,'');return location.protocol.indexOf('http')===0?location.origin:v;};
+  const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const subF=s=>!s?'':esc(String(s).replace(/([A-Za-zА-Яа-я)\]])\s+(?=\d)/g,'$1')).replace(/(\d+)/g,'<sub>$1</sub>'); // формула с индексами
+  const enc=encodeURIComponent;
+  const PICTO_ICON={
+    GHS01:'<path d="M12 2l2 7 7-3-4 6 5 4-7 1-1 5-3-4-5 3 1-6-5-3 6-2z"/>',
+    GHS02:'<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.4-.6-2.5-1.5-3.5C8 7 8 5 9 3c-3 1.5-5 4.5-5 8a6 6 0 1 0 12 0c0-1.3-.4-2.6-1-3.6-.6 1.6-2 2.6-3.5 2.6 0 1 .5 1.5 1 2"/>',
+    GHS03:'<circle cx="12" cy="18" r="3.5"/><path d="M12 2l2 6-2-1-2 1zM6 9l1 3M18 9l-1 3"/>',
+    GHS04:'<rect x="8" y="3" width="8" height="18" rx="3"/><path d="M12 3V1M10 7h4"/>',
+    GHS05:'<path d="M5 4h6v4l5 3-2 4M11 4v6l-4 8h12"/><path d="M14 18l1.5 2"/>',
+    GHS06:'<circle cx="12" cy="9" r="5"/><circle cx="10" cy="8" r="1"/><circle cx="14" cy="8" r="1"/><path d="M9 18h6M10 21h4"/>',
+    GHS07:'<path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17h.01"/>',
+    GHS08:'<circle cx="12" cy="8" r="3"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7"/><path d="M12 11v4"/>',
+    GHS09:'<path d="M3 14c4 3 7-3 11 0M3 9c4 3 7-3 11 0"/><path d="M17 6l4 6-4 6"/>'};
+  window.__drawn=code=>`<div class="diamond"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${PICTO_ICON[code]||''}</svg></div>`;
+
+  let t=null;
+  $('q').addEventListener('input',()=>{clearTimeout(t);t=setTimeout(async()=>{
+    const p=$('q').value.trim(); if(p.length<2) return;
+    try{const d=await(await fetch(base()+'/substances/names?prefix='+enc(p)+'&limit=12')).json();
+      $('names').innerHTML=(d.names||[]).map(n=>`<option value="${esc(n)}">`).join('');}catch(e){}
+  },180);});
+
+  function tile(k,v,danger){return `<div class="tile${danger?' danger':''}"><div class="k">${k}</div><div class="v">${v}</div></div>`;}
+  function show(id,on){$(id).style.display=on?'block':'none';}
+
+  // примеры в один тап — чтобы незнакомый человек сразу увидел, как это работает
+  const EXAMPLES=['хлор','аммиак','серная кислота','ацетон','толуол'];
+  EXAMPLES.forEach(n=>{const b=document.createElement('button');b.className='chip';b.type='button';
+    b.textContent=n;b.onclick=()=>{$('q').value=n;load();};$('ex').appendChild(b);});
+
+  // «не найдено» -> предложить близкие названия (по префиксу и первому слову)
+  async function notFound(n){
+    let names=[];
+    try{
+      const tries=[n, n.split(/\s+/)[0], n.slice(0,4)];
+      for(const t of tries){ if(t.length<2) continue;
+        const d=await(await fetch(base()+'/substances/names?prefix='+enc(t)+'&limit=8')).json();
+        names=(d.names||[]).filter(x=>x.toLowerCase()!==n.toLowerCase());
+        if(names.length) break;
+      }
+    }catch(e){}
+    const chips=names.slice(0,6).map(x=>`<button class="chip" type="button" onclick="$('q').value=${JSON.stringify(x).replace(/"/g,'&quot;')};load()">${esc(x)}</button>`).join('');
+    $('err').innerHTML = `«${esc(n)}» не найдено в базе.` + (chips?` Возможно, вы имели в виду:<div class="examples" style="margin:10px 0 0">${chips}</div>`:' Проверьте написание или выберите из подсказок поля.');
+    $('err').style.display='block';
+  }
+  async function load(){
+    $('err').style.display='none';$('out').style.display='none';
+    const n=$('q').value.trim(); if(!n){$('err').textContent='введите название вещества';$('err').style.display='block';return;}
+    let s,g,em;
+    try{
+      [s,g,em]=await Promise.all([
+        (await fetch(base()+'/substance/'+enc(n))).json(),
+        (await fetch(base()+'/ghs/'+enc(n))).json(),
+        (await fetch(base()+'/emergency/'+enc(n))).json()
+      ]);
+    }catch(e){$('err').textContent='ошибка запроса';$('err').style.display='block';return;}
+    if(s.error){await notFound(n);return;}
+
+    // заголовок
+    $('o-name').textContent=s.name;
+    $('o-frm').innerHTML=[subF(s.formula),s.cas?'CAS '+esc(s.cas):''].filter(Boolean).join(' · ');
+    if(s.resolved_from){$('o-resolved').style.display='block';$('o-resolved').textContent='найдено по синониму «'+s.resolved_from+'»';}
+    else $('o-resolved').style.display='none';
+    $('o-syn').innerHTML=(s.synonyms||[]).slice(0,12).map(x=>`<span class="s">${esc(x)}</span>`).join('');
+
+    // значок экспертной верификации (verified / требует проверки / отклонено)
+    const v=s.verification||{status:'needs_review'};
+    if(v.status==='verified'){
+      const who=[v.by,v.role].filter(Boolean).join(', '); const when=v.at?(' · '+esc(v.at.slice(0,10))):'';
+      $('o-vbadge').innerHTML=`<span class="vbadge ver"><span class="vd"></span>✓ Подтверждено экспертом${who?(' — '+esc(who)):''}${when}</span>`;
+    } else if(v.status==='rejected'){
+      $('o-vbadge').innerHTML=`<span class="vbadge rej"><span class="vd"></span>✕ Отклонено экспертом — не использовать как факт</span>`;
+    } else {
+      $('o-vbadge').innerHTML=`<span class="vbadge rev"><span class="vd"></span>⚠ Требует проверки экспертом ОТ/ПБ</span>`;
+    }
+
+    // плитки
+    const idlh=s.idlh&&s.idlh.idlh!=null?esc(s.idlh.idlh)+' '+esc(s.idlh.units||''):null;
+    $('o-tiles').innerHTML=
+      tile('Класс опасности',esc(s.hazard_class||'—'))+
+      tile('ПДК раб. зоны',s.pdk_mgm3?esc(s.pdk_mgm3)+' мг/м³':'—')+
+      (idlh?tile('IDLH (острый)',idlh,true):'')+
+      (g.signal_word?tile('Сигнальное слово',esc(g.signal_word),/опас/i.test(g.signal_word)):'');
+
+    // знаки
+    const pics=(g.pictograms||[]);
+    show('s-ghs',pics.length||g.signal_word);
+    $('o-sig').innerHTML=g.signal_word?`<div class="sig">⚠ ${esc(g.signal_word)}</div>`:'';
+    $('o-pics').innerHTML=pics.map(p=>`<div class="picto"><span class="picwrap"><img class="ghsimg" src="assets/ghs/${p.code}.svg" alt="${esc(p.name)}" onerror="this.parentElement.innerHTML=window.__drawn('${p.code}')"></span><div class="pl">${esc(p.name)}</div></div>`).join('');
+    // H-коды + сверка с эталоном PubChem
+    const pc=s.pubchem;
+    if(pc&&(pc.h_codes||[]).length){
+      const hc=pc.h_codes.filter(h=>h.text).map(h=>`<div class="hcode"><span class="c">${esc(h.code)}</span><span>${esc(h.text)}</span></div>`).join('');
+      const x=pc.crosscheck||{};
+      let xh='';
+      if(x.agree)xh=`<div class="xcheck ok">✓ Наши знаки совпадают с эталоном PubChem</div>`;
+      else if((x.only_pubchem||[]).length)xh=`<div class="xcheck diff">⚠ PubChem дополнительно указывает: ${esc((x.only_pubchem||[]).join(', '))} — стоит сверить с паспортом</div>`;
+      $('o-hcodes').innerHTML=`<div class="hcodes"><div class="ht">Коды опасности H (СГС, ГОСТ 31340) <span class="src">эталон: PubChem</span></div>${hc}${xh}</div>`;
+    } else $('o-hcodes').innerHTML='';
+
+    // IDLH
+    show('s-idlh',!!idlh);
+    if(idlh)$('o-idlh').innerHTML=`<span class="big">${idlh}</span><span class="ex">выше этой концентрации без изолирующего дыхательного аппарата — угроза жизни за ~30 мин. Источник: NIOSH · сверьте</span>`;
+
+    // флаги СанПиН
+    const fl=(s.sanpin&&s.sanpin.flags)||[];
+    show('s-flags',fl.length>0);
+    $('o-flags').innerHTML=fl.map(f=>`<div class="flag ${f.severity}"><div class="c">${esc(f.code)}</div><div class="b"><div class="l">${esc(f.label)}</div><div class="m">${esc(f.meaning)}</div></div></div>`).join('');
+
+    // физико-химические свойства (PubChem, public domain) — сырые значения с источниками
+    const phc=s.physchem;
+    show('s-phys',!!phc);
+    if(phc){
+      $('o-phys').innerHTML=phc.props.map(p=>
+        `<div class="row"><div class="pl">${esc(p.label)}${p.why?` <span class="pw">— ${esc(p.why)}</span>`:''}</div>`+
+        `<div class="pv">${p.values.map(v=>`<span>${esc(v.value)}<span class="src">${esc((v.sources||[]).join(' · '))}</span></span>`).join('')}</div></div>`
+      ).join('')+`<div class="note">${esc(phc.note)} Источник: ${esc(phc.source)}.</div>`;
+    }
+
+    // экологические ПДК (СанПиН: атмосфера населённых мест / вода) — ОТДЕЛЬНО от ПДК рабочей зоны
+    const env=s.sanpin_env;
+    show('s-env',!!env);
+    if(env){
+      const kv=(k,v)=>v?`<div class="kv"><div class="k">${k}</div><div class="v">${esc(v)}</div></div>`:'';
+      let h='<div class="env">';
+      if(env.atmo){const a=env.atmo;
+        const obuv=a.norm_type==='ОБУВ';
+        h+=`<div class="box"><div class="t">Атмосфера населённых мест${obuv?' <span class="ntag">ОБУВ · ориентир.</span>':''}</div>`+
+           (obuv
+             ? kv('ОБУВ','{0} мг/м³'.replace('{0}',a.obuv||'—'))
+             : kv('ПДК макс. разовая','{0} мг/м³'.replace('{0}',a.pdk_mr||'—'))+
+               kv('ПДК среднесуточная',a.pdk_ss?a.pdk_ss+' мг/м³':null)+
+               kv('Лимитирующий показатель',a.limit)+kv('Класс опасности',a.hazard_class))+
+           (a.emission_prohibited?`<div class="prohib">⚠ Выброс в атмосферу запрещён</div>`:'')+
+           `<div class="src">${esc(a.source)} · сверьте</div></div>`;
+      }
+      if(env.water){const w=env.water;
+        const odu=w.norm_type==='ОДУ';
+        h+=`<div class="box water"><div class="t">Вода водных объектов${odu?' <span class="ntag">ОДУ · ориентир.</span>':''}</div>`+
+           kv(odu?'ОДУ':'ПДК',(odu?w.odu:w.pdk)?((odu?w.odu:w.pdk)+' мг/л'):null)+
+           kv('Лимит. показатель (ЛПВ)',w.lpv)+kv('Класс опасности',w.hazard_class)+
+           `<div class="src">${esc(w.source)} · сверьте</div></div>`;
+      }
+      h+='</div><div class="note">Это нормативы для НАСЕЛЁНИЯ и ВОДЫ (за периметром), не для воздуха рабочей зоны — не путать.</div>';
+      $('o-env').innerHTML=h;
+    }
+
+    // АХОВ / ERG
+    const e=em.erg;
+    show('s-erg',!!(em.is_ahov||e||em.un_number));
+    $('erg-title').textContent=em.is_ahov?'АХОВ: ООН / ДОПОГ / зона эвакуации (ERG-2024)':'Транспортная идентификация: ООН / класс груза';
+    if(em.is_ahov||e||em.un_number){
+      const km=v=>v==null?'—':(typeof v==='number'?v+' км':esc(v));
+      const m=v=>v==null?'—':(typeof v==='number'?v+' м':esc(v));
+      let h=`<div style="margin-bottom:10px">${em.is_ahov?'<b style="color:#ff9b9b">⚠ АХОВ</b> · ':''}ООН <b>${esc(em.un_number||'—')}</b> · ДОПОГ <b>${esc(em.adr_class||'—')}</b>${e&&e.erg_guide?' · гид ERG '+esc(e.erg_guide):''}</div>`;
+      if(e){
+        h+=`<div class="erg-grid">
+          <div class="erg-box"><div class="t">малый разлив</div><div class="r">изоляция <b>${m(e.isolation_small_m)}</b><br>эвак.: день <b>${km(e.protect_small_day_km)}</b> · ночь <b>${km(e.protect_small_night_km)}</b></div></div>
+          <div class="erg-box"><div class="t">большой разлив</div><div class="r">изоляция <b>${m(e.isolation_large_m)}</b><br>эвак.: день <b>${km(e.protect_large_day_km)}</b> · ночь <b>${km(e.protect_large_night_km)}</b></div></div>
+        </div>`;
+        if(e.large_note)h+=`<div class="note">⚠ ${esc(e.large_note)}</div>`;
+        h+=`<div class="note">Расстояния ERG — ориентир первого реагирования (США/Канада). Точная зона — расчёт по РД 52.04.253-90. Требует проверки экспертом.</div>`;
+      }
+      // транспортная идентификация из PubChem (ООН по формам + метки) — дополняет кураторские АХОВ
+      const tr=em.transport;
+      if(tr&&((tr.un&&tr.un.length>1)||(tr.labels&&tr.labels.length))){
+        if(tr.un&&tr.un.length>1){
+          h+=`<div class="tr-forms"><div class="tt">Номер ООН по форме вещества:</div>`+
+             tr.un.map(u=>`<div class="tf"><b>${esc(u.un)}</b>${u.form?' · '+esc(u.form):''}${u.erg_guide?' · гид ERG '+esc(u.erg_guide):''}</div>`).join('')+`</div>`;
+        }
+        if(tr.labels&&tr.labels.length){
+          h+=`<div class="tr-lab"><span class="tt">Транспортная метка (DOT):</span> `+
+             tr.labels.map(l=>esc(l.raw)+(l.hint?` <span class="hint">→ ${l.hint.map(esc).join('; ')}</span>`:'')).join(' · ')+`</div>`;
+        }
+        h+=`<div class="note">Номер ООН международный (совпадает с ДОПОГ). Источник: ${esc(tr.source)}. Требует проверки экспертом.</div>`;
+      }
+      $('o-erg').innerHTML=h;
+    }
+
+    // операционные поля
+    const gd=s.guidance||{};
+    const row=(k,obj,raw)=>{
+      const val=(obj&&obj.value)||raw||'—';
+      const typ=obj&&obj.source==='типовое по группе';
+      return `<div class="f"><div class="k">${k}</div><div class="v">${esc(val)}${typ?'<span class="bt">типовое</span>':''}</div></div>`;
+    };
+    show('s-ops',true);
+    $('o-ops').innerHTML=row('Первая помощь',gd.first_aid,s.first_aid)+row('Средства защиты (СИЗ)',gd.ppe,s.ppe)+row('Хранение',gd.storage,s.storage);
+
+    // группы совместимости (берём из guidance/registry? используем /compat самопроверкой) — через поле groups в substance? нет.
+    show('s-grp',false);
+
+    // раздел 13: удаление отходов (типовое по группе + рамка ФККО/89-ФЗ)
+    const wst=s.waste;
+    show('s-waste',!!wst);
+    if(wst){
+      let h='<ul class="wlist">'+wst.measures.map(m=>`<li>${esc(m)}</li>`).join('')+'</ul>';
+      if(wst.groups&&wst.groups.length)h+=`<div class="wgrp">группы: ${esc(wst.groups.join(', '))}</div>`;
+      h+='<div class="wframe">'+wst.framework.map(f=>`<div class="wf"><span class="wk">${esc(f.k)}</span><span class="wv">${esc(f.v)}</span></div>`).join('')+'</div>';
+      h+=`<div class="note">${esc(wst.note)} <b>Класс отхода I–V ≠ класс вещества 1–4.</b></div>`;
+      $('o-waste').innerHTML=h;
+    }
+
+    // карта соответствия 16 разделам ГОСТ 30333
+    const gm=s.gost_map;
+    show('s-gost',!!gm);
+    if(gm){
+      const sm=gm.summary||{};
+      const GST={full:'свой слой данных',partial:'частично/типовое',corpus:'только корпус',gap:'пробел',na:'вне системы'};
+      $('o-gost').innerHTML=
+        `<div class="gmeta"><b>${sm.structured||0} из ${sm.total||16}</b> разделов закрыты структурно `+
+        `(<span style="color:var(--green)">${sm.full||0}</span> своим слоем, <span style="color:var(--amber)">${sm.partial||0}</span> частично). `+
+        `Стандарт: ${esc(gm.standard||'ГОСТ 30333-2022')}.</div>`+
+        `<div class="gleg"><span><i style="background:var(--green)"></i>свой слой</span>`+
+        `<span><i style="background:var(--amber)"></i>частично/типовое</span>`+
+        `<span><i style="background:var(--blue)"></i>только корпус</span>`+
+        `<span><i style="background:#4a5468"></i>пробел</span></div>`+
+        `<div class="gmap">`+(gm.sections||[]).map(x=>{
+          const fb=(x.filled_by||[]).join('; ');
+          const tip=[x.source?'источник: '+x.source:'',x.note||''].filter(Boolean).join(' · ');
+          return `<div class="gi ${esc(x.status)}" title="${esc(GST[x.status]||x.status)}${tip?' — '+esc(tip):''}">`+
+            `<div class="gn">${x.n}</div><div class="gtx"><div class="gt">${esc(x.title)}</div>`+
+            (fb?`<div class="gf">${esc(fb)}</div>`:`<div class="gf" style="color:#6b7689">${esc(GST[x.status]||'')}</div>`)+
+            (x.source?`<div class="gsrc">${esc(x.source)}</div>`:'')+`</div></div>`;
+        }).join('')+`</div>`+
+        (gm.title_needs_review?`<div class="gwarn">⚠ Формулировки названий разделов — на финальной сверке с оригиналом ГОСТ 30333-2022. Структура (состав/порядок) подтверждена (СГС).</div>`:'');
+    }
+
+    // действия
+    const _ai=(d)=>`<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:6px">${d}</svg>`;
+    $('o-acts').innerHTML=
+      `<a href="label.html?name=${enc(s.name)}">${_ai('<path d="M20 13.5V7a2 2 0 0 0-2-2h-6.5a2 2 0 0 0-1.4.6l-7 7a2 2 0 0 0 0 2.8l5.5 5.5a2 2 0 0 0 2.8 0l7-7a2 2 0 0 0 .6-1.4z"/><path d="M7.5 7.5h.01"/>')}этикетка</a>`+
+      `<a href="quiz.html?name=${enc(s.name)}">${_ai('<circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 1 1 4 2.8c-.8.4-1.6 1.1-1.6 2.2"/><path d="M12 17h.01"/>')}проверка знаний</a>`+
+      `<a href="${base()}/card/${enc(s.name)}" target="_blank">${_ai('<rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/>')}карточка + QR</a>`+
+      `<a href="emergency.html?name=${enc(s.name)}">${_ai('<path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17h.01"/>')}аварийная карточка</a>`;
+
+    $('intro').style.display='none';   // прячем подсказку «как пользоваться» после первой загрузки
+    $('out').style.display='block';
+  }
+  $('go').onclick=load;
+  $('q').addEventListener('keydown',ev=>{if(ev.key==='Enter')load();});
+
+  async function health(){try{await(await fetch(base()+'/health',{signal:AbortSignal.timeout(4000)})).json();$('dot').className='dot ok';$('st').textContent='система на связи';}catch(e){$('dot').className='dot off';$('st').textContent='нет связи';}}
+  $('base').addEventListener('change',health);
+  const qp=new URLSearchParams(location.search).get('name');
+  if(qp)$('q').value=qp;
+  health().then(()=>{if(qp)load();});
+</script>
+</body>
+</html>
