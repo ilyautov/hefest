@@ -1,0 +1,63 @@
+{
+ "_meta": {
+  "source": "ERG-2024 (US DOT/Transport Canada, public domain) через CAMEO Chemicals (NOAA); классификация ДОПОГ/ADR 2025 (adrdangerousgoods.com, adr-tool.com)",
+  "verified": "web-research, 3 независимых источника на вещество, сверка ERG-2024 vs ERG-2008",
+  "disclaimer": "Расстояния ERG — ОРИЕНТИР ПЕРВОГО РЕАГИРОВАНИЯ (US/Canada методика), НЕ заменяют расчёт зоны по РД 52.04.253-90 и не являются российским нормативом. needs_review: сверить с ERG-2024 PDF (phmsa.dot.gov). Для большого разлива у ряда веществ ERG ссылается на Таблицу 3 (зависит от типа ёмкости) — приведён репрезентативный сценарий (автоцистерна), для ж/д цистерны расстояния больше.",
+  "units": {"isolation_m": "начальная зона изоляции, метры", "protect_km": "защитные действия по ветру, км (день/ночь)"}
+ },
+ "cards": {
+  "хлор": {
+   "un_number": "1017", "adr_class": "2.3+5.1+8", "adr_kemler": "265", "erg_guide": 124, "tih_zone": "B",
+   "isolation_small_m": 61, "protect_small_day_km": 0.32, "protect_small_night_km": 1.45,
+   "isolation_large_m": 610, "protect_large_day_km": 5.6, "protect_large_night_km": 6.4,
+   "large_note": "большой разлив → Таблица 3 ERG; ж/д цистерна — изоляция до 610–914 м, защита больше",
+   "needs_review": true,
+   "sources": ["https://cameochemicals.noaa.gov/unna/1017", "https://adrdangerousgoods.com/eng/substances/0000464/un1017-chlorine/"]
+  },
+  "азота диоксид (азот (iv) оксид; азота двуокись)": {
+   "un_number": "1067", "adr_class": "2.3+5.1+8", "adr_kemler": "265", "erg_guide": 124, "tih_zone": "A",
+   "isolation_small_m": 30, "protect_small_day_km": 0.16, "protect_small_night_km": 0.48,
+   "isolation_large_m": 381, "protect_large_day_km": 1.45, "protect_large_night_km": 3.38,
+   "needs_review": true,
+   "sources": ["https://cameochemicals.noaa.gov/unna/1067", "https://adrdangerousgoods.com/eng/substances/0000435/un1067-dinitrogen-tetroxide-nitrogen-dioxide/"]
+  },
+  "диоксид серы": {
+   "un_number": "1079", "adr_class": "2.3+8", "adr_kemler": "268", "erg_guide": 125, "tih_zone": "B",
+   "isolation_small_m": 91, "protect_small_day_km": 0.64, "protect_small_night_km": 2.57,
+   "isolation_large_m": 183, "protect_large_day_km": 1.1, "protect_large_night_km": 1.4,
+   "large_note": "большой разлив → Таблица 3 ERG; ж/д цистерна — до 914 м и 11+ км",
+   "needs_review": true,
+   "sources": ["https://cameochemicals.noaa.gov/unna/1079", "https://adrdangerousgoods.com/eng/substances/0000445/un1079-sulphur-dioxide/"]
+  },
+  "сероводород": {
+   "un_number": "1053", "adr_class": "2.3+2.1", "adr_kemler": "263", "erg_guide": 117, "tih_zone": "B",
+   "isolation_small_m": 30, "protect_small_day_km": 0.16, "protect_small_night_km": 0.48,
+   "isolation_large_m": 381, "protect_large_day_km": 2.41, "protect_large_night_km": 6.44,
+   "needs_review": true,
+   "sources": ["https://cameochemicals.noaa.gov/unna/1053", "https://adr-tool.com/419/un-1053"]
+  },
+  "бром": {
+   "un_number": "1744", "adr_class": "8+6.1", "adr_kemler": "886", "packing_group": "I", "erg_guide": 154, "tih_zone": "A",
+   "isolation_small_m": 61, "protect_small_day_km": 0.8, "protect_small_night_km": 2.4,
+   "isolation_large_m": 381, "protect_large_day_km": 4.2, "protect_large_night_km": 7.6,
+   "needs_review": true,
+   "sources": ["https://cameochemicals.noaa.gov/unna/1744", "https://adrdangerousgoods.com/eng/substances/0001086/un1744-bromine-or-bromine-solution/"]
+  },
+  "озон": {
+   "un_number": "1955", "adr_class": "2.3", "erg_guide": 123, "tih_zone": "требует проверки (вероятно A)",
+   "isolation_small_m": 152, "protect_small_day_km": 0.97, "protect_small_night_km": 3.86,
+   "isolation_large_m": 914, "protect_large_day_km": 6.27, "protect_large_night_km": 10.46,
+   "large_note": "озон не имеет собственного номера ООН — перевозится как UN 1955 (сжатый токсичный газ, н.у.к.); зона A/B требует проверки",
+   "needs_review": true,
+   "sources": ["https://cameochemicals.noaa.gov/unna/1955", "https://cameochemicals.noaa.gov/chemical/5102"]
+  },
+  "аммиак": {
+   "un_number": "1005", "adr_class": "2.3+8", "adr_kemler": "268", "erg_guide": 125, "tih_zone": "B",
+   "isolation_small_m": 30, "protect_small_day_km": 0.16, "protect_small_night_km": 0.16,
+   "isolation_large_m": 153, "protect_large_day_km": 0.8, "protect_large_night_km": 1.1,
+   "large_note": "большой разлив → Таблица 3 ERG; ж/д цистерна — до 305 м и ~4+ км",
+   "needs_review": true,
+   "sources": ["https://cameochemicals.noaa.gov/unna/1005", "https://adrdangerousgoods.com/eng/substances/0000384/un1005-ammonia-anhydrous/"]
+  }
+ }
+}

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Проверка знаний по веществу</title>
+<style>
+  :root{
+    --bg:#0f1419; --panel:#1a2230; --panel2:#222c3a; --line:#2b3647;
+    --txt:#eef2f7; --muted:#a8b3c2;
+    --blue:#5b9dff; --blue-d:#2563eb; --orange:#f9a23b; --red:#ff6b6b; --green:#3ecf8e; --amber:#ffce6b;
+    --r:14px; --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1200px 520px at 75% -12%,#13233c,transparent 62%),var(--bg);
+    color:var(--txt);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;min-height:100dvh}
+  .wrap{max-width:760px;margin:0 auto;padding:32px 18px 80px}
+  .top{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+  a.back{color:var(--muted);text-decoration:none;font-size:13px;font-family:var(--sans)}
+  a.back:hover{color:var(--blue)}
+  h1{font-size:23px;margin:0;font-weight:700}
+  .lead{color:var(--muted);font-size:14px;margin:4px 0 20px;max-width:680px}
+  .pick{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:22px}
+  input.q{background:var(--panel);border:1px solid var(--line);border-radius:9px;color:var(--txt);
+    padding:11px 13px;font:15px var(--sans);min-width:300px;flex:1}
+  .btn{cursor:pointer;background:var(--panel);border:1px solid var(--line);border-radius:9px;color:var(--txt);
+    padding:11px 15px;font:14px var(--sans);font-weight:600}
+  .btn:hover{border-color:var(--blue);background:var(--panel2)}
+  .btn.pr{background:var(--blue);border-color:var(--blue);color:#fff}.btn.pr:hover{background:var(--blue-d)}
+  datalist{display:none}
+  .err{color:#ff8d8d;font-size:14px;margin:10px 0}
+
+  .exrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:-12px 0 18px}
+  .exrow .lbl{font-size:12.5px;color:var(--muted)}
+  .exchip{cursor:pointer;font-size:13.5px;background:var(--panel);border:1px solid var(--line);color:var(--txt);
+    height:38px;padding:0 14px;border-radius:9px;display:inline-flex;align-items:center;font-family:var(--sans);
+    transition:border-color .15s,background .15s}
+  .exchip:hover{border-color:var(--blue);background:var(--panel2)}
+  .exchip:focus-visible{outline:3px solid #5b9dffaa;outline-offset:2px}
+  .introbox{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;margin-bottom:16px}
+  .introbox h2{font-size:16px;margin:0 0 13px;font-weight:700}
+  .introbox ol{margin:0;padding-left:20px}
+  .introbox li{margin-bottom:9px;color:var(--muted);line-height:1.5}
+  .introbox li b{color:var(--txt)}
+
+  .scorebar{display:none;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);
+    border-radius:var(--r);padding:12px 16px;margin-bottom:16px;font-family:var(--mono);font-size:14px}
+  .scorebar .v{font-size:20px;font-weight:700;color:var(--green)}
+
+  .qz{display:flex;flex-direction:column;gap:14px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px}
+  .qnum{font-family:var(--mono);font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px}
+  .qtext{font-size:15.5px;font-weight:600;margin-bottom:12px}
+  .opts{display:flex;flex-direction:column;gap:8px}
+  .opt{text-align:left;cursor:pointer;background:var(--panel2);border:1px solid var(--line);border-radius:9px;
+    color:var(--txt);padding:11px 13px;font:14px var(--sans);transition:border-color .12s,background .12s}
+  .opt:hover{border-color:var(--blue)}
+  .opt:disabled{cursor:default}
+  .opt.correct{border-color:#1d4a32;background:#10261a;color:#7ce0a8}
+  .opt.wrong{border-color:#5a2025;background:#1e1414;color:#ff9b9b}
+  .reveal{margin-top:12px}
+  .reveal .btn{font-size:13px;padding:8px 13px}
+  .ans{margin-top:10px;padding:12px 14px;border-radius:9px;background:#10261a;border:1px solid #1d4a32;
+    font-size:14px;color:#cdeedd;display:none}
+  .ans.show{display:block}
+  .ans .lbl{font-family:var(--mono);font-size:11px;color:#5fd99a;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+  .src{display:inline-block;font-family:var(--mono);font-size:10.5px;padding:2px 7px;border-radius:5px;margin-left:8px}
+  .src.passport,.src.паспорт{background:#10261a;color:#5fd99a;border:1px solid #1d4a32}
+  .src.typ{background:#3a2e12;color:#fbd56b;border:1px solid #5a4920}
+  .note{font-size:12px;color:var(--muted);margin-top:18px;line-height:1.55;
+    background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 15px}
+  .cfg{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:24px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .cfg input{background:var(--panel);border:1px solid var(--line);border-radius:7px;color:var(--txt);padding:6px 9px;font:12px var(--mono);min-width:200px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><h1>Проверка знаний по веществу</h1></div>
+  <div style="margin:-2px 0 14px"><a class="back" href="home.html">← на главную</a></div>
+  <div class="lead">Короткий инструктаж для персонала: класс опасности, ПДК, средства защиты, первая помощь и хранение.
+    Вопросы и ответы берутся <b style="color:var(--txt)">прямо из паспорта</b> и не придумываются ИИ —
+    в обучении безопасности ошибки недопустимы.</div>
+
+  <div class="pick">
+    <input class="q" id="q" list="names" placeholder="название вещества (например, аммиак)" autocomplete="off">
+    <datalist id="names"></datalist>
+    <button class="btn pr" id="go">Начать</button>
+  </div>
+  <div class="exrow" id="ex"><span class="lbl">Примеры:</span></div>
+  <div id="err" class="err" style="display:none"></div>
+
+  <div id="introbox" class="introbox">
+    <h2>Что это и как пользоваться</h2>
+    <ol>
+      <li><b>Введите вещество или нажмите пример</b> — система соберёт короткий инструктаж-проверку прямо по этому веществу.</li>
+      <li><b>Вопросы про главное:</b> класс опасности, ПДК, средства защиты (СИЗ), первая помощь. Все ответы взяты из паспорта безопасности — ИИ ничего не выдумывает.</li>
+      <li><b>Для допуска к работе:</b> прогоните инструктаж с персоналом перед сменой или перед допуском к веществу — быстро видно, кто что усвоил.</li>
+    </ol>
+  </div>
+
+  <div class="scorebar" id="score"><span>Результат:</span><span class="v" id="sv">0 / 0</span><span id="sl" style="color:var(--muted)"></span></div>
+  <div class="qz" id="out"></div>
+  <div id="note"></div>
+
+  <input type="hidden" id="base" value="http://127.0.0.1:8000"><!-- адрес берётся автоматически из location.origin; поле скрыто, чтобы не пугать нетех. пользователя -->
+</div>
+<script>
+  const $=id=>document.getElementById(id);
+  const base=()=>{const v=$('base').value.replace(/\/+$/,'');return location.protocol.indexOf('http')===0?location.origin:v;};
+  const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const enc=encodeURIComponent;
+
+  let total=0,correct=0;
+
+  // автодополнение
+  let t=null;
+  $('q').addEventListener('input',()=>{clearTimeout(t);t=setTimeout(async()=>{
+    const p=$('q').value.trim(); if(p.length<2) return;
+    try{const d=await(await fetch(base()+'/substances/names?prefix='+enc(p)+'&limit=12')).json();
+      $('names').innerHTML=(d.names||[]).map(n=>`<option value="${esc(n)}">`).join('');
+    }catch(e){}
+  },180);});
+
+  function srcTag(src){
+    if(!src) return '';
+    const typ=src.includes('типов');
+    return `<span class="src ${typ?'typ':'passport'}">${esc(src)}</span>`;
+  }
+
+  function renderChoice(item,i){
+    const opts=item.options.map(o=>`<button class="opt" data-ans="${esc(item.answer)}" data-v="${esc(o)}">${esc(o)}</button>`).join('');
+    return `<div class="card"><div class="qnum">Вопрос ${i+1} · выбор ответа</div>
+      <div class="qtext">${esc(item.q)}${srcTag(item.source)}</div>
+      <div class="opts">${opts}</div></div>`;
+  }
+  function renderOpen(item,i){
+    return `<div class="card"><div class="qnum">Вопрос ${i+1} · открытый</div>
+      <div class="qtext">${esc(item.q)}${srcTag(item.source)}</div>
+      <div class="reveal"><button class="btn" data-reveal="${i}">Показать эталонный ответ</button></div>
+      <div class="ans" id="ans-${i}"><div class="lbl">Эталонный ответ</div>${esc(item.answer)}</div></div>`;
+  }
+
+  async function start(){
+    $('err').style.display='none';$('out').innerHTML='';$('note').innerHTML='';
+    $('score').style.display='none';total=0;correct=0;
+    const n=$('q').value.trim(); if(!n){$('err').textContent='введите название вещества';$('err').style.display='block';return;}
+    let d;
+    try{d=await(await fetch(base()+'/quiz/'+enc(n))).json();}
+    catch(e){$('err').textContent='ошибка запроса';$('err').style.display='block';return;}
+    if(d.error){$('err').textContent=d.error;$('err').style.display='block';return;}
+
+    total=d.questions.filter(q=>q.type==='choice').length;
+    $('out').innerHTML=d.questions.map((it,i)=>it.type==='choice'?renderChoice(it,i):renderOpen(it,i)).join('');
+    if(total){$('score').style.display='flex';updScore();}
+    $('note').innerHTML=`<div class="note">${esc(d.note||'')}</div>`;
+    $('introbox').style.display='none';   // прячем подсказку «как пользоваться» после первой загрузки
+
+    // обработчики выбора
+    $('out').querySelectorAll('.opt').forEach(b=>b.addEventListener('click',()=>{
+      const card=b.closest('.card'); if(card.dataset.done) return; card.dataset.done='1';
+      const ans=b.dataset.ans;
+      card.querySelectorAll('.opt').forEach(o=>{
+        o.disabled=true;
+        if(o.dataset.v===ans)o.classList.add('correct');
+        else if(o===b)o.classList.add('wrong');
+      });
+      if(b.dataset.v===ans)correct++;
+      updScore();
+    }));
+    // раскрытие открытых
+    $('out').querySelectorAll('[data-reveal]').forEach(b=>b.addEventListener('click',()=>{
+      $('ans-'+b.dataset.reveal).classList.add('show'); b.style.display='none';
+    }));
+  }
+  function updScore(){
+    $('sv').textContent=correct+' / '+total;
+    const answered=$('out').querySelectorAll('.card[data-done]').length;
+    $('sl').textContent=answered<total?`(отвечено ${answered} из ${total})`:'готово';
+  }
+  // примеры в один тап — чтобы незнакомый человек сразу увидел, как это работает
+  ['хлор','аммиак','серная кислота','ацетон','толуол'].forEach(n=>{
+    const b=document.createElement('button');b.className='exchip';b.type='button';
+    b.textContent=n;b.onclick=()=>{$('q').value=n;start();};$('ex').appendChild(b);});
+
+  $('go').onclick=start;
+  $('q').addEventListener('keydown',e=>{if(e.key==='Enter')start();});
+
+  const qp=new URLSearchParams(location.search).get('name');
+  if(qp){$('q').value=qp;}
+  fetch(base()+'/health').then(r=>r.json()).then(()=>{if(qp)start();}).catch(()=>{});
+</script>
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Этикетка СГС с QR-кодом</title>
+<style>
+  :root{
+    --bg:#0f1419; --panel:#1a2230; --panel2:#222c3a; --line:#2b3647;
+    --txt:#eef2f7; --muted:#a8b3c2;
+    --blue:#5b9dff; --blue-d:#2563eb; --orange:#f9a23b; --red:#ff6b6b; --green:#3ecf8e; --amber:#ffce6b;
+    --r:14px; --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1200px 520px at 75% -12%,#13233c,transparent 62%),var(--bg);
+    color:var(--txt);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;min-height:100dvh}
+  .wrap{max-width:780px;margin:0 auto;padding:32px 18px 80px}
+  .top{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+  a.back{color:var(--muted);text-decoration:none;font-size:13px;font-family:var(--sans)}
+  a.back:hover{color:var(--blue)}
+  h1{font-size:23px;margin:0;font-weight:700}
+  .lead{color:var(--muted);font-size:14px;margin:4px 0 20px;max-width:680px}
+  .pick{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:22px}
+  input.q{background:var(--panel);border:1px solid var(--line);border-radius:9px;color:var(--txt);
+    padding:11px 13px;font:15px var(--sans);min-width:300px;flex:1}
+  .btn{cursor:pointer;background:var(--panel);border:1px solid var(--line);border-radius:9px;color:var(--txt);
+    padding:11px 15px;font:14px var(--sans);font-weight:600;display:inline-flex;align-items:center;gap:7px}
+  .btn:hover{border-color:var(--blue);background:var(--panel2)}
+  .btn.pr{background:var(--blue);border-color:var(--blue);color:#fff}.btn.pr:hover{background:var(--blue-d)}
+  datalist{display:none}
+  .err{color:#ff8d8d;font-size:14px;margin:10px 0}
+  .exrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:-10px 0 20px}
+  .exrow .lbl{font-size:12.5px;color:var(--muted)}
+  .exchip{cursor:pointer;font-size:13.5px;background:var(--panel);border:1px solid var(--line);color:var(--txt);
+    height:38px;padding:0 14px;border-radius:9px;display:inline-flex;align-items:center;font-family:var(--sans)}
+  .exchip:hover{border-color:var(--blue);background:var(--panel2)}
+  .exchip:focus-visible{outline:3px solid #5b9dffaa;outline-offset:2px}
+  .introbox{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;margin-bottom:16px}
+  .introbox h2{font-size:16px;margin:0 0 12px;font-weight:700}
+  .introbox ol{margin:0;padding-left:20px}
+  .introbox li{margin-bottom:9px;color:var(--muted);line-height:1.5}
+  .introbox li b{color:var(--txt)}
+
+  /* ЭТИКЕТКА — печатается на белом */
+  .label{background:#fff;color:#111;border-radius:12px;padding:0;overflow:hidden;border:1px solid var(--line);
+    max-width:560px;box-shadow:0 8px 40px #0008}
+  .lh{display:flex;justify-content:space-between;align-items:flex-start;padding:18px 20px 14px;border-bottom:2px solid #111}
+  .lh .nm{font-size:24px;font-weight:800;line-height:1.15;color:#111}
+  .lh .frm{font-family:var(--mono);font-size:13px;color:#555;margin-top:3px}
+  .sig{display:inline-block;font-weight:800;font-size:15px;padding:6px 14px;border-radius:7px;margin-top:9px;
+    text-transform:uppercase;letter-spacing:.5px}
+  .sig.danger{background:#c01818;color:#fff}.sig.warn{background:#f5a623;color:#111}
+  .qr{flex:none;width:96px;height:96px;margin-left:14px}.qr svg,.qr img{width:100%;height:100%;display:block}
+  .pics{display:flex;flex-wrap:wrap;gap:14px;padding:16px 20px;justify-content:center;border-bottom:1px solid #ddd}
+  .picto{width:84px;text-align:center}
+  .picwrap{display:block;width:66px;height:66px;margin:0 auto 5px}
+  .ghsimg{width:66px;height:66px;display:block}
+  .diamond{width:66px;height:66px;margin:0 auto 5px;position:relative;display:grid;place-items:center}
+  .diamond:before{content:"";position:absolute;inset:0;background:#fff;border:4px solid #c01818;
+    transform:rotate(45deg);border-radius:7px}
+  .diamond svg{position:relative;color:#111;width:32px;height:32px}
+  .picto .pl{font-size:11px;color:#333;line-height:1.2;font-weight:600}
+  .lfields{padding:14px 20px}
+  .lf{display:flex;gap:12px;padding:7px 0;border-bottom:1px solid #eee;font-size:14px}
+  .lf:last-child{border-bottom:none}
+  .lf .k{flex:none;width:140px;color:#666;font-weight:600}
+  .lf .v{color:#111}
+  .ahovb{background:#c01818;color:#fff;font-weight:700;padding:8px 20px;font-size:14px}
+  .lidlh{margin:0 20px 4px;background:#fff4f4;border:1px solid #e0b4b4;color:#8a1a1a;border-radius:8px;padding:8px 12px;font-size:13px}
+  .lidlh b{font-family:var(--mono)}
+  .lflags{display:flex;flex-wrap:wrap;gap:7px;padding:6px 20px 4px}
+  .lflag{background:#fff8e8;border:1px solid #e3c889;color:#7a5a10;border-radius:7px;padding:4px 10px;font-size:12px}
+  .lflag b{font-family:var(--mono);color:#111}
+  .lfoot{padding:11px 20px 16px;font-size:11px;color:#777;border-top:1px solid #eee}
+  .bt{font-family:var(--mono);font-size:10px;color:#9a6b00;border:1px solid #e3c060;background:#fff8e0;padding:1px 6px;border-radius:5px;margin-left:5px}
+
+  .cfg{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:24px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .cfg input{background:var(--panel);border:1px solid var(--line);border-radius:7px;color:var(--txt);padding:6px 9px;font:12px var(--mono);min-width:200px}
+
+  @media print{
+    body{background:#fff}
+    .wrap{max-width:none;padding:0}
+    .top,.lead,.pick,.cfg,.err,a.back,#actions{display:none!important}
+    .label{box-shadow:none;border:none;max-width:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><h1>Этикетка СГС с QR-кодом</h1></div>
+  <div style="margin:-2px 0 14px"><a class="back" href="home.html">← на главную</a></div>
+  <div class="lead">Печатная этикетка для тары и рабочего места: знаки опасности, сигнальное слово,
+    класс, ПДК и <b style="color:var(--txt)">QR-код</b> — навёл телефон и сразу видишь карточку первой помощи.
+    Знаки определены по паспорту — перед нанесением сверьте с официальной классификацией.</div>
+
+  <div class="pick">
+    <input class="q" id="q" list="names" placeholder="название вещества (например, хлор)" autocomplete="off">
+    <datalist id="names"></datalist>
+    <button class="btn pr" id="go">Собрать этикетку</button>
+  </div>
+  <div class="exrow" id="ex"><span class="lbl">Примеры:</span></div>
+  <div id="err" class="err" style="display:none"></div>
+
+  <div id="introbox" class="introbox">
+    <h2>Что это и как пользоваться</h2>
+    <ol>
+      <li><b>Введите вещество</b> в поле выше или нажмите пример — система соберёт печатную этикетку СГС.</li>
+      <li><b>На этикетке:</b> знаки опасности, класс, ПДК и QR-код на карточку первой помощи.</li>
+      <li><b>Печать или PDF</b> — кнопкой внизу. Наведите телефон на QR — откроется, что делать при контакте.</li>
+    </ol>
+  </div>
+
+  <div id="out"></div>
+  <div id="actions" style="margin-top:16px;display:none">
+    <button class="btn" onclick="window.print()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:6px"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg>Печать / сохранить в PDF</button>
+  </div>
+
+  <input type="hidden" id="base" value="http://127.0.0.1:8000"><!-- адрес берётся автоматически из location.origin; поле скрыто, чтобы не пугать нетех. пользователя -->
+</div>
+<script>
+  const $=id=>document.getElementById(id);
+  const base=()=>{const v=$('base').value.replace(/\/+$/,'');return location.protocol.indexOf('http')===0?location.origin:v;};
+  const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const subF=s=>!s?'':esc(String(s).replace(/([A-Za-zА-Яа-я)\]])\s+(?=\d)/g,'$1')).replace(/(\d+)/g,'<sub>$1</sub>'); // формула с индексами
+  const enc=encodeURIComponent;
+  // примеры в один тап
+  ['хлор','аммиак','серная кислота','ацетон','толуол'].forEach(n=>{const b=document.createElement('button');
+    b.className='exchip';b.type='button';b.textContent=n;b.onclick=()=>{$('q').value=n;build();};$('ex').appendChild(b);});
+
+  const PICTO_ICON={
+    GHS01:'<path d="M12 2l2 7 7-3-4 6 5 4-7 1-1 5-3-4-5 3 1-6-5-3 6-2z"/>',
+    GHS02:'<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.4-.6-2.5-1.5-3.5C8 7 8 5 9 3c-3 1.5-5 4.5-5 8a6 6 0 1 0 12 0c0-1.3-.4-2.6-1-3.6-.6 1.6-2 2.6-3.5 2.6 0 1 .5 1.5 1 2"/>',
+    GHS03:'<circle cx="12" cy="18" r="3.5"/><path d="M12 2l2 6-2-1-2 1zM6 9l1 3M18 9l-1 3"/>',
+    GHS04:'<rect x="8" y="3" width="8" height="18" rx="3"/><path d="M12 3V1M10 7h4"/>',
+    GHS05:'<path d="M5 4h6v4l5 3-2 4M11 4v6l-4 8h12"/><path d="M14 18l1.5 2"/>',
+    GHS06:'<circle cx="12" cy="9" r="5"/><circle cx="10" cy="8" r="1"/><circle cx="14" cy="8" r="1"/><path d="M9 18h6M10 21h4"/>',
+    GHS07:'<path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17h.01"/>',
+    GHS08:'<circle cx="12" cy="8" r="3"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7"/><path d="M12 11v4"/>',
+    GHS09:'<path d="M3 14c4 3 7-3 11 0M3 9c4 3 7-3 11 0"/><path d="M17 6l4 6-4 6"/>'
+  };
+
+  // автодополнение
+  let t=null;
+  $('q').addEventListener('input',()=>{clearTimeout(t);t=setTimeout(async()=>{
+    const p=$('q').value.trim(); if(p.length<2) return;
+    try{const d=await(await fetch(base()+'/substances/names?prefix='+enc(p)+'&limit=12')).json();
+      $('names').innerHTML=(d.names||[]).map(n=>`<option value="${esc(n)}">`).join('');
+    }catch(e){}
+  },180);});
+
+  function sigClass(w){const s=(w||'').toLowerCase();return s.includes('опас')&&!s.includes('осто')?'danger':s?'warn':'';}
+
+  async function build(){
+    $('err').style.display='none';$('out').innerHTML='';$('actions').style.display='none';
+    const n=$('q').value.trim(); if(!n){$('err').textContent='введите название вещества';$('err').style.display='block';return;}
+    let s,g;
+    try{
+      [s,g]=await Promise.all([
+        (await fetch(base()+'/substance/'+enc(n))).json(),
+        (await fetch(base()+'/ghs/'+enc(n))).json()
+      ]);
+    }catch(e){$('err').textContent='ошибка запроса';$('err').style.display='block';return;}
+    if(s.error){$('err').textContent=s.error;$('err').style.display='block';return;}
+
+    const sig=g.signal_word||'';
+    const sc=sigClass(sig);
+    // Официальная пиктограмма СГС (assets/ghs/*.svg, public domain), с запасным рисованным вариантом
+    const drawn=code=>`<div class="diamond"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${PICTO_ICON[code]||''}</svg></div>`;
+    const pics=(g.pictograms||[]).map(p=>`<div class="picto"><span class="picwrap"><img class="ghsimg" src="assets/ghs/${p.code}.svg" alt="${esc(p.name)}" onerror="this.parentElement.innerHTML=window.__drawn('${p.code}')"></span><div class="pl">${esc(p.name)}</div></div>`).join('');
+    window.__drawn=drawn;
+    const qrUrl=base()+'/qr/'+enc(s.name);
+    const hc=s.hazard_class?`Класс опасности ${esc(s.hazard_class)} (ГОСТ 12.1.007)`:'—';
+    const pdk=s.pdk_mgm3?`${esc(s.pdk_mgm3)} мг/м³`:'—';
+    // IDLH — острый порог (NIOSH)
+    const idlhHtml=(s.idlh&&s.idlh.idlh!=null)
+      ? `<div class="lidlh"><b>IDLH ${esc(s.idlh.idlh)} ${esc(s.idlh.units||'')}</b> — выше без изолирующего СИЗ опасно для жизни (NIOSH)</div>` : '';
+    // отметки СанПиН (О/К/А/Ф/кожа)
+    const flags=(s.sanpin&&s.sanpin.flags)||[];
+    const flagHtml=flags.length
+      ? `<div class="lflags">${flags.map(f=>`<span class="lflag"><b>${esc(f.code)}</b> ${esc(f.label)}</span>`).join('')}</div>` : '';
+
+    $('out').innerHTML=`
+      <div class="label">
+        <div class="lh">
+          <div>
+            <div class="nm">${esc(s.name)}</div>
+            <div class="frm">${subF(s.formula)}${s.cas?' · CAS '+esc(s.cas):''}</div>
+            ${sig?`<div class="sig ${sc}">${esc(sig)}</div>`:''}
+          </div>
+          <div class="qr"><img src="${qrUrl}" alt="QR на карточку вещества" loading="eager"></div>
+        </div>
+        ${pics?`<div class="pics">${pics}</div>`:''}
+        ${idlhHtml}${flagHtml}
+        <div class="lfields">
+          <div class="lf"><div class="k">Опасность</div><div class="v">${hc}</div></div>
+          <div class="lf"><div class="k">ПДК раб. зоны</div><div class="v">${pdk}</div></div>
+          <div class="lf"><div class="k">Хранение</div><div class="v">${esc((s.guidance&&s.guidance.storage&&s.guidance.storage.value)||s.storage||'—')}${(s.guidance&&s.guidance.storage&&s.guidance.storage.source==='типовое по группе')?'<span class="bt">типовое</span>':''}</div></div>
+        </div>
+        <div class="lfoot">QR ведёт на карточку первой помощи и СИЗ. Знаки и пороги — по данным паспорта, СанПиН 1.2.3685-21 и NIOSH;
+          перед нанесением на тару сверьте с официальной классификацией. Цена ошибки = здоровье.</div>
+      </div>`;
+    $('introbox').style.display='none';
+    $('actions').style.display='block';
+  }
+  $('go').onclick=build;
+  $('q').addEventListener('keydown',e=>{if(e.key==='Enter')build();});
+
+  // автозапуск из ?name=
+  const qp=new URLSearchParams(location.search).get('name');
+  if(qp){$('q').value=qp;}
+  fetch(base()+'/health').then(r=>r.json()).then(()=>{if(qp)build();}).catch(()=>{});
+</script>
+</body>
+</html>

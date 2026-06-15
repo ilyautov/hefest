@@ -1,0 +1,84 @@
+# ============================================================================
+# SDS Safety Assistant — оркестрация on-prem (air-gapped, контур КИИ / 152-ФЗ).
+#
+# Состав:
+#   sds    — FastAPI-сервис (engine/service.py), порт 8000.
+#   qdrant — векторная БД (ОПЦИОНАЛЬНО, профиль `qdrant`). По умолчанию НЕ нужна:
+#            есть локальный semantic-retrieval на data/embeddings_clean.npy.
+#
+# Ollama НЕ в compose: она работает НА ХОСТЕ железа завода (порт 11434).
+# Так модель и веса остаются на машине оператора, а контейнер обращается к ней
+# по host.docker.internal (см. extra_hosts ниже).
+#
+# Сетевой выбор (host.docker.internal vs network_mode: host):
+#   Используем extra_hosts: "host.docker.internal:host-gateway", а НЕ network_mode: host.
+#   Причины:
+#     - host-gateway работает одинаково на Linux и на macOS/Windows (Docker Desktop),
+#       тогда как network_mode: host на macOS не пробрасывает сеть хоста.
+#     - сохраняется bridge-сеть, чтобы сервис мог ходить в опциональный контейнер qdrant
+#       по имени `qdrant`, и чтобы publish порта 8000 работал предсказуемо.
+#   Если в вашем Linux-контуре политика запрещает host-gateway — допустима альтернатива
+#   network_mode: host (тогда уберите ports/extra_hosts и ставьте OLLAMA_HOST=http://127.0.0.1:11434).
+#
+# Запуск:
+#   docker compose up -d                 # сервис (semantic + ollama на хосте)
+#   docker compose --profile qdrant up -d# + векторная БД Qdrant
+# ============================================================================
+
+services:
+  sds:
+    build:
+      # Контекст сборки = КОРЕНЬ репозитория (иначе COPY data/ выйдет за пределы контекста).
+      context: .
+      dockerfile: engine/Dockerfile
+    image: rag-sds:latest
+    container_name: sds
+    # Все настройки — из .env (скопируйте из .env.example). Значения ниже —
+    # явные дефолты на случай отсутствия переменной в .env; их можно переопределить.
+    env_file:
+      - .env
+    environment:
+      RETRIEVER: ${RETRIEVER:-semantic}
+      LLM_BACKEND: ${LLM_BACKEND:-ollama}
+      OLLAMA_LLM: ${OLLAMA_LLM:-qwen2.5:7b}
+      EMBED_MODEL: ${EMBED_MODEL:-bge-m3}
+      # Ollama на хосте: внутри контейнера host.docker.internal -> IP хоста (см. extra_hosts).
+      OLLAMA_HOST: ${OLLAMA_HOST:-http://host.docker.internal:11434}
+      CORPUS_FILE: ${CORPUS_FILE:-corpus_full_clean.json}
+      EMB_FILE: ${EMB_FILE:-embeddings_clean.npy}
+      IDS_FILE: ${IDS_FILE:-embed_ids_clean.json}
+      SUBS_FILE: ${SUBS_FILE:-substances_clean.json}
+      ABSTAIN_THRESHOLD: ${ABSTAIN_THRESHOLD:-0.62}
+    extra_hosts:
+      # Делает host.docker.internal доступным и на Linux (на Docker Desktop работает само).
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "8000:8000"
+    volumes:
+      # data/ монтируется read-only: корпус и эмбеддинги обновляются только пересборкой
+      # data/ на машине подготовки, в контур переносится готовая папка.
+      # audit_log.jsonl пишется сервисом — при необходимости вынесите его в отдельный rw-том.
+      - ./data:/app/data:ro
+    healthcheck:
+      # /health отдаёт состояние сервиса (см. engine/service.py).
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0) if urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=5).status==200 else sys.exit(1)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+  # --- ОПЦИОНАЛЬНО: векторная БД Qdrant (профиль `qdrant`) -------------------
+  # Включается только при RETRIEVER=qdrant. По умолчанию не стартует.
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: qdrant
+    profiles: ["qdrant"]
+    ports:
+      - "6333:6333"
+    volumes:
+      - qdrant_storage:/qdrant/storage
+    restart: unless-stopped
+
+volumes:
+  qdrant_storage:

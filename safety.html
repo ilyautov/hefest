@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Операции и хранение</title>
+<style>
+  /* Dark Mode (OLED). Инструменты: совместимость хранения, GHS, зона АХОВ (РД 52.04.253-90), гигиена базы.
+     Дизайн-токены общие с console.html / emergency.html. Системные шрифты (on-prem, без CDN). */
+  :root{
+    --bg:#0f1419; --panel:#1a2230; --panel2:#222c3a; --line:#2b3647;
+    --txt:#eef2f7; --muted:#a8b3c2;
+    --blue:#5b9dff; --blue-d:#2563eb; --orange:#f9a23b; --red:#ff6b6b; --green:#3ecf8e; --amber:#ffce6b;
+    --r:12px; --r-sm:9px;
+    --mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono",Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1100px 480px at 80% -10%,#122036,transparent 60%),var(--bg);
+    color:var(--txt);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;min-height:100dvh}
+  .wrap{max-width:880px;margin:0 auto;padding:24px 18px 80px}
+  .top{display:flex;align-items:center;gap:12px;margin-bottom:4px}
+  .logo{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;
+    background:linear-gradient(145deg,#1b263b,#0f1722);border:1px solid var(--line);color:var(--orange);flex:none}
+  h1{font-size:19px;margin:0;font-weight:600;letter-spacing:.2px}
+  .status{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);font-family:var(--sans)}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+  .dot.ok{background:var(--green);box-shadow:0 0 10px #3ecf8e88}
+  .dot.off{background:var(--red);box-shadow:0 0 10px #ff6b6b88}
+  .sub{color:var(--muted);font-size:13px;margin:2px 0 20px}
+  .sub a{color:var(--blue);text-decoration:none}.sub a:hover{text-decoration:underline}
+
+  .tabs{display:flex;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:4px;margin-bottom:18px;gap:4px}
+  .tab{appearance:none;background:none;border:0;color:var(--muted);font:inherit;font-size:14px;
+    padding:9px 15px;border-radius:8px;cursor:pointer;transition:background .15s,color .15s;min-height:42px;display:flex;align-items:center;gap:7px}
+  .tab[aria-selected="true"]{background:var(--panel2);color:var(--txt);box-shadow:inset 0 0 0 1px var(--line)}
+  .tab:focus-visible{outline:3px solid #5b9dffaa;outline-offset:2px}
+
+  .pane{display:none}.pane.on{display:block}
+  label.fld{display:block;font-size:12px;color:var(--muted);margin:0 0 6px}
+  input,select{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-sm);color:var(--txt);
+    padding:12px 13px;font:14px var(--sans);outline:none;transition:border-color .15s,box-shadow .15s;width:100%}
+  input::placeholder{color:#5f6c7e}
+  input:focus-visible,select:focus-visible{border-color:var(--blue);box-shadow:0 0 0 3px #5b9dff33}
+  .row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+  .row>div{flex:1;min-width:130px}
+  button.go{background:var(--orange);color:#241204;border:0;border-radius:var(--r-sm);min-height:46px;padding:0 22px;
+    font-weight:600;font-size:15px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:filter .15s,transform .06s}
+  button.go:hover{filter:brightness(1.07)}button.go:active{transform:translateY(1px)}
+  button.go:focus-visible{outline:3px solid #5b9dffaa;outline-offset:2px}
+  button.go[disabled]{opacity:.55;cursor:progress}
+  .cfg{font-size:12px;color:var(--muted);font-family:var(--mono);margin:14px 0 0;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .cfg input{padding:6px 9px;font-size:12px;width:auto;min-width:190px;border-radius:7px}
+  .hint{font-size:12px;color:var(--muted);margin:-4px 0 14px}
+
+  .msg{display:none;border-radius:var(--r);padding:13px 15px;margin:12px 0;font-size:14px;align-items:center;gap:10px}
+  .msg.on{display:flex}.msg.err{background:#2a1414;border:1px solid #4a2424;color:#ffb4b4}
+
+  /* verdict card (совместимость) */
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-top:16px;
+    opacity:0;transform:translateY(8px);animation:rise .25s ease forwards}
+  @keyframes rise{to{opacity:1;transform:none}}
+  .vstrip{height:5px}
+  .vstrip.forbidden{background:var(--red)}.vstrip.caution{background:var(--amber)}.vstrip.ok{background:var(--green)}
+  .card .in{padding:18px}
+  .verdict{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+  .vbadge{font-weight:700;font-size:13px;letter-spacing:.6px;padding:6px 13px;border-radius:8px;text-transform:uppercase}
+  .vbadge.forbidden{background:#3a1518;color:#ff8d8d;border:1px solid #5a2025}
+  .vbadge.caution{background:#3a2e12;color:#fbd56b;border:1px solid #5a4920}
+  .vbadge.ok{background:#13301f;color:#6ee7a8;border:1px solid #1f5236}
+  .vpair{font-weight:600;font-size:16px}
+  .groups{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+  .gchip{font-family:var(--mono);font-size:11.5px;color:#b9c6d6;background:var(--panel2);border:1px solid var(--line);padding:3px 9px;border-radius:7px}
+  .reasons{list-style:none;padding:0;margin:0 0 14px}
+  .reasons li{display:flex;gap:9px;padding:8px 0;border-top:1px solid var(--line);font-size:13.5px;color:#d2dbe6}
+  .reasons li:first-child{border-top:0}
+  .rico{flex:none;margin-top:2px}
+  .quote{font-family:var(--mono);font-size:12px;color:var(--muted);background:#0e1622;border-left:2px solid var(--line);
+    padding:8px 11px;border-radius:0 7px 7px 0;margin-top:8px;line-height:1.5}
+  .disc{font-size:11.5px;color:var(--muted);margin-top:14px;line-height:1.5}
+
+  /* GHS */
+  .ghsgrid{display:flex;flex-wrap:wrap;gap:14px;margin:6px 0 4px}
+  .picto{width:78px;text-align:center}
+  .diamond{width:62px;height:62px;margin:0 auto 6px;position:relative;display:grid;place-items:center}
+  .diamond:before{content:"";position:absolute;inset:0;background:#fff;border:3px solid var(--red);
+    transform:rotate(45deg);border-radius:8px}
+  .diamond svg{position:relative;color:#0f1419;width:30px;height:30px}
+  .picto .pl{font-size:10.5px;color:var(--muted);line-height:1.25}
+  .signal{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:15px;padding:7px 14px;border-radius:8px;margin:4px 0 12px}
+  .signal.danger{background:#3a1518;color:#ff8d8d;border:1px solid #5a2025}
+  .signal.warn{background:#3a2e12;color:#fbd56b;border:1px solid #5a4920}
+  .basis{font-size:12.5px;color:#aab6c6;line-height:1.55}.basis b{color:var(--txt);font-weight:600}
+
+  /* zone result */
+  .bignum{font-family:var(--mono);font-size:40px;font-weight:700;color:var(--orange);line-height:1;letter-spacing:-1px}
+  .bignum small{font-size:16px;color:var(--muted);font-weight:500;margin-left:6px}
+  .ztable{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+  .ztable td{padding:7px 10px;border-top:1px solid var(--line)}
+  .ztable td:first-child{color:var(--muted)}
+  .ztable td:last-child{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+  /* quality dashboard */
+  .stats{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:16px}
+  .stat{flex:1;min-width:140px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:15px 16px}
+  .stat .v{font-family:var(--mono);font-size:26px;font-weight:700;font-variant-numeric:tabular-nums}
+  .stat .l{font-size:12px;color:var(--muted);margin-top:3px}
+  .stat.good .v{color:var(--green)}.stat.warn .v{color:var(--amber)}.stat.bad .v{color:var(--red)}
+  .gaps{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:16px}
+  .gaps h3,.audit h3{margin:0 0 12px;font-size:13px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+  .gaprow{display:flex;align-items:center;gap:10px;margin-bottom:9px;font-size:13px}
+  .gaprow .gl{width:120px;flex:none;color:#c4cfdc}
+  .gbar{flex:1;height:8px;background:#0e1622;border-radius:5px;overflow:hidden}
+  .gbar i{display:block;height:100%;background:linear-gradient(90deg,#b9472f,var(--orange))}
+  .gaprow .gv{font-family:var(--mono);font-size:12px;color:var(--muted);width:54px;text-align:right}
+  .audit{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+  .alog{font-family:var(--mono);font-size:12px;color:#aab6c6;max-height:240px;overflow:auto}
+  .alog .ar{display:flex;gap:10px;padding:5px 0;border-top:1px solid var(--line)}
+  .alog .ar:first-child{border-top:0}
+  .akind{flex:none;width:64px;color:var(--blue)}
+  .ats{flex:none;color:var(--muted)}
+
+  .skeleton{display:none}.skeleton.on{display:block;margin-top:16px}
+  .sk{height:14px;border-radius:6px;background:linear-gradient(90deg,#1a2436,#222e40,#1a2436);
+    background-size:200% 100%;animation:sh 1.2s linear infinite;margin-bottom:12px}
+  @keyframes sh{to{background-position:-200% 0}}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <span class="logo" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 6v6c0 5 3.5 8 8 10 4.5-2 8-5 8-10V6l-8-4z"/><path d="M9 12l2 2 4-4"/></svg></span>
+    <h1>Операции и хранение</h1>
+    <div class="status" aria-live="polite"><span class="dot" id="dot"></span><span id="st">проверка…</span></div>
+  </div>
+  <div style="margin:6px 0 2px"><a href="home.html" style="color:var(--accent);text-decoration:none;font-size:14px;font-weight:500">← На главную</a></div>
+  <div class="sub">Совместимость хранения · знаки опасности (СГС) · зона заражения · состояние данных ·
+    <a href="console.html">поиск/ответ →</a> · <a href="emergency.html">аварийные карточки →</a></div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" id="t-compat" role="tab" aria-selected="true">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M3 16v3a2 2 0 0 0 2 2h3M21 16v3a2 2 0 0 1-2 2h-3M9 12h6"/></svg>Совместимость</button>
+    <button class="tab" id="t-ghs" role="tab" aria-selected="false">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.3a2.4 2.4 0 0 1 3.4 0l7 7a2.4 2.4 0 0 1 0 3.4l-7 7a2.4 2.4 0 0 1-3.4 0l-7-7a2.4 2.4 0 0 1 0-3.4z"/><path d="M12 8v4M12 16h.01"/></svg>Знаки опасности</button>
+    <button class="tab" id="t-zone" role="tab" aria-selected="false">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>Зона АХОВ</button>
+    <button class="tab" id="t-qual" role="tab" aria-selected="false">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 16l4-6 4 3 5-7"/></svg>Состояние данных</button>
+  </div>
+
+  <div id="err" class="msg err" role="alert"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg><span id="errt"></span></div>
+
+  <!-- COMPAT -->
+  <section class="pane on" id="p-compat" role="tabpanel">
+    <div class="hint">Можно ли хранить два вещества рядом? Введите два названия — система покажет, можно ли их ставить вместе, и почему (по группам совместимости и разделу «Стабильность» паспортов).</div>
+    <div class="row">
+      <div><label class="fld" for="ca">Вещество А</label><input id="ca" list="subs" placeholder="напр. серная кислота" autocomplete="off"></div>
+      <div><label class="fld" for="cb">Вещество Б</label><input id="cb" list="subs" placeholder="напр. гидроксид натрия" autocomplete="off"></div>
+    </div>
+    <button class="go" id="go-compat">Проверить совместимость</button>
+    <div id="out-compat"></div>
+  </section>
+
+  <!-- GHS -->
+  <section class="pane" id="p-ghs" role="tabpanel">
+    <div class="hint">Знаки опасности (международная система СГС) и сигнальное слово «Опасно/Осторожно». Определяются по данным паспорта и классу опасности (ГОСТ 12.1.007).</div>
+    <div class="row"><div><label class="fld" for="gname">Вещество</label><input id="gname" list="subs" placeholder="напр. аммиак" autocomplete="off"></div></div>
+    <button class="go" id="go-ghs">Показать знаки опасности</button>
+    <div id="out-ghs"></div>
+  </section>
+
+  <!-- ZONE -->
+  <section class="pane" id="p-zone" role="tabpanel">
+    <div class="hint">Прогноз глубины зоны заражения по методике гражданской обороны (РД 52.04.253-90). Заполните данные о выбросе. <b style="color:var(--amber)">Требует проверки</b> — это прогноз по типовой методике, а не утверждённый расчёт объекта.</div>
+    <div class="row">
+      <div><label class="fld" for="zsub">АХОВ</label><select id="zsub"></select></div>
+      <div><label class="fld" for="zq">Масса выброса, т</label><input id="zq" type="number" value="5" min="0" step="0.1"></div>
+    </div>
+    <div class="row">
+      <div><label class="fld" for="zwind">Ветер, м/с</label><input id="zwind" type="number" value="1" min="1" max="15" step="0.5"></div>
+      <div><label class="fld" for="ztemp">Температура, °C</label><input id="ztemp" type="number" value="20" min="-40" max="40" step="1"></div>
+      <div><label class="fld" for="zstab">Устойчивость</label><select id="zstab"><option>инверсия</option><option selected>изотермия</option><option>конвекция</option></select></div>
+    </div>
+    <div class="row">
+      <div><label class="fld" for="ztime">Время после аварии, ч</label><input id="ztime" type="number" value="1" min="0" step="0.5"></div>
+      <div><label class="fld" for="zspill">Разлив</label><select id="zspill"><option value="свободный">свободный (h=0.05м)</option><option value="поддон">в поддон/обваловку</option></select></div>
+    </div>
+    <button class="go" id="go-zone">Рассчитать зону</button>
+    <div id="out-zone"></div>
+  </section>
+
+  <!-- QUALITY -->
+  <section class="pane" id="p-qual" role="tabpanel">
+    <div class="hint">Насколько полны и проверены данные по веществам. Показывает, у скольких есть полные паспортные сведения, а где пока только типовые меры по группе.</div>
+    <div id="out-qual"></div>
+  </section>
+
+  <div id="sk" class="skeleton"><div class="sk" style="width:60%;height:18px"></div><div class="sk" style="width:100%"></div><div class="sk" style="width:85%"></div></div>
+  <input type="hidden" id="base" value="http://127.0.0.1:8000"><!-- адрес берётся автоматически из location.origin; поле скрыто, чтобы не пугать нетех. пользователя -->
+</div>
+
+<datalist id="subs"></datalist>
+
+<script>
+const $=id=>document.getElementById(id);
+const base=()=>{const v=$('base').value.replace(/\/+$/,'');return location.protocol.indexOf('http')===0?location.origin:v;};
+const esc=s=>String(s==null?'':s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const VLABEL={forbidden:'нельзя вместе',caution:'осторожно',ok:'совместимы'};
+
+// --- GHS pictogram icons (Lucide-style) ---
+const PICTO_ICON={
+  GHS01:'<path d="M12 2l2 7 7-3-4 6 5 4-7 1-1 5-3-4-5 3 1-6-5-3 6-2z"/>',
+  GHS02:'<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.4-.6-2.5-1.5-3.5C8 7 8 5 9 3c-3 1.5-5 4.5-5 8a6 6 0 1 0 12 0c0-1.3-.4-2.6-1-3.6-.6 1.6-2 2.6-3.5 2.6 0 1 .5 1.5 1 2"/>',
+  GHS03:'<circle cx="12" cy="18" r="3.5"/><path d="M12 2l2 6-2-1-2 1zM6 9l1 3M18 9l-1 3"/>',
+  GHS04:'<rect x="8" y="3" width="8" height="18" rx="3"/><path d="M12 3V1M10 7h4"/>',
+  GHS05:'<path d="M5 4h6v4l5 3-2 4M11 4v6l-4 8h12"/><path d="M14 18l1.5 2"/>',
+  GHS06:'<circle cx="12" cy="9" r="5"/><circle cx="10" cy="8" r="1"/><circle cx="14" cy="8" r="1"/><path d="M9 18h6M10 21h4"/>',
+  GHS07:'<path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17h.01"/>',
+  GHS08:'<circle cx="12" cy="8" r="3"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7"/><path d="M12 11v4"/>',
+  GHS09:'<path d="M3 14c4 3 7-3 11 0M3 9c4 3 7-3 11 0"/><path d="M17 6l4 6-4 6"/>'
+};
+
+function setTab(id){
+  ['compat','ghs','zone','qual'].forEach(k=>{
+    $('t-'+k).setAttribute('aria-selected', k===id);
+    $('p-'+k).classList.toggle('on', k===id);
+  });
+  $('err').classList.remove('on');
+  if(id==='qual') loadQuality();
+}
+['compat','ghs','zone','qual'].forEach(k=>$('t-'+k).onclick=()=>setTab(k));
+
+async function health(){
+  try{const d=await(await fetch(base()+'/health',{signal:AbortSignal.timeout(4000)})).json();
+    $('dot').className='dot ok';$('st').textContent='на связи · '+(d.substances||0)+' веществ';
+    loadSubs(); loadZoneSubs();
+  }catch(e){$('dot').className='dot off';$('st').textContent='нет связи';}
+}
+function showErr(t){$('errt').textContent=t;$('err').classList.add('on');}
+function clearErr(){$('err').classList.remove('on');}
+
+async function loadSubs(){
+  try{const d=await(await fetch(base()+'/substances/names?limit=400')).json();
+    $('subs').innerHTML=d.names.map(n=>`<option value="${esc(n)}">`).join('');}catch(e){}
+}
+async function loadZoneSubs(){
+  try{const d=await(await fetch(base()+'/zone/substances')).json();
+    $('zsub').innerHTML=(d.available||[]).map(n=>`<option>${esc(n)}</option>`).join('');}catch(e){}
+}
+
+// --- COMPAT ---
+$('go-compat').onclick=async()=>{
+  const a=$('ca').value.trim(), b=$('cb').value.trim();
+  if(!a||!b){showErr('Укажите оба вещества.');return;}
+  clearErr(); $('out-compat').innerHTML='';
+  try{
+    const r=await(await fetch(base()+'/compat?a='+encodeURIComponent(a)+'&b='+encodeURIComponent(b))).json();
+    if(r.error){showErr(r.error);return;}
+    const v=r.verdict;
+    const reasons=(r.reasons||[]).map(x=>`<li><span class="rico">${v==='ok'?'✓':'⚠'}</span><span><b>${esc(x.pair.join(' + '))}</b> — ${esc(x.why)}</span></li>`).join('')
+      || '<li><span class="rico">✓</span>Известных несовместимостей между группами нет. Это не гарантия — сверяйте Раздел 10.</li>';
+    const q=(t,n)=>t?`<div class="quote"><b style="color:#b9c6d6">${esc(n)} · Раздел 10:</b> ${esc(t)}</div>`:'';
+    $('out-compat').innerHTML=`<div class="card"><div class="vstrip ${v}"></div><div class="in">
+      <div class="verdict"><span class="vbadge ${v}">${VLABEL[v]}</span>
+        <span class="vpair">${esc(r.a)} + ${esc(r.b)}</span></div>
+      <div class="groups">${[...r.groups_a.map(g=>`<span class="gchip">А: ${esc(g)}</span>`),...r.groups_b.map(g=>`<span class="gchip">Б: ${esc(g)}</span>`)].join('')}</div>
+      <ul class="reasons">${reasons}</ul>
+      ${q(r.sds_a,r.a)}${q(r.sds_b,r.b)}
+      <div class="disc">${esc(r.disclaimer)}</div></div></div>`;
+  }catch(e){showErr('Система недоступна.');}
+};
+
+// --- GHS ---
+$('go-ghs').onclick=async()=>{
+  const n=$('gname').value.trim(); if(!n){showErr('Укажите вещество.');return;}
+  clearErr(); $('out-ghs').innerHTML='';
+  try{
+    const r=await(await fetch(base()+'/ghs/'+encodeURIComponent(n))).json();
+    if(r.error){showErr(r.error);return;}
+    const pics=(r.pictograms||[]).map(p=>`<div class="picto"><div class="diamond"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${PICTO_ICON[p.code]||''}</svg></div><div class="pl">${esc(p.name)}</div></div>`).join('')
+      || '<div class="basis">Пиктограммы не определены по доступным данным.</div>';
+    const sig=r.signal_word==='Опасно'?'<span class="signal danger">⚠ Опасно</span>':r.signal_word==='Осторожно'?'<span class="signal warn">⚠ Осторожно</span>':'';
+    const basis=(r.basis||[]).map(b=>`• ${esc(b)}`).join('<br>');
+    $('out-ghs').innerHTML=`<div class="card"><div class="vstrip ${r.signal_word==='Опасно'?'forbidden':'caution'}"></div><div class="in">
+      <div class="verdict"><span class="vpair">${esc(r.substance)}</span>${sig}</div>
+      <div class="ghsgrid">${pics}</div>
+      <div class="basis">${basis}</div>
+      <div class="disc">${esc(r.note)}</div></div></div>`;
+  }catch(e){showErr('Система недоступна.');}
+};
+
+// --- ZONE ---
+$('go-zone').onclick=async()=>{
+  clearErr(); $('out-zone').innerHTML=''; $('go-zone').disabled=true;
+  const body={substance:$('zsub').value,q0_t:parseFloat($('zq').value),wind_ms:parseFloat($('zwind').value),
+    temp_c:parseFloat($('ztemp').value),stability:$('zstab').value,n_hours:parseFloat($('ztime').value),spill:$('zspill').value};
+  try{
+    const r=await(await fetch(base()+'/zone',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})).json();
+    $('go-zone').disabled=false;
+    if(r.error){showErr(r.error);return;}
+    const c=r.coeffs;
+    $('out-zone').innerHTML=`<div class="card"><div class="vstrip forbidden"></div><div class="in">
+      <div class="verdict"><div><div class="bignum">${r.depth_total_km}<small>км — глубина зоны</small></div>
+        <div class="basis" style="margin-top:6px">${esc(r.name)} · ${r.input.q0_t} т · ветер ${r.input.wind_ms} м/с · ${r.input.temp_c}°C · ${esc(r.input.stability)}</div></div></div>
+      <table class="ztable">
+        <tr><td>Первичное облако (Qэ1)</td><td>${r.equiv_primary_t} т → ${r.depth_primary_km} км</td></tr>
+        <tr><td>Вторичное облако (Qэ2)</td><td>${r.equiv_secondary_t} т → ${r.depth_secondary_km} км</td></tr>
+        <tr><td>Время испарения</td><td>${r.evap_time_h==null?'—':r.evap_time_h+' ч'}</td></tr>
+        <tr><td>K1·K2·K3 / K4·K5·K6</td><td>${c.K1}·${c.K2}·${c.K3} / ${c.K4}·${c.K5}·${c.K6}</td></tr>
+        <tr><td>K7 перв./втор. · токсодоза</td><td>${c.K7_prim}/${c.K7_sec} · ${c.toxodose_mgmin_l} мг·мин/л</td></tr>
+      </table>
+      <div class="disc">${esc(r.method)}. ${esc(r.disclaimer)}</div></div></div>`;
+  }catch(e){$('go-zone').disabled=false;showErr('Система недоступна.');}
+};
+
+// --- QUALITY ---
+async function loadQuality(){
+  $('out-qual').innerHTML=''; $('sk').classList.add('on');
+  try{
+    const q=await(await fetch(base()+'/quality')).json();
+    const a=await(await fetch(base()+'/audit?n=30')).json();
+    $('sk').classList.remove('on');
+    const maxgap=Math.max(...Object.values(q.field_gaps),1);
+    const gaps=Object.entries(q.field_gaps).sort((x,y)=>y[1]-x[1]).map(([k,v])=>
+      `<div class="gaprow"><span class="gl">${esc(k)}</span><span class="gbar"><i style="width:${Math.round(v/maxgap*100)}%"></i></span><span class="gv">${v}</span></div>`).join('');
+    const tiers=Object.entries(q.by_source_tier).map(([k,v])=>`<span class="gchip">${esc(k)}: ${v}</span>`).join(' ');
+    const log=(a.recent||[]).map(r=>`<div class="ar"><span class="ats">${esc((r.ts||'').slice(5,16).replace('T',' '))}</span><span class="akind">${esc(r.kind)}</span><span>${esc(r.query||'')}</span></div>`).join('')
+      || '<div class="basis">Журнал пуст.</div>';
+    const dg=q.data_grade||{passport:0,partial:0,baseline:0};
+    const covered=(dg.passport||0)+(dg.partial||0)+(dg.baseline||0);
+    $('out-qual').innerHTML=`
+      <div class="stats">
+        <div class="stat good"><div class="v">${dg.passport||0}</div><div class="l">полные паспортные сведения</div></div>
+        <div class="stat warn"><div class="v">${dg.baseline||0}</div><div class="l">типовые меры по группе</div></div>
+        <div class="stat"><div class="v" style="color:var(--blue)">100%</div><div class="l">есть руководство по действиям (${covered})</div></div>
+      </div>
+      <div class="gaps"><h3>Полнота сведений по веществам</h3>
+        <div class="basis" style="margin-bottom:10px">У каждого вещества есть руководство: <b style="color:var(--green)">из паспорта</b> либо <b style="color:var(--amber)">типовое по химической группе</b> (не из паспорта — помечено в карточке, нужна сверка). Типовое никогда не выдаётся за паспортное.</div>
+        <div class="gaprow"><span class="gl">из паспорта</span><span class="gbar"><i style="width:${Math.round((dg.passport||0)/covered*100)}%;background:var(--green)"></i></span><span class="gv">${dg.passport||0}</span></div>
+        <div class="gaprow"><span class="gl">частично</span><span class="gbar"><i style="width:${Math.round((dg.partial||0)/covered*100)}%;background:var(--amber)"></i></span><span class="gv">${dg.partial||0}</span></div>
+        <div class="gaprow"><span class="gl">типовое</span><span class="gbar"><i style="width:${Math.round((dg.baseline||0)/covered*100)}%"></i></span><span class="gv">${dg.baseline||0}</span></div>
+      </div>
+      <div class="gaps"><h3>Чего не хватает в паспортах (нужно дозаполнить по первоисточнику)</h3>${gaps}
+        <div class="basis" style="margin-top:12px;margin-bottom:6px">Уровень источника данных:</div>
+        <div class="groups">${tiers}</div></div>
+      <div class="audit"><h3>Журнал запросов</h3><div class="alog">${log}</div></div>`;
+  }catch(e){$('sk').classList.remove('on');showErr('Система недоступна.');}
+}
+
+$('base').addEventListener('change',health);
+health();
+</script>
+</body>
+</html>

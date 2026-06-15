@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Поиск и ответ по паспортам безопасности</title>
+<style>
+  /* Dark Mode (OLED) ops-консоль. Живой движок: семантика bge-m3 + grounded qwen2.5.
+     Системные шрифты (on-prem, без CDN). Моно для данных/цитат. */
+  :root{
+    --bg:#0f1419; --panel:#1a2230; --panel2:#222c3a; --line:#2b3647;
+    --txt:#eef2f7; --muted:#a8b3c2;
+    --blue:#5b9dff; --blue-d:#2563eb; --orange:#f9a23b; --red:#ff6b6b; --green:#3ecf8e; --amber:#ffce6b;
+    --r:12px; --r-sm:9px;
+    --mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono",Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1100px 480px at 80% -10%,#122036,transparent 60%),var(--bg);
+    color:var(--txt);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;min-height:100dvh}
+  .wrap{max-width:860px;margin:0 auto;padding:24px 18px 80px}
+  .top{display:flex;align-items:center;gap:12px;margin-bottom:4px}
+  .logo{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;
+    background:linear-gradient(145deg,#1b263b,#0f1722);border:1px solid var(--line);color:var(--blue);flex:none}
+  h1{font-size:19px;margin:0;font-weight:600;letter-spacing:.2px}
+  .status{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);font-family:var(--sans)}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+  .dot.ok{background:var(--green);box-shadow:0 0 10px #3ecf8e88}
+  .dot.off{background:var(--red);box-shadow:0 0 10px #ff6b6b88}
+  .sub{color:var(--muted);font-size:13px;margin:2px 0 20px}
+  .sub a{color:var(--blue);text-decoration:none}.sub a:hover{text-decoration:underline}
+
+  .modes{display:inline-flex;background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:4px;margin-bottom:14px;gap:4px}
+  .mode{appearance:none;background:none;border:0;color:var(--muted);font:inherit;font-size:14px;
+    padding:8px 16px;border-radius:8px;cursor:pointer;transition:background .15s,color .15s;min-height:40px;display:flex;align-items:center;gap:7px}
+  .mode[aria-selected="true"]{background:var(--panel2);color:var(--txt);box-shadow:inset 0 0 0 1px var(--line)}
+  .mode:focus-visible{outline:3px solid #5b9dffaa;outline-offset:2px}
+
+  .search{display:flex;gap:9px;margin-bottom:9px}
+  .fw{flex:1;position:relative;display:flex;align-items:center}
+  .fw svg{position:absolute;left:13px;color:var(--muted);pointer-events:none}
+  input,select{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);color:var(--txt);
+    padding:13px 14px;font:15px var(--sans);outline:none;transition:border-color .15s,box-shadow .15s}
+  .fw input{width:100%;padding-left:40px}
+  input::placeholder{color:#5f6c7e}
+  .exrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:14px 0 0}
+  .exrow .lbl{font-size:12.5px;color:var(--muted)}
+  .exchip{cursor:pointer;font-size:13px;background:var(--panel);border:1px solid var(--line);color:var(--txt);
+    min-height:38px;padding:7px 13px;border-radius:9px;display:inline-flex;align-items:center;text-align:left;line-height:1.3;font-family:var(--sans)}
+  .exchip:hover{border-color:var(--blue);background:var(--panel2)}
+  .exchip:focus-visible{outline:3px solid #5b9dffaa;outline-offset:2px}
+  .introbox{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;margin-top:16px}
+  .introbox h2{font-size:16px;margin:0 0 12px;font-weight:700}
+  .introbox p{margin:0 0 8px;color:var(--muted);line-height:1.55;font-size:14px}
+  .introbox p b{color:var(--txt)}
+  .abstain{border-left:3px solid var(--amber)!important}
+  .abstain .lbl{color:var(--amber)!important}
+  .vchip{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-family:var(--mono);padding:3px 8px;
+    border-radius:6px;border:1px solid;white-space:nowrap}
+  .vchip .vd{width:7px;height:7px;border-radius:50%;flex:none}
+  .vchip.ver{color:var(--green);border-color:rgba(52,211,153,.4);background:rgba(52,211,153,.08)}.vchip.ver .vd{background:var(--green)}
+  .vchip.rev{color:var(--amber);border-color:rgba(251,191,36,.33);background:rgba(251,191,36,.06)}.vchip.rev .vd{background:var(--amber)}
+  .vchip.rej{color:var(--red);border-color:rgba(239,68,68,.4);background:rgba(239,68,68,.08)}.vchip.rej .vd{background:var(--red)}
+  input:focus-visible,select:focus-visible{border-color:var(--blue);box-shadow:0 0 0 3px #5b9dff33}
+  button.go{background:var(--orange);color:#241204;border:0;border-radius:var(--r);min-height:48px;padding:0 20px;
+    font-weight:600;font-size:15px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:filter .15s,transform .06s}
+  button.go:hover{filter:brightness(1.07)}button.go:active{transform:translateY(1px)}
+  button.go:focus-visible{outline:3px solid #5b9dffaa;outline-offset:2px}
+  button.go[disabled]{opacity:.55;cursor:progress}
+  .opts{display:flex;gap:9px;margin-bottom:18px;flex-wrap:wrap;align-items:center}
+  .opts select{padding:9px 12px;font-size:13px}
+  .cfg{font-size:12px;color:var(--muted);font-family:var(--mono);margin-left:auto}
+  .cfg input{padding:6px 9px;font-size:12px;min-width:180px;border-radius:7px}
+
+  .msg{display:none;border-radius:var(--r);padding:13px 15px;margin-bottom:10px;font-size:14px;align-items:center;gap:10px}
+  .msg.on{display:flex}.msg.err{background:#2a1414;border:1px solid #4a2424;color:#ffb4b4}
+  .skeleton{display:none}.skeleton.on{display:block}
+  .sk{height:14px;border-radius:6px;background:linear-gradient(90deg,#1a2436,#222e40,#1a2436);
+    background-size:200% 100%;animation:sh 1.2s linear infinite;margin-bottom:12px}
+  @keyframes sh{to{background-position:-200% 0}}
+
+  @keyframes rise{to{opacity:1;transform:none}}
+  .empty{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px;color:var(--muted);font-size:14px}
+
+  /* search results — кликабельная карточка -> карточка вещества */
+  .res{display:block;text-decoration:none;color:inherit;background:var(--panel);border:1px solid var(--line);
+    border-radius:var(--r);padding:15px 17px;margin-bottom:11px;opacity:0;transform:translateY(8px);
+    animation:rise .25s ease forwards;transition:border-color .15s,background .15s,transform .08s}
+  .res:hover{border-color:var(--blue);background:var(--panel2);transform:translateY(-1px)}
+  .res:focus-visible{outline:3px solid #5b9dffaa;outline-offset:2px}
+  .res .h{display:flex;align-items:center;gap:10px;margin-bottom:9px;flex-wrap:wrap}
+  .res .subname{font-weight:700;font-size:16px}
+  .res .sec{font-family:var(--mono);font-size:11.5px;color:var(--blue);background:#14233c;border:1px solid #1e3354;
+    padding:3px 9px;border-radius:6px}
+  .res .rel{margin-left:auto;font-family:var(--mono);font-size:11.5px;color:var(--muted);display:flex;align-items:center;gap:7px}
+  .bar{width:54px;height:5px;border-radius:3px;background:#1d2a3d;overflow:hidden}
+  .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--blue-d),var(--blue))}
+  .res .txt{font-size:13.5px;color:#c4cfdc;line-height:1.55}
+  .res .cit{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11.5px;color:var(--muted);
+    margin-top:10px;padding-top:9px;border-top:1px solid #1b2433}
+  .res .go-card{margin-left:auto;color:var(--blue);opacity:0;transition:opacity .15s;font-family:var(--sans);font-weight:600}
+  .res:hover .go-card{opacity:1}
+
+  /* ask answer — структурированный, с выделением предупреждений и источниками */
+  .answer{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;
+    opacity:0;transform:translateY(8px);animation:rise .25s ease forwards}
+  .answer .strip{height:4px;background:linear-gradient(90deg,var(--blue-d),var(--blue))}
+  .answer.abstain .strip{background:linear-gradient(90deg,#b45309,var(--amber))}
+  .answer .in{padding:20px}
+  .answer .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:13px;
+    display:flex;align-items:center;gap:7px;font-weight:600}
+  .answer .body{font-size:15px;line-height:1.62}
+  .answer .body p{margin:0 0 11px}
+  .answer .body p:last-child{margin-bottom:0}
+  .steps{margin:4px 0 12px;padding:0;list-style:none;counter-reset:st}
+  .steps li{counter-increment:st;position:relative;padding:8px 0 8px 38px;border-top:1px solid #1b2433;line-height:1.5}
+  .steps li:first-child{border-top:none}
+  .steps li::before{content:counter(st);position:absolute;left:0;top:7px;width:25px;height:25px;border-radius:7px;
+    background:#14233c;border:1px solid #1e3354;color:var(--blue);font-family:var(--mono);font-size:12.5px;font-weight:700;
+    display:grid;place-items:center}
+  .callout{display:flex;gap:10px;align-items:flex-start;border-radius:10px;padding:11px 13px;margin:4px 0 12px;
+    font-size:14px;line-height:1.5}
+  .callout.warn{background:#2a1c0d;border:1px solid #5a4216;color:#fcd9a0}
+  .callout .ci{flex:none;margin-top:1px;color:var(--amber)}
+  .srcs{margin-top:16px;border-top:1px solid #1b2433;padding-top:14px}
+  .srcs-h{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:9px}
+  .src{display:flex;align-items:center;gap:9px;text-decoration:none;color:#c4cfdc;background:var(--panel2);
+    border:1px solid var(--line);border-radius:9px;padding:9px 12px;margin-bottom:7px;font-size:13px;transition:border-color .15s}
+  a.src:hover{border-color:var(--blue);color:var(--txt)}
+  .src .snum{flex:none;width:19px;height:19px;border-radius:5px;background:#14233c;border:1px solid #1e3354;
+    color:var(--blue);font-family:var(--mono);font-size:11px;font-weight:700;display:grid;place-items:center}
+  .src .si{flex:none;color:var(--blue)}
+  .src .sarrow{margin-left:auto;color:var(--blue);font-size:12px;font-weight:600;flex:none}
+  .src.hl{border-color:var(--blue);background:#14233c}
+  .cref{display:inline-block;font-family:var(--mono);font-size:11px;color:var(--blue);background:#14233c;
+    border:1px solid #1e3354;border-radius:5px;padding:0 5px;margin:0 1px;text-decoration:none;cursor:pointer;vertical-align:1px}
+  .cref:hover{background:#1e3354}
+  /* источник с первичкой + пер-источниковая оценка */
+  .src2{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:10px 12px;margin-bottom:8px}
+  .src2.hl{border-color:var(--blue);background:#14233c}
+  .src2.irr{border-color:rgba(239,68,68,.45);background:rgba(239,68,68,.05)}
+  .src2.rel{border-color:rgba(52,211,153,.4)}
+  .src-h{display:flex;align-items:center;gap:9px;font-size:13px}
+  .src-h .snum{flex:none;width:19px;height:19px;border-radius:5px;background:#14233c;border:1px solid #1e3354;
+    color:var(--blue);font-family:var(--mono);font-size:11px;font-weight:700;display:grid;place-items:center}
+  .src-t{color:var(--txt);font-weight:600}
+  .src-sec{color:var(--muted);font-weight:400;font-size:12px}
+  .src-sc{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--muted);flex:none}
+  .src-prim{margin-top:8px}
+  .src-prim>summary{cursor:pointer;font-size:12px;color:var(--blue);user-select:none}
+  .prim-text{margin-top:7px;padding:9px 11px;background:#0f1419;border:1px solid #1b2433;border-radius:7px;
+    font-size:12.5px;line-height:1.5;color:#cdd8e4;white-space:pre-wrap}
+  .prim-link{display:inline-block;margin-top:7px;font-size:12px;color:var(--blue);text-decoration:none}
+  .src-judge{display:flex;align-items:center;gap:7px;margin-top:9px;font-size:12px}
+  .src-judge .sj-q{color:var(--muted)}
+  .sj{cursor:pointer;font-size:12px;padding:3px 10px;border-radius:13px;border:1px solid var(--line);
+    background:transparent;color:#c4cfdc;min-height:26px}
+  .sj.rel.on{border-color:var(--green);color:var(--green);background:rgba(52,211,153,.1)}
+  .sj.irr.on{border-color:var(--red);color:var(--red);background:rgba(239,68,68,.1)}
+  /* панель сверки выдачи */
+  .review{margin-top:16px;border-top:1px dashed #2a3852;padding-top:13px}
+  .rv-h{font-size:12.5px;color:#cfe3f5;margin-bottom:10px;font-weight:600}
+  .rv-row{display:flex;flex-wrap:wrap;align-items:center;gap:9px;margin-bottom:9px}
+  .rv-l{font-size:12.5px;color:var(--muted)}
+  .rv{cursor:pointer;font-size:13px;padding:6px 14px;border-radius:8px;border:1px solid var(--line);
+    background:transparent;color:#c4cfdc;min-height:38px}
+  .rv.ok.on{border-color:var(--green);color:var(--green);background:rgba(52,211,153,.1)}
+  .rv.part.on{border-color:var(--amber);color:var(--amber);background:rgba(251,191,36,.1)}
+  .rv.bad.on{border-color:var(--red);color:var(--red);background:rgba(239,68,68,.1)}
+  .rv-chk{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:#c4cfdc;cursor:pointer}
+  .rv-chk input{width:16px;height:16px;accent-color:var(--blue)}
+  .rv-in{flex:1;min-width:150px;background:#0f1419;border:1px solid var(--line);border-radius:7px;
+    padding:8px 11px;color:var(--txt);font-size:13px;font-family:var(--sans)}
+  .rv-save{cursor:pointer;background:var(--blue);color:#fff;border:none;border-radius:8px;padding:9px 16px;
+    font-size:13px;font-weight:600;min-height:38px}
+  .rv-save:disabled{opacity:.5;cursor:default}
+  .rv-msg{font-size:12.5px;margin-top:4px}
+  .rv-msg.ok{color:var(--green)}.rv-msg.err{color:var(--red)}
+  /* уточнение неоднозначности */
+  .answer.clarify .strip{background:linear-gradient(90deg,#7c3aed,#a78bfa)}
+  .clar-h{font-size:14px;color:var(--txt);margin:4px 0 12px;line-height:1.5}
+  .clar-chips{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:12px}
+  .clar-chip{cursor:pointer;display:inline-flex;align-items:center;gap:8px;background:var(--panel2);
+    border:1px solid #3a3460;border-radius:10px;padding:10px 14px;color:var(--txt);font-size:13.5px;min-height:40px}
+  .clar-chip:hover{border-color:#a78bfa;background:#1a1733}
+  .clar-chip .cs{font-family:var(--mono);font-size:11px;color:var(--muted)}
+  .clar-note{font-size:12px;color:var(--muted);line-height:1.5}
+  /* мягкое подтверждение распознанного вещества */
+  .recog{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:0 0 12px;padding:9px 12px;
+    background:#0d1620;border:1px solid var(--line);border-radius:9px;font-size:12.5px;color:#c4cfdc}
+  .recog .rb{color:var(--blue);font-weight:600}
+  .recog .alt{cursor:pointer;background:transparent;border:1px solid var(--line);border-radius:13px;
+    padding:3px 10px;color:#c4cfdc;font-size:12px;min-height:26px}
+  .recog .alt:hover{border-color:var(--blue);color:var(--blue)}
+  /* подсказки уточнения вопроса */
+  .refine{margin-top:14px;border-top:1px dashed #1b2433;padding-top:11px}
+  .refine .rf-h{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px}
+  .refine .rf-chips{display:flex;flex-wrap:wrap;gap:7px}
+  .rfc{cursor:pointer;background:var(--panel2);border:1px solid var(--line);border-radius:13px;
+    padding:5px 12px;color:#c4cfdc;font-size:12.5px;min-height:30px}
+  .rfc:hover{border-color:var(--blue);color:var(--blue)}
+  /* автодополнение */
+  .ac{position:absolute;z-index:50;left:0;right:0;top:100%;margin-top:5px;background:var(--panel);
+    border:1px solid var(--line);border-radius:10px;overflow:hidden;box-shadow:0 12px 30px rgba(0,0,0,.45);max-height:280px;overflow-y:auto}
+  .ac-i{padding:9px 13px;font-size:13.5px;color:#c4cfdc;cursor:pointer;border-bottom:1px solid #16202c}
+  .ac-i:last-child{border-bottom:none}
+  .ac-i.sel,.ac-i:hover{background:#14233c;color:var(--txt)}
+  .ac-i b{color:var(--blue);font-weight:600}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <span class="logo" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 21-4.35-4.35"/><circle cx="11" cy="11" r="7"/><path d="M11 8v6M8 11h6"/></svg></span>
+    <h1>Поиск и ответ</h1>
+    <div class="status" aria-live="polite"><span class="dot" id="dot"></span><span id="st">проверка…</span></div>
+  </div>
+  <div style="margin:6px 0 2px"><a href="home.html" style="color:var(--accent);text-decoration:none;font-size:14px;font-weight:500">← На главную</a></div>
+  <div class="sub">«Спросить» — задайте вопрос обычными словами, получите ответ со ссылками на разделы паспорта.
+    «Поиск» — найдите нужное вещество и раздел. · <a href="emergency.html">аварийные карточки →</a></div>
+
+  <div class="modes" role="tablist" aria-label="Режим">
+    <button class="mode" id="m-ask" role="tab" aria-selected="true">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/></svg>Спросить</button>
+    <button class="mode" id="m-search" role="tab" aria-selected="false">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>Поиск</button>
+  </div>
+
+  <form class="search" id="form" autocomplete="off">
+    <label class="fw" for="q" aria-label="Запрос">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
+      <input id="q" placeholder="напр. «антидот при отравлении цианидом» или «как хранить серную кислоту»" inputmode="search" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="ac">
+      <div id="ac" class="ac" role="listbox" hidden></div>
+    </label>
+    <button class="go" id="go" type="submit"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>Спросить</button>
+  </form>
+  <div class="opts">
+    <label class="cfg" id="plant-wrap">завод (опц.): <input id="plant" placeholder="напр. Корунд" aria-label="Завод"></label>
+    <input type="hidden" id="base" value="http://127.0.0.1:8000"><!-- адрес берётся автоматически из location.origin; поле скрыто, чтобы не пугать нетех. пользователя -->
+  </div>
+
+  <div class="exrow" id="ex"><span class="lbl">Примеры вопросов:</span></div>
+
+  <div id="err" class="msg err" role="alert"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg><span id="errt"></span></div>
+  <div id="sk" class="skeleton"><div class="sk" style="width:70%;height:18px"></div><div class="sk" style="width:100%"></div><div class="sk" style="width:90%"></div><div class="sk" style="width:55%"></div></div>
+
+  <div id="introbox" class="introbox">
+    <h2>Как задать вопрос</h2>
+    <p><b>Спросить</b> — задайте вопрос обычными словами («чем опасен аммиак», «первая помощь при отравлении хлором»). Ответ собирается строго из паспортов со ссылками на разделы.</p>
+    <p><b>Поиск</b> — найдёт нужные разделы паспортов по смыслу, без генерации.</p>
+    <p>Если в загруженных паспортах нет основания для ответа — система <b>честно откажет</b> и отправит к паспорту, а не выдумает. Цена ошибки — здоровье.</p>
+  </div>
+
+  <div id="out"></div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const base=()=>{const v=$('base').value.replace(/\/+$/,'');return location.protocol.indexOf('http')===0?location.origin:v;};
+const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+let mode='ask';
+
+function setMode(m){
+  mode=m;
+  $('m-ask').setAttribute('aria-selected',m==='ask');
+  $('m-search').setAttribute('aria-selected',m==='search');
+  $('go').lastChild.textContent = m==='ask'?'Спросить':'Найти';
+  $('plant-wrap').style.display = m==='ask'?'':'none';
+  $('out').innerHTML=''; $('err').classList.remove('on');
+}
+$('m-ask').onclick=()=>setMode('ask'); $('m-search').onclick=()=>setMode('search');
+
+async function health(){
+  try{const r=await fetch(base()+'/health',{signal:AbortSignal.timeout(4000)});const d=await r.json();
+    $('dot').className='dot ok';$('st').textContent='система на связи';
+  }catch(e){$('dot').className='dot off';$('st').textContent='нет связи';}
+}
+function showErr(t){$('errt').textContent=t;$('err').classList.add('on');}
+
+// компактный значок верификации по статусу (для ответов и результатов поиска)
+function vchip(status){
+  if(status==='verified') return '<span class="vchip ver"><span class="vd"></span>✓ проверено</span>';
+  if(status==='rejected') return '<span class="vchip rej"><span class="vd"></span>✕ отклонено</span>';
+  return '<span class="vchip rev"><span class="vd"></span>⚠ требует проверки</span>';
+}
+function renderSearch(arr){
+  if(!arr.length){$('out').innerHTML='<div class="empty">Ничего не найдено. Попробуйте переформулировать запрос или указать другое вещество.</div>';return;}
+  $('out').innerHTML=arr.map((r,i)=>{
+    const pct=Math.max(5,Math.min(100,Math.round((r.score||0)*100)));
+    let snip=(r.text||'').slice(0,220); if((r.text||'').length>220){snip=snip.replace(/\s+\S*$/,'')+'…';}
+    return `<a class="res" href="substance.html?name=${encodeURIComponent(r.substance)}" style="animation-delay:${i*40}ms">
+      <div class="h"><span class="subname">${esc(r.substance)}</span>
+        <span class="sec">${esc(r.section)}</span>
+        ${vchip(r.verification)}
+        <span class="rel" title="насколько найденный текст подходит под запрос"><span class="bar"><i style="width:${pct}%"></i></span>${pct}%</span></div>
+      <div class="txt">${esc(snip)}</div>
+      <div class="cit"><svg class="si" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><span>${esc(r.citation||'')}</span><span class="go-card">карточка →</span></div>
+    </a>`;}).join('');
+}
+
+// Разбор ответа в структуру: предупреждения -> callout, нумерация -> шаги, [N] цитаты -> источники.
+// Сноски [N] внутри текста делаем кликабельными (скролл к источнику).
+const lref=s=>esc(s).replace(/\[(\d+)\]/g,(_,n)=>`<a class="cref" href="#src${n}" onclick="hlSrc(${n});return false">[${n}]</a>`);
+function hlSrc(n){const el=document.getElementById('src'+n);if(!el)return;
+  el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.add('hl');setTimeout(()=>el.classList.remove('hl'),1500);}
+function fmtAnswer(text){
+  const out=[],cites=[]; let steps=[];
+  const flush=()=>{ if(steps.length){out.push('<ol class="steps">'+steps.map(x=>`<li>${lref(x)}</li>`).join('')+'</ol>');steps=[];} };
+  String(text||'').split(/\n/).forEach(ln=>{
+    const t=ln.trim(); if(!t){flush();return;}
+    if(/^\[\d+\]/.test(t)){cites.push(t.replace(/^\[\d+\]\s*/,''));return;}
+    const num=t.match(/^(\d+)[.)]\s+(.+)$/);
+    if(num){steps.push(num[2]);return;}
+    flush();
+    if(/^(внимание|осторожно|важно|⚠|!)/i.test(t)){
+      out.push(`<div class="callout warn"><svg class="ci" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg><span>${lref(t.replace(/^[⚠!]\s*/,''))}</span></div>`);
+    } else out.push(`<p>${lref(t)}</p>`);
+  });
+  flush();
+  return {html:out.join('')||`<p>${esc(text||'')}</p>`, cites};
+}
+// первичка: точный текст найденного раздела паспорта + провенанс + пер-источниковая оценка
+function srcCard(p,i){
+  // совместимость: p может быть строкой-цитатой (старый формат) или объектом-passage (новый)
+  if(typeof p==='string') p={citation:p, substance:String(p).split(/[(,]/)[0].trim()};
+  const name=(p.substance||'').split(/[(,]/)[0].trim();
+  const pct=p.score!=null?Math.round(p.score*100):null;
+  const ic=`<svg class="si" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>`;
+  const prim=p.text?`<details class="src-prim"><summary>показать текст из паспорта</summary>
+      <div class="prim-text">${esc(p.text)}</div>
+      ${name?`<a class="prim-link" href="substance.html?name=${encodeURIComponent(name)}">открыть карточку вещества →</a>`:''}</details>`
+    :(name?`<a class="prim-link" href="substance.html?name=${encodeURIComponent(name)}">открыть карточку вещества →</a>`:'');
+  return `<div class="src2" id="src${i}">
+    <div class="src-h"><span class="snum">${i}</span>${ic}<span class="src-t">${esc(p.substance||p.citation||'')}</span>
+      <span class="src-sec">${esc(p.section||'')}</span>
+      ${pct!=null?`<span class="src-sc">совпадение ${pct}%</span>`:''}
+      ${p.verification?vchip(p.verification):''}</div>
+    ${prim}
+    <div class="src-judge"><span class="sj-q">этот источник:</span>
+      <button class="sj rel" onclick="markSrc(${i-1},true,this)">релевантен</button>
+      <button class="sj irr" onclick="markSrc(${i-1},false,this)">не в тему</button></div>
+  </div>`;
+}
+
+// состояние сверки текущего ответа
+let RV={q:'',answer:'',top:null,passages:[],verdict:null,marks:{}};
+function markSrc(i,rel,btn){
+  RV.marks[i]=rel;
+  const box=btn.closest('.src2'); box.classList.remove('rel','irr'); box.classList.add(rel?'rel':'irr');
+  btn.parentElement.querySelectorAll('.sj').forEach(b=>b.classList.remove('on')); btn.classList.add('on');
+}
+function setVerdict(v,btn){
+  RV.verdict=v; btn.parentElement.querySelectorAll('.rv').forEach(b=>b.classList.remove('on')); btn.classList.add('on');
+}
+async function saveReview(){
+  const by=$('rv-by').value.trim(), msg=$('rv-msg');
+  if(!RV.verdict){msg.className='rv-msg err';msg.textContent='Выберите оценку выдачи (верно/частично/неверно).';return;}
+  if(!by){msg.className='rv-msg err';msg.textContent='Укажите ФИО/должность — оценка подписывается.';return;}
+  const sources=RV.passages.map((p,i)=>({citation:p.citation,substance:p.substance,relevant:RV.marks[i]}))
+    .filter(s=>s.relevant!=null);
+  const body={question:RV.q,answer:RV.answer,top_score:RV.top,verdict:RV.verdict,
+    data_ok:$('rv-data').checked,useful:$('rv-use').checked,sources,by,note:$('rv-note').value.trim()};
+  try{
+    const r=await fetch(base()+'/review',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    const d=await r.json();
+    if(d.error){msg.className='rv-msg err';msg.textContent=d.error;return;}
+    msg.className='rv-msg ok';msg.textContent='✓ Оценка подписана и записана. Спасибо — это повышает доверие к системе.';
+    $('rv-save').disabled=true;
+  }catch(e){msg.className='rv-msg err';msg.textContent='Не удалось сохранить: '+e.message;}
+}
+function reviewBar(ab){
+  return `<div class="review">
+    <div class="rv-h">Сверка выдачи — ${ab?'правильно ли система отказалась отвечать?':'верно ли система ответила по тексту из паспорта?'}</div>
+    <div class="rv-row"><span class="rv-l">Выдача:</span>
+      <button class="rv ok" onclick="setVerdict('correct',this)">✓ верно</button>
+      <button class="rv part" onclick="setVerdict('partial',this)">◐ частично</button>
+      <button class="rv bad" onclick="setVerdict('incorrect',this)">✕ неверно</button></div>
+    ${ab?'':`<div class="rv-row">
+      <label class="rv-chk"><input type="checkbox" id="rv-data"> данные совпадают с текстом из паспорта</label>
+      <label class="rv-chk"><input type="checkbox" id="rv-use"> ответ полезен</label></div>`}
+    <div class="rv-row">
+      <input id="rv-by" class="rv-in" placeholder="ваше ФИО / должность (обязательно)" autocomplete="name">
+      <input id="rv-note" class="rv-in" placeholder="комментарий (необязательно)"></div>
+    <div class="rv-row"><button class="rv-save" id="rv-save" onclick="saveReview()">подписать оценку</button></div>
+    <div id="rv-msg" class="rv-msg"></div>
+    ${ab?'<input type="checkbox" id="rv-data" hidden><input type="checkbox" id="rv-use" hidden>':''}
+  </div>`;
+}
+// кандидаты для уточнения/подтверждения; re-ask строго по выбранному веществу
+let CANDS=[];
+function askSub(i){const c=CANDS[i]; if(c) run(c.substance);}
+function renderClarify(d){
+  CANDS=d.candidates||[]; RV={q:'',answer:null,top:null,passages:[],verdict:null,marks:{}};
+  const chips=CANDS.map((c,i)=>{const pct=(c.score!=null)?` <span class="cs">${Math.round(c.score*100)}%</span>`:'';
+    return `<button class="clar-chip" onclick="askSub(${i})">${esc(c.substance)}${pct}</button>`;}).join('');
+  const head=d.too_generic
+    ? esc(d.note||'Слишком общий запрос. Уточните конкретное вещество:')+' Например:'
+    : 'Ваш запрос подходит к нескольким веществам. Чтобы не смешать данные из разных паспортов — выберите, о каком речь:';
+  $('out').innerHTML=`<div class="answer clarify"><div class="strip"></div><div class="in">
+    <div class="lbl"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.1 9a3 3 0 1 1 4 2.8c-.8.4-1.6 1.1-1.6 2.2"/><path d="M12 17h.01"/></svg>Уточните вещество</div>
+    <div class="clar-h">${head}</div>
+    <div class="clar-chips">${chips}</div>
+    <div class="clar-note">Система не угадывает вещество, когда запрос неоднозначен: цена ошибки в химбезопасности — здоровье человека.</div>
+  </div></div>`;
+}
+// подсказки уточнения вопроса (раздел паспорта)
+const REFINE=[['первая помощь','первая помощь при отравлении'],['СИЗ','какие СИЗ нужны при работе с'],
+  ['хранение','как безопасно хранить'],['разлив','что делать при разливе'],['пожар','действия при пожаре с'],['знаки опасности','знаки опасности']];
+function refine(tpl,sub){if(!sub)return;$('q').value=tpl+' '+sub;run();}
+function renderAsk(d){
+  const ab=d.abstained;
+  const f=ab?{html:`<p>${esc(d.answer||'')}</p>`,cites:[]}:fmtAnswer(d.answer);
+  const passages=(d.passages&&d.passages.length)?d.passages:((d.sources||f.cites).map(s=>(typeof s==='string'?{citation:s,substance:String(s).split(/[(,]/)[0].trim()}:s)));
+  RV={q:(d._q||$('q').value.trim()),answer:ab?null:d.answer,top:d.top_score,passages,verdict:null,marks:{}};
+  CANDS=d.candidates||[];
+  const cur=d.chosen||d.top_substance||'';
+  // #3 мягкое подтверждение распознанного вещества + альтернативы
+  let recog='';
+  if(!ab&&cur){
+    const pct=d.top_score!=null?Math.round(d.top_score*100):null;
+    const alts=CANDS.filter(c=>c.substance!==cur);
+    recog=`<div class="recog"><span>Понял запрос как про <span class="rb">${esc(cur)}</span>${pct!=null?` (совпадение с запросом ${pct}%)`:''}.</span>`+
+      (alts.length?`<span>Не то?</span>`+alts.map(c=>{const gi=CANDS.indexOf(c);return `<button class="alt" onclick="askSub(${gi})">${esc(c.substance)}</button>`}).join(''):'')+`</div>`;
+  }
+  // #4 подсказки уточнения вопроса
+  const refChips=(!ab&&cur)?`<div class="refine"><div class="rf-h">Уточнить вопрос про ${esc(cur)}</div><div class="rf-chips">`+
+    REFINE.map(([lbl,tpl])=>`<button class="rfc" onclick="refine('${tpl.replace(/'/g,"\\'")}','${cur.replace(/'/g,"\\'")}')">${lbl}</button>`).join('')+`</div></div>`:'';
+  $('out').innerHTML=`
+    <div class="answer${ab?' abstain':''}"><div class="strip"></div><div class="in">
+      <div class="lbl"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/><path d="M9 21h6"/></svg>${ab?'Нет основания для ответа':'Ответ по паспортам безопасности'}${d.cached?' · из кэша':''}${(!ab&&d.verification)?'<span style="margin-left:auto">'+vchip(d.verification.status)+'</span>':''}</div>
+      ${recog}
+      <div class="body">${f.html}</div>
+      ${(!ab&&passages.length)?'<div class="srcs"><div class="srcs-h">Текст из паспорта (сверьте сами)</div>'+passages.map((s,i)=>srcCard(s,i+1)).join('')+'</div>':''}
+      ${refChips}
+      ${reviewBar(ab)}
+    </div></div>`;
+}
+
+// ---- автодополнение названий веществ (из /substances/names) ----
+let AC={items:[],sel:-1,timer:null};
+function hideAC(){const e=$('ac');e.hidden=true;e.innerHTML='';AC={items:[],sel:-1,timer:AC.timer};$('q').setAttribute('aria-expanded','false');}
+function showAC(items,q){
+  const e=$('ac');
+  if(!items.length){hideAC();return;}
+  AC.items=items;AC.sel=-1;
+  const ql=q.toLowerCase();
+  e.innerHTML=items.map((n,i)=>{const idx=n.toLowerCase().indexOf(ql);
+    const h=idx>=0?esc(n.slice(0,idx))+'<b>'+esc(n.slice(idx,idx+ql.length))+'</b>'+esc(n.slice(idx+ql.length)):esc(n);
+    return `<div class="ac-i" role="option" data-i="${i}" onmousedown="pickAC(${i})">${h}</div>`;}).join('');
+  e.hidden=false;$('q').setAttribute('aria-expanded','true');
+}
+function pickAC(i){const n=AC.items[i];if(n==null)return;$('q').value=n;hideAC();
+  if(mode==='search')run(); else $('q').focus();}
+function moveAC(d){if(!AC.items.length)return;AC.sel=(AC.sel+d+AC.items.length)%AC.items.length;
+  [...$('ac').children].forEach((c,i)=>c.classList.toggle('sel',i===AC.sel));}
+async function acFetch(){
+  const q=$('q').value.trim();
+  if(q.length<2){hideAC();return;}
+  try{const r=await fetch(base()+'/substances/names?prefix='+encodeURIComponent(q)+'&limit=8',{signal:AbortSignal.timeout(4000)});
+    const d=await r.json();const names=(d.names||[]).filter(n=>n.toLowerCase()!==q.toLowerCase());
+    if($('q').value.trim()===q) showAC(names,q);
+  }catch(e){hideAC();}
+}
+$('q').addEventListener('input',()=>{clearTimeout(AC.timer);AC.timer=setTimeout(acFetch,170);});
+$('q').addEventListener('keydown',e=>{
+  if($('ac').hidden)return;
+  if(e.key==='ArrowDown'){e.preventDefault();moveAC(1);}
+  else if(e.key==='ArrowUp'){e.preventDefault();moveAC(-1);}
+  else if(e.key==='Enter'&&AC.sel>=0){e.preventDefault();pickAC(AC.sel);}
+  else if(e.key==='Escape'){hideAC();}
+});
+document.addEventListener('click',e=>{if(!e.target.closest('.fw'))hideAC();});
+
+async function run(substance){
+  const q=$('q').value.trim(); if(!q) return;
+  hideAC(); $('introbox').style.display='none';
+  $('err').classList.remove('on'); $('out').innerHTML=''; $('sk').classList.add('on'); $('go').disabled=true;
+  try{
+    let d;
+    if(mode==='search'){
+      const r=await fetch(base()+'/search?q='+encodeURIComponent(q)+'&k=5',{signal:AbortSignal.timeout(30000)});
+      d=await r.json(); $('sk').classList.remove('on'); $('go').disabled=false; renderSearch(d);
+    }else{
+      const body={question:q}; const pl=$('plant').value.trim(); if(pl) body.plant=pl;
+      if(substance) body.substance=substance;            // выбор после уточнения неоднозначности
+      const r=await fetch(base()+'/ask',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(body),signal:AbortSignal.timeout(60000)});
+      d=await r.json(); $('sk').classList.remove('on'); $('go').disabled=false;
+      if(d.clarify) renderClarify(d); else renderAsk(d);  // #1 уточнение неоднозначности
+    }
+  }catch(e){$('sk').classList.remove('on');$('go').disabled=false;
+    showErr('Система недоступна. Проверьте, что она запущена, и адрес в поле «адрес системы» внизу.');}
+}
+// примеры вопросов в один тап (включают режим «Спросить»)
+['первая помощь при отравлении хлором','как хранить серную кислоту','чем опасен аммиак','антидот при отравлении цианидом'].forEach(t=>{
+  const b=document.createElement('button');b.className='exchip';b.type='button';b.textContent=t;
+  b.onclick=()=>{setMode('ask');$('m-ask').setAttribute('aria-selected','true');$('m-search').setAttribute('aria-selected','false');$('q').value=t;run();};
+  $('ex').appendChild(b);});
+$('form').addEventListener('submit',e=>{e.preventDefault();run();});
+$('base').addEventListener('change',health);
+setMode('ask'); health();
+// deep-link: ?q=...&mode=ask|search — префилл и авто-запуск (расшаривание/онбординг)
+(function(){const p=new URLSearchParams(location.search);const q=p.get('q');
+  if(q){const m=p.get('mode')==='search'?'search':'ask';setMode(m);
+    $('m-ask').setAttribute('aria-selected',m==='ask');$('m-search').setAttribute('aria-selected',m==='search');
+    $('q').value=q;setTimeout(run,300);}})();
+</script>
+</body>
+</html>

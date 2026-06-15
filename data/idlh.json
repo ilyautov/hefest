@@ -1,0 +1,1868 @@
+{
+ "_meta": {
+  "source": "NIOSH IDLH values, cdc.gov/niosh/idlh (public domain, US HHS)",
+  "fetched_count": 228,
+  "total_queried": 2072,
+  "disclaimer": "Острый порог IDLH из NIOSH. Числа в ppm/мг·м⁻³ как у первоисточника. needs_review — сверить с cdc.gov/niosh/idlh. НЕ заменяет российские нормативы."
+ },
+ "98-83-9": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/98839.html",
+  "needs_review": true,
+  "idlh": "700",
+  "units": "ppm",
+  "basis": "The revised IDLH for a-methyl styrene is 700 ppm based on acute toxicity data in humans and animals and an analogy to styrene which has a revised IDLH of 700 ppm.",
+  "niosh_rel": "50 ppm (240 mg/m"
+ },
+ "108-21-4": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/108214.html",
+  "needs_review": true,
+  "idlh": "1800",
+  "units": "ppm",
+  "basis": "The revised IDLH for isopropyl acetate is 1,800 ppm based on analogies to ethyl acetate and n-propyl acetate",
+  "niosh_rel": "The 1989 OSHA PEL may not be protective to workers."
+ },
+ "98-82-8": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/98828.html",
+  "needs_review": true,
+  "idlh": "900",
+  "units": "ppm",
+  "basis": "the revised IDLH for cumene is 900 ppm based strictly on safety considerations",
+  "niosh_rel": "50 ppm (245 mg/m"
+ },
+ "309-00-2": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/309002.html",
+  "needs_review": true,
+  "idlh": "25",
+  "units": "mg/m³",
+  "basis": "The revised IDLH for aldrin is 25 mg/m3 based on acute toxicity data in humans",
+  "niosh_rel": "0.25 mg/m3 TWA [skin]; NIOSH considers aldrin to be a potential occupational carcinogen as defined by the OSHA carcinoge"
+ },
+ "60-57-1": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/60571.html",
+  "needs_review": true,
+  "idlh": "50",
+  "units": "mg/m³",
+  "basis": "The revised IDLH for dieldrin is 50 mg/m3 based on acute oral toxicity data in humans",
+  "niosh_rel": "0.25 mg/m"
+ },
+ "123-73-9": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/123739.html",
+  "needs_review": true,
+  "idlh": "50",
+  "units": "ppm",
+  "basis": "The revised IDLH for crotonaldehyde is 50 ppm based on acute inhalation toxicity data in humans and animals",
+  "niosh_rel": "2 ppm (6 mg/m"
+ },
+ "100-44-7": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/100447.html",
+  "needs_review": true,
+  "idlh": "10",
+  "units": "ppm",
+  "basis": "Based on acute inhalation toxicity data in humans, the original IDLH for benzyl chloride (10 ppm) is not being revised at this time.",
+  "niosh_rel": "1 ppm (5 mg/m"
+ },
+ "106-89-8": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/106898.html",
+  "needs_review": true,
+  "idlh": "75",
+  "units": "ppm",
+  "basis": "The revised IDLH for epichlorohydrin is 75 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "None established; NIOSH considers epichlorohydrin to be a potential occupational carcinogen as defined by the OSHA carci"
+ },
+ "8065-48-3": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/8065483.html",
+  "needs_review": true,
+  "idlh": "10",
+  "units": "mg/m³",
+  "basis": "The revised IDLH for demeton is 10 mg/m3 based on an analogy with parathion which has a revised IDLH of 10 mg/m3",
+  "niosh_rel": "0.1 mg/m"
+ },
+ "300-76-5": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/300765.html",
+  "needs_review": true,
+  "idlh": "200",
+  "units": "mg/m³",
+  "basis": "The revised IDLH for dimethyl-1,2-dibromo-2,2-dichlorethyl phosphate is 200 mg/m3 based on acute toxicity data in animals",
+  "niosh_rel": "3 mg/m"
+ },
+ "71-55-6": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/71556.html",
+  "needs_review": true,
+  "idlh": "700",
+  "units": "ppm",
+  "basis": "The revised IDLH for methyl chloroform is 700 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "350 ppm (1,900 mg/m"
+ },
+ "76-14-2": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/76142.html",
+  "needs_review": true,
+  "idlh": "15000",
+  "units": "ppm",
+  "basis": "The revised IDLH for dichlorotetrafluoroethane is 15,000 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "1,000 ppm (7,000 mg/m"
+ },
+ "79-34-5": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/79345.html",
+  "needs_review": true,
+  "idlh": "100",
+  "units": "ppm",
+  "basis": "The revised IDLH for 1,1,2,2-tetrachloroethane is 100 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "1 ppm (7 mg/m3) TWA [skin]; NIOSH considers 1,1,2,2-tetrachloroethane to be a potential occupational carcinogen as defin"
+ },
+ "76-13-1": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/76131.html",
+  "needs_review": true,
+  "idlh": "2000",
+  "units": "ppm",
+  "basis": "The revised IDLH for 1,1,2-trichloro-1,2,2-trifluoroethane is 2,000 ppm based on acute inhalation toxicity data in volunteers",
+  "niosh_rel": "1,000 ppm (7,600 mg/m"
+ },
+ "50-29-3": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/50293.html",
+  "needs_review": true,
+  "idlh": "500",
+  "units": "mg/m³",
+  "basis": "The revised IDLH for DDT is 500 mg/m3 based on acute toxicity data in humans",
+  "niosh_rel": "0.5 mg/m"
+ },
+ "101-68-8": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/101688.html",
+  "needs_review": true,
+  "idlh": "75",
+  "units": "mg/m³",
+  "basis": "The revised IDLH for methylene bisphenyl isocyanate is 75 mg/m3 based on acute inhalation toxicity data in animals",
+  "niosh_rel": "0.05 mg/m"
+ },
+ "111-44-4": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/111444.html",
+  "needs_review": true,
+  "idlh": "100",
+  "units": "ppm",
+  "basis": "The revised IDLH for dichloroethyl ether is 100 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "5 ppm (30 mg/m"
+ },
+ "96-18-4": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/96184.html",
+  "needs_review": true,
+  "idlh": "100",
+  "units": "ppm",
+  "basis": "The revised IDLH for 1,2,3-trichloropropane is 100 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "10 ppm (60 mg/m3) TWA [skin]; NIOSH considers 1,2,3-trichloropropane to be a potential occupational carcinogen as define"
+ },
+ "107-15-3": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/107153.html",
+  "needs_review": true,
+  "idlh": "1000",
+  "units": "ppm",
+  "basis": "The revised IDLH for ethylenediamine is 1,000 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "10 ppm (25 mg/m"
+ },
+ "76-12-0": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/76120.html",
+  "needs_review": true,
+  "idlh": "2000",
+  "units": "ppm",
+  "basis": "The revised IDLH for 1,1,2,2-tetrachloro-1,2-difluoroethane is 2,000 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "500 ppm (4,170 mg/m"
+ },
+ "78-87-5": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/78875.html",
+  "needs_review": true,
+  "idlh": "400",
+  "units": "ppm",
+  "basis": "The revised IDLH for propylene dichloride is 400 ppm based on inhalation toxicity data in animals",
+  "niosh_rel": "None established; NIOSH considers propylene dichloride to be a potential occupational carcinogen as defined by the OSHA "
+ },
+ "107-06-2": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/107062.html",
+  "needs_review": true,
+  "idlh": "50",
+  "units": "ppm",
+  "basis": "The revised IDLH for ethylene dichloride is 50 ppm based on acute inhalation toxicity data in workers",
+  "niosh_rel": "1 ppm (4 mg/m"
+ },
+ "75-56-9": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/75569.html",
+  "needs_review": true,
+  "idlh": "400",
+  "units": "ppm",
+  "basis": "The revised IDLH for propylene oxide is 400 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "None established; NIOSH considers propylene oxide to be a potential occupational carcinogen as defined by the OSHA carci"
+ },
+ "75-21-8": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/75218.html",
+  "needs_review": true,
+  "idlh": "800",
+  "units": "ppm",
+  "basis": "Based on acute inhalation toxicity data in humans the original IDLH for ethylene oxide (800 ppm) is not being revised at this time",
+  "niosh_rel": "&lt;0.1 ppm (&lt;0.18 mg/m"
+ },
+ "76-44-8": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/76448.html",
+  "needs_review": true,
+  "idlh": "35",
+  "units": "mg/m³",
+  "basis": "The revised IDLH for heptachlor is 35 mg/m3 based on acute inhalation toxicity data in animals",
+  "niosh_rel": "0.5 mg/m"
+ },
+ "106-50-3": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/106503.html",
+  "needs_review": true,
+  "idlh": "25",
+  "units": "mg/m³",
+  "basis": "the revised IDLH for p-phenylene diamine is 25 mg/m3 based on the concentration recommended originally in the Standards Completion Program for deciding when the &quot;most protective&quot; respirators should be used.",
+  "niosh_rel": "0.1 mg/m"
+ },
+ "123-31-9": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/123319.html",
+  "needs_review": true,
+  "idlh": "50",
+  "units": "mg/m³",
+  "basis": "the revised IDLH for hydroquinone is 50 mg/m3 based on acute oral toxicity data in humans",
+  "niosh_rel": "2 mg/m"
+ },
+ "123-91-1": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/123911.html",
+  "needs_review": true,
+  "idlh": "500",
+  "units": "ppm",
+  "basis": "The revised IDLH for dioxane is 500 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "1 ppm (3.6 mg/m"
+ },
+ "76-22-2": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/76222.html",
+  "needs_review": true,
+  "idlh": "200",
+  "units": "mg/m³",
+  "basis": "Based on chronic inhalation toxicity data in workers, the original IDLH for synthetic camphor (200 mg/m3) is not being revised at this time.",
+  "niosh_rel": "2 mg/m"
+ },
+ "95-53-4": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/95534.html",
+  "needs_review": true,
+  "idlh": "50",
+  "units": "ppm",
+  "basis": "The revised IDLH for o-toluidine is 50 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "None established; NIOSH considers o-toluidine to be a potential occupational carcinogen as defined by the OSHA carcinoge"
+ },
+ "90-04-0": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/90040.html",
+  "needs_review": true,
+  "idlh": "50",
+  "units": "mg/m³",
+  "basis": "Based on subchronic inhalation toxicity data in animals, the original IDLH for o-anisidine (50 mg/m3) is not being revised at this time",
+  "niosh_rel": "0.5 mg/m3 TWA [skin]; NIOSH considers o-anisidine to be a potential occupational carcinogen as defined by the OSHA carci"
+ },
+ "104-94-9": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/104949.html",
+  "needs_review": true,
+  "idlh": "50",
+  "units": "mg/m³",
+  "basis": "the original IDLH for p-anisidine of 50 mg/m3 is not being revised at this time"
+ },
+ "100-01-6": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/100016.html",
+  "needs_review": true,
+  "idlh": "300",
+  "units": "mg/m³",
+  "basis": "the original IDLH for p-nitroaniline (300 mg/m3) is not being revised at this time",
+  "niosh_rel": "3 mg/m"
+ },
+ "109-73-9": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/109739.html",
+  "needs_review": true,
+  "idlh": "300",
+  "units": "ppm",
+  "basis": "The revised IDLH for n-butylamine is 300 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "5 ppm (15 mg/m"
+ },
+ "534-52-1": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/534521.html",
+  "needs_review": true,
+  "idlh": "5",
+  "units": "mg/m³",
+  "basis": "Based on acute toxicity data in humans and animals, the original IDLH for dinitro-o-cresol (5 mg/m3) is not being revised at this time.",
+  "niosh_rel": "0.2 mg/m"
+ },
+ "105-46-4": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/105464.html",
+  "needs_review": true,
+  "idlh": "1700",
+  "units": "ppm",
+  "basis": "the revised IDLH for sec-Butyl acetate is 1,700 ppm based strictly on safety considerations (i.e., being 10% of the lower explosive limit of 1.7%)",
+  "niosh_rel": "200 ppm (950 mg/m"
+ },
+ "556-52-5": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/556525.html",
+  "needs_review": true,
+  "idlh": "150",
+  "units": "ppm",
+  "basis": "The revised IDLH for glycidol is 150 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "25 ppm (75 mg/m"
+ },
+ "108-31-6": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/108316.html",
+  "needs_review": true,
+  "idlh": "10",
+  "units": "mg/m³",
+  "basis": "The revised IDLH for maleic anhydride is 10 mg/m3 based on acute inhalation toxicity data in volunteers",
+  "niosh_rel": "1 mg/m"
+ },
+ "108-20-3": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/108203.html",
+  "needs_review": true,
+  "idlh": "1400",
+  "units": "ppm",
+  "basis": "the revised IDLH for isopropyl ether is 1,400 ppm based strictly on safety considerations (i.e., being 10% of the lower explosive limit of 1.4%)",
+  "niosh_rel": "500 ppm (2,100 mg/m"
+ },
+ "100-37-8": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/100378.html",
+  "needs_review": true,
+  "idlh": "100",
+  "units": "ppm",
+  "basis": "The revised IDLH for 2-diethylaminoethanol is 100 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "10 ppm (50 mg/m"
+ },
+ "75-31-0": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/75310.html",
+  "needs_review": true,
+  "idlh": "750",
+  "units": "ppm",
+  "basis": "The revised IDLH for isopropylamine is 750 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "The 1989 OSHA PEL may not be protective to workers."
+ },
+ "141-43-5": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/141435.html",
+  "needs_review": true,
+  "idlh": "30",
+  "units": "ppm",
+  "basis": "The revised IDLH for ethanolamine is 30 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "3 ppm (8 mg/m"
+ },
+ "111-76-2": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/111762.html",
+  "needs_review": true,
+  "idlh": "700",
+  "units": "ppm",
+  "basis": "Based on acute inhalation toxicity data in humans, a value of about 1,000 ppm would have been appropriate for 2-butoxyethanol",
+  "niosh_rel": "5 ppm (24 mg/m"
+ },
+ "118-96-7": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/118967.html",
+  "needs_review": true,
+  "idlh": "500",
+  "units": "mg/m³",
+  "basis": "No inhalation toxicity data are available on which to base an IDLH for 2,4,6-trinitrotoluene. Therefore, the revised IDLH for 2,4,6-trinitrotoluene is 500 mg/m3 based on acute oral toxicity data in humans and animals",
+  "niosh_rel": "0.5 mg/m"
+ },
+ "78-83-1": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/78831.html",
+  "needs_review": true,
+  "idlh": "1600",
+  "units": "ppm",
+  "basis": "The revised IDLH for isobutyl alcohol is 1,600 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "50 ppm (150 mg/m"
+ },
+ "75-65-0": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/75650.html",
+  "needs_review": true,
+  "idlh": "1600",
+  "units": "ppm",
+  "basis": "The revised IDLH for tert-butyl alcohol is 1,600 ppm based on analogies to isobutyl alcohol and n-butyl alcohol.",
+  "niosh_rel": "100 ppm (300 mg/m"
+ },
+ "110-49-6": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/110496.html",
+  "needs_review": true,
+  "idlh": "200",
+  "units": "ppm",
+  "basis": "the revised IDLH for methyl Cellosolve® acetate is 200 ppm based on being 2,000 times the current NIOSH REL of 0.1 ppm",
+  "niosh_rel": "0.1 ppm (0.5 mg/m"
+ },
+ "126-99-8": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/126998.html",
+  "needs_review": true,
+  "idlh": "300",
+  "units": "ppm",
+  "basis": "The revised IDLH for ß-chloroprene is 300 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "1 ppm (3.6 mg/m"
+ },
+ "107-07-3": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/107073.html",
+  "needs_review": true,
+  "idlh": "7",
+  "units": "ppm",
+  "basis": "The revised IDLH for ethylene chlorohydrin is 7 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "1 ppm (3 mg/m"
+ },
+ "110-80-5": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/110805.html",
+  "needs_review": true,
+  "idlh": "500",
+  "units": "ppm",
+  "basis": "The revised IDLH for 2-ethoxyethanol is 500 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "0.5 ppm (1.8 mg/m"
+ },
+ "111-15-9": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/111159.html",
+  "needs_review": true,
+  "idlh": "500",
+  "units": "ppm",
+  "basis": "The revised IDLH for 2-ethoxyethyl acetate is 500 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "0.5 ppm (2.7 mg/m"
+ },
+ "78-59-1": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/78591.html",
+  "needs_review": true,
+  "idlh": "200",
+  "units": "ppm",
+  "basis": "The revised IDLH for isophorone is 200 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "4 ppm (23 mg/m"
+ },
+ "106-92-3": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/106923.html",
+  "needs_review": true,
+  "idlh": "50",
+  "units": "ppm",
+  "basis": "The revised IDLH for allyl glycidyl ether is 50 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "5 ppm (22 mg/m3) TWA, 10 ppm (44 mg/m3) STEL [skin]"
+ },
+ "123-51-3": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/123513.html",
+  "needs_review": true,
+  "idlh": "500",
+  "units": "ppm",
+  "basis": "the revised IDLH for isoamyl alcohol (primary &amp; secondary) is 500 ppm based on acute oral toxicity data in humans",
+  "niosh_rel": "100 ppm (360 mg/m"
+ },
+ "107-05-1": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/107051.html",
+  "needs_review": true,
+  "idlh": "250",
+  "units": "ppm",
+  "basis": "The revised IDLH for allyl chloride is 250 ppm based on acute inhalation toxicity data in humans and animals",
+  "niosh_rel": "1 ppm (3 mg/m3) TWA, 2 ppm (6 mg/m3) STEL"
+ },
+ "57-74-9": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/57749.html",
+  "needs_review": true,
+  "idlh": "100",
+  "units": "mg/m³",
+  "basis": "No inhalation toxicity data are available on which to base an IDLH for chlordane",
+  "niosh_rel": "0.5 mg/m"
+ },
+ "81-81-2": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/81812.html",
+  "needs_review": true,
+  "idlh": "100",
+  "units": "mg/m³",
+  "basis": "the revised IDLH for warfarin is 100 mg/m3 based on acute toxicity data in humans. This may be a conservative value due to the lack of acute inhalation toxicity data for workers.",
+  "niosh_rel": "0.1 mg/m3 TWA"
+ },
+ "123-42-2": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/123422.html",
+  "needs_review": true,
+  "idlh": "1800",
+  "units": "ppm",
+  "basis": "the revised IDLH for diacetone alcohol is 1,800 ppm based strictly on safety considerations",
+  "niosh_rel": "50 ppm (240 mg/m"
+ },
+ "108-11-2": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/108112.html",
+  "needs_review": true,
+  "idlh": "400",
+  "units": "ppm",
+  "basis": "The revised IDLH for methyl isobutyl carbinol is 400 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "25 ppm (100 mg/m"
+ },
+ "141-79-7": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/141797.html",
+  "needs_review": true,
+  "idlh": "1400",
+  "units": "ppm",
+  "basis": "the revised IDLH for mesityl oxide is 1,400 ppm based strictly on safety considerations (i.e., being 10% of the lower explosive limit of 1.4%)",
+  "niosh_rel": "10 ppm (40 mg/m"
+ },
+ "108-10-1": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/108101.html",
+  "needs_review": true,
+  "idlh": "500",
+  "units": "ppm",
+  "basis": "The revised IDLH for hexone is 500 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "50 ppm (205 mg/m"
+ },
+ "584-84-9": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/584849.html",
+  "needs_review": true,
+  "idlh": "2.5",
+  "units": "ppm",
+  "basis": "The revised IDLH for toluene-2,4-diisocyanate is 2.5 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "None established; NIOSH considers toluene-2,4-diisocyanate to be a potential occupational carcinogen as defined by the O"
+ },
+ "100-74-3": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/100743.html",
+  "needs_review": true,
+  "idlh": "100",
+  "units": "ppm",
+  "basis": "The revised IDLH for N-ethylmorpholine is 100 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "5 ppm (23 mg/m"
+ },
+ "118-52-5": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/118525.html",
+  "needs_review": true,
+  "idlh": "5",
+  "units": "mg/m³",
+  "basis": "Based on health considerations and acute oral toxicity data in animals, a value of about 500 mg/m3 would have been appropriate for 1,3-dichloro-5,5-dimethylhydantoin",
+  "niosh_rel": "0.2 mg/m"
+ },
+ "121-69-7": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/121697.html",
+  "needs_review": true,
+  "idlh": "100",
+  "units": "ppm",
+  "basis": "the original IDLH for N,N-dimethylaniline (100 ppm) is not being revised for at this time",
+  "niosh_rel": "5 ppm (25 mg/m"
+ },
+ "127-19-5": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/127195.html",
+  "needs_review": true,
+  "idlh": "300",
+  "units": "ppm",
+  "basis": "The revised IDLH for dimethyl acetamide is 300 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "10 ppm (35 mg/m"
+ },
+ "68-12-2": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/68122.html",
+  "needs_review": true,
+  "idlh": "500",
+  "units": "ppm",
+  "basis": "The revised IDLH for dimethylformamide is 500 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "10 ppm (30 mg/m"
+ },
+ "121-44-8": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/121448.html",
+  "needs_review": true,
+  "idlh": "200",
+  "units": "ppm",
+  "basis": "The revised IDLH for triethylamine is 200 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "The 1989 OSHA PEL may not be protective to workers."
+ },
+ "108-18-9": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/108189.html",
+  "needs_review": true,
+  "idlh": "200",
+  "units": "ppm",
+  "basis": "The revised IDLH for diisopropylamine is 200 ppm based on acute inhalation toxicity data in workers and animals",
+  "niosh_rel": "5 ppm (20 mg/m"
+ },
+ "100-61-8": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/100618.html",
+  "needs_review": true,
+  "idlh": "100",
+  "units": "ppm",
+  "basis": "Based on animal subchronic inhalation toxicity data and an analogy to aniline which has a revised IDLH of 100 ppm, the original IDLH for monomethyl aniline (100 ppm) is not being revised at this time",
+  "niosh_rel": "0.5 ppm (2 mg/m"
+ },
+ "124-40-3": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/124403.html",
+  "needs_review": true,
+  "idlh": "500",
+  "units": "ppm",
+  "basis": "The revised IDLH for dimethylamine is 500 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "10 ppm (18 mg/m"
+ },
+ "62-73-7": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/62737.html",
+  "needs_review": true,
+  "idlh": "100",
+  "units": "mg/m³",
+  "basis": "the revised IDLH for dichlorvos is 10 times the revised IDLH for parathion (10 mg/m3).",
+  "niosh_rel": "1 mg/m"
+ },
+ "10102-44-0": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/10102440.html",
+  "needs_review": true,
+  "idlh": "20",
+  "units": "ppm",
+  "basis": "The revised IDLH for nitrogen dioxide is 20 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "1 ppm (1.8 mg/m"
+ },
+ "7783-54-2": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/7783542.html",
+  "needs_review": true,
+  "idlh": "1000",
+  "units": "ppm",
+  "basis": "The revised IDLH for nitrogen trifluoride is 1,000 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "10 ppm (29 mg/m"
+ },
+ "7697-37-2": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/7697372.html",
+  "needs_review": true,
+  "idlh": "25",
+  "units": "ppm",
+  "basis": "The revised IDLH for nitric acid is 25 ppm based on acute toxicity data in humans and animals",
+  "niosh_rel": "2 ppm (5 mg/m"
+ },
+ "62-53-3": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/62533.html",
+  "needs_review": true,
+  "idlh": "100",
+  "units": "ppm",
+  "basis": "Based on acute inhalation toxicity data in humans, the original IDLH for aniline of 100 ppm is not being revised at this time",
+  "niosh_rel": "None established; NIOSH considers aniline to be a potential occupational carcinogen as defined by the OSHA carcinogen po"
+ },
+ "1300-73-8": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/1300738.html",
+  "needs_review": true,
+  "idlh": "50",
+  "units": "ppm",
+  "basis": "The revised IDLH for xylidine is 50 ppm based on acute toxicity data in animals",
+  "niosh_rel": "2 ppm (10 mg/m"
+ },
+ "7664-41-7": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/7664417.html",
+  "needs_review": true,
+  "idlh": "300",
+  "units": "ppm",
+  "basis": "The revised IDLH for ammonia is 300 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "25 ppm (18 mg/m3) TWA, 35 ppm (27 mg/m3) STEL"
+ },
+ "7784-42-1": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/7784421.html",
+  "needs_review": true,
+  "idlh": "3",
+  "units": "ppm",
+  "basis": "The revised IDLH for arsine is 3 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "0.002 mg/m3 15-minute CEILING; NIOSH considers arsine to be a potential occupational carcinogen as defined by the OSHA c"
+ },
+ "75-07-0": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/75070.html",
+  "needs_review": true,
+  "idlh": "2000",
+  "units": "ppm",
+  "basis": "The revised IDLH for acetaldehyde is 2,000 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "None established; NIOSH considers acetaldehyde to be a potential occupational carcinogen as defined by the OSHA carcinog"
+ },
+ "108-24-7": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/108247.html",
+  "needs_review": true,
+  "idlh": "200",
+  "units": "ppm",
+  "basis": "The revised IDLH for acetic anhydride is 200 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "5 ppm (20 mg/m3) CEILING"
+ },
+ "67-64-1": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/67641.html",
+  "needs_review": true,
+  "idlh": "2500",
+  "units": "ppm",
+  "basis": "Based on health considerations and acute inhalation toxicity data in humans and animals, a value of about 5,000 ppm would have been appropriate for acetone",
+  "niosh_rel": "250 ppm (590 mg/m3) TWA"
+ },
+ "75-05-8": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/75058.html",
+  "needs_review": true,
+  "idlh": "500",
+  "units": "ppm",
+  "basis": "The revised IDLH for acetonitrile is 500 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "20 ppm (34 mg/m3) TWA"
+ },
+ "71-43-2": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/71432.html",
+  "needs_review": true,
+  "idlh": "500",
+  "units": "ppm",
+  "basis": "The revised IDLH for benzene is 500 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "0.1 ppm TWA, 1 ppm STEL; NIOSH considers benzene to be a potential occupational carcinogen as defined by the OSHA carcin"
+ },
+ "106-51-4": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/106514.html",
+  "needs_review": true,
+  "idlh": "100",
+  "units": "mg/m³",
+  "basis": "the revised IDLH for quinone is 100 mg/m3 based on acute oral toxicity data in animals. This may be a conservative value due to the lack of relevant acute toxicity data for workers.",
+  "niosh_rel": "0.4 mg/m"
+ },
+ "117-81-7": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/117817.html",
+  "needs_review": true,
+  "idlh": "5000",
+  "units": "mg/m³",
+  "basis": "the revised IDLH for di-sec octyl phthalate is 5,000 mg/m3 based on being 1,000 times the OSHA PEL of 5 mg/m3",
+  "niosh_rel": "5 mg/m"
+ },
+ "8004-13-5": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/8004135.html",
+  "needs_review": true,
+  "idlh": "10",
+  "units": "ppm",
+  "basis": "The revised IDLH for a phenyl ether-biphenyl vapor mixture is 10 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "1 ppm (7 mg/m"
+ },
+ "7637-07-2": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/7637072.html",
+  "needs_review": true,
+  "idlh": "25",
+  "units": "ppm",
+  "basis": "The revised IDLH for boron trifluoride is 25 ppm based on subchronic inhalation toxicity data in animals",
+  "niosh_rel": "1 ppm (3 mg/m3) CEILING"
+ },
+ "7726-95-6": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/7726956.html",
+  "needs_review": true,
+  "idlh": "3",
+  "units": "ppm",
+  "basis": "The revised IDLH for bromine is 3 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "0.1 ppm (0.7 mg/m3) TWA, 0.3 ppm (2 mg/m3) STEL"
+ },
+ "74-83-9": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/74839.html",
+  "needs_review": true,
+  "idlh": "250",
+  "units": "ppm",
+  "basis": "The revised IDLH for methyl bromide is 250 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "None established; NIOSH considers methyl bromide to be a potential occupational carcinogen as defined by the OSHA carcin"
+ },
+ "75-63-8": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/75638.html",
+  "needs_review": true,
+  "idlh": "40000",
+  "units": "ppm",
+  "basis": "The revised IDLH for trifluorobromomethane is 40,000 ppm based on acute toxicity data in humans",
+  "niosh_rel": "1,000 ppm (6,100 mg/m"
+ },
+ "74-96-4": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/74964.html",
+  "needs_review": true,
+  "idlh": "2000",
+  "units": "ppm",
+  "basis": "The revised IDLH for ethyl bromide is 2,000 ppm based on acute inhalation toxicity data in humans and animals",
+  "niosh_rel": "The 1989 OSHA PEL may not be protective to workers."
+ },
+ "106-99-0": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/106990.html",
+  "needs_review": true,
+  "idlh": "2000",
+  "units": "ppm",
+  "basis": "Based on health considerations and acute inhalation toxicity data in humans and animals, a value between 10,000 and 20,000 ppm would have been appropriate",
+  "niosh_rel": "None established; NIOSH considers 1,3-butadiene to be a potential occupational carcinogen as defined by the OSHA carcino"
+ },
+ "71-36-3": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/71363.html",
+  "needs_review": true,
+  "idlh": "1400",
+  "units": "ppm",
+  "basis": "the revised IDLH for n-butyl alcohol is 1,400 ppm based strictly on safety considerations (i.e., being 10% if the lower explosive limit of 1.4%)",
+  "niosh_rel": "50 ppm (150 mg/m"
+ },
+ "78-92-2": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/78922.html",
+  "needs_review": true,
+  "idlh": "2000",
+  "units": "ppm",
+  "basis": "The revised IDLH for sec-butyl alcohol is 2,000 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "100 ppm (305 mg/m"
+ },
+ "78-93-3": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/78933.html",
+  "needs_review": true,
+  "idlh": "3000",
+  "units": "ppm",
+  "basis": "Based on acute inhalation toxicity data in humans, the original IDLH for 2-butanone (3,000 ppm) is not being revised at this time.",
+  "niosh_rel": "200 ppm (590 mg/m"
+ },
+ "123-86-4": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/123864.html",
+  "needs_review": true,
+  "idlh": "1700",
+  "units": "ppm",
+  "basis": "the revised IDLH for n-butyl acetate is 1,700 ppm based strictly on safety considerations (i.e., being 10% of the lower explosive limit of 1.7%)",
+  "niosh_rel": "150 ppm (710 mg/m"
+ },
+ "110-54-3": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/110543.html",
+  "needs_review": true,
+  "idlh": "1100",
+  "units": "ppm",
+  "basis": "the revised IDLH for n-hexane is 1,100 ppm based strictly on safety considerations (i.e., being 10% of the lower exposure limit of 1.1%)",
+  "niosh_rel": "50 ppm (180 mg/m"
+ },
+ "108-95-2": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/108952.html",
+  "needs_review": true,
+  "idlh": "250",
+  "units": "ppm",
+  "basis": "the original IDLH for phenol of 250 ppm is not being revised at this time",
+  "niosh_rel": "5 ppm (19 mg/m"
+ },
+ "1310-73-2": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/1310732.html",
+  "needs_review": true,
+  "idlh": "10",
+  "units": "mg/m³",
+  "basis": "The revised IDLH for sodium hydroxide is 10 mg/m3 based on acute inhalation toxicity data in workers",
+  "niosh_rel": "2 mg/m"
+ },
+ "7783-07-5": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/7783075.html",
+  "needs_review": true,
+  "idlh": "1",
+  "units": "ppm",
+  "basis": "The revised IDLH for hydrogen selenide is 1 ppm based on acute inhalation data in humans",
+  "niosh_rel": "0.05 ppm (0.2 mg/m"
+ },
+ "7664-39-3": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/7664393.html",
+  "needs_review": true,
+  "idlh": "30",
+  "units": "ppm",
+  "basis": "Based on acute inhalation toxicity data in humans and animals, the original IDLH for hydrogen fluoride (30 ppm) is not being revised at this time.",
+  "niosh_rel": "3 ppm (2.5 mg/m"
+ },
+ "74-90-8": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/74908.html",
+  "needs_review": true,
+  "idlh": "50",
+  "units": "ppm",
+  "basis": "Based on acute inhalation toxicity data in humans, the IDLH for hydrogen cyanide (50 ppm) is not being revised at this time.",
+  "niosh_rel": "4.7 ppm (5 mg/m"
+ },
+ "1303-86-2": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/1303862.html",
+  "needs_review": true,
+  "idlh": "2000",
+  "units": "mg/m³",
+  "basis": "The revised IDLH for boron oxide is 2,000 mg/m3 based on acute toxicity data in animals",
+  "niosh_rel": "10 mg/m3 TWA"
+ },
+ "19287-45-7": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/19287457.html",
+  "needs_review": true,
+  "idlh": "15",
+  "units": "ppm",
+  "basis": "The revised IDLH for diborane is 15 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "0.1 ppm (0.1 mg/m"
+ },
+ "84-74-2": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/84742.html",
+  "needs_review": true,
+  "idlh": "4000",
+  "units": "mg/m³",
+  "basis": "The revised IDLH for dibutyl phthalate is 4,000 mg/m3 based on acute inhalation toxicity data in animals",
+  "niosh_rel": "5 mg/m"
+ },
+ "7783-06-4": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/7783064.html",
+  "needs_review": true,
+  "idlh": "100",
+  "units": "ppm",
+  "basis": "The revised IDLH for hydrogen sulfide is 100 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "10 ppm (15 mg/m"
+ },
+ "131-11-3": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/131113.html",
+  "needs_review": true,
+  "idlh": "2000",
+  "units": "mg/m³",
+  "basis": "The revised IDLH for dimethylphthalate is 2,000 mg/m3 based on acute inhalation toxicity data in animals",
+  "niosh_rel": "5 mg/m"
+ },
+ "77-78-1": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/77781.html",
+  "needs_review": true,
+  "idlh": "7",
+  "units": "ppm",
+  "basis": "The revised IDLH for dimethyl sulfate is 7 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "0.1 ppm (0.5 mg/m"
+ },
+ "109-87-5": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/109875.html",
+  "needs_review": true,
+  "idlh": "2200",
+  "units": "ppm",
+  "basis": "the revised IDLH for methylal is 2,200 ppm based strictly on safety considerations (i.e., being 10% of the lower explosive limit of 2.2%)",
+  "niosh_rel": "1,000 ppm (3,100 mg/m"
+ },
+ "7446-09-5": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/7446095.html",
+  "needs_review": true,
+  "idlh": "100",
+  "units": "ppm",
+  "basis": "Based on acute inhalation toxicity data in humans, the original IDLH for sulfur dioxide (100 ppm) is not being revised at this time.",
+  "niosh_rel": "2 ppm (5 mg/m"
+ },
+ "5714-22-7": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/5714227.html",
+  "needs_review": true,
+  "idlh": "1",
+  "units": "ppm",
+  "basis": "Based on acute inhalation toxicity data in animals, the original IDLH for sulfur pentafluoride (1 ppm) is not being revised at this time",
+  "niosh_rel": "0.01 ppm (0.1 mg/m"
+ },
+ "10025-67-9": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/10025679.html",
+  "needs_review": true,
+  "idlh": "5",
+  "units": "ppm",
+  "basis": "The revised IDLH for sulfur monochloride is 5 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "1 ppm (6 mg/m"
+ },
+ "75-71-8": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/75718.html",
+  "needs_review": true,
+  "idlh": "15000",
+  "units": "ppm",
+  "basis": "The revised IDLH for dichlorodifluoromethane is 15,000 ppm based on acute inhalation toxicity data in humans and animals",
+  "niosh_rel": "1,000 ppm (4,950 mg/m"
+ },
+ "75-09-2": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/75092.html",
+  "needs_review": true,
+  "idlh": "2300",
+  "units": "ppm",
+  "basis": "The revised IDLH for methylene chloride is 2,300 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "None established; NIOSH considers methylene chloride to be a potential occupational carcinogen as defined by the OSHA ca"
+ },
+ "75-43-4": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/75434.html",
+  "needs_review": true,
+  "idlh": "5000",
+  "units": "ppm",
+  "basis": "The revised IDLH for dichloromonofluoromethane is 5,000 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "10 ppm (40 mg/m"
+ },
+ "121-75-5": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/121755.html",
+  "needs_review": true,
+  "idlh": "250",
+  "units": "mg/m³",
+  "basis": "The revised IDLH for malathion is 250 mg/m3 based on acute toxicity data in humans",
+  "niosh_rel": "10 mg/m"
+ },
+ "109-89-7": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/109897.html",
+  "needs_review": true,
+  "idlh": "200",
+  "units": "ppm",
+  "basis": "The revised IDLH for diethylamine is 200 ppm based on acute inhalation toxicity data in animals and an analogy to ammonia",
+  "niosh_rel": "10 ppm (30 mg/m"
+ },
+ "85-44-9": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/85449.html",
+  "needs_review": true,
+  "idlh": "60",
+  "units": "mg/m³",
+  "basis": "the revised IDLH for phthalic anhydride is 60 mg/m3 (i.e., 10 times the NIOSH REL) based on acute inhalation data in humans",
+  "niosh_rel": "6 mg/m"
+ },
+ "67-63-0": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/67630.html",
+  "needs_review": true,
+  "idlh": "2000",
+  "units": "ppm",
+  "basis": "the revised IDLH for isopropyl alcohol is 2,000 ppm based strictly on safety considerations (i.e., being 10% of the lower explosive limit of 2%)",
+  "niosh_rel": "400 ppm (980 mg/m"
+ },
+ "7553-56-2": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/7553562.html",
+  "needs_review": true,
+  "idlh": "2",
+  "units": "ppm",
+  "basis": "The revised IDLH for iodine is 2 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "0.1 ppm (1 mg/m"
+ },
+ "1305-78-8": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/1305788.html",
+  "needs_review": true,
+  "idlh": "25",
+  "units": "mg/m³",
+  "basis": "The revised IDLH for calcium oxide is 25 mg/m3 based on acute inhalation toxicity data in humans",
+  "niosh_rel": "2 mg/m"
+ },
+ "75-44-5": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/75445.html",
+  "needs_review": true,
+  "idlh": "2",
+  "units": "ppm",
+  "basis": "Based on acute inhalation toxicity data in humans, the original IDLH for phosgene (2 ppm) is not being revised at this time",
+  "niosh_rel": "0.1 ppm (0.4 mg/m"
+ },
+ "1309-48-4": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/1309484.html",
+  "needs_review": true,
+  "idlh": "750",
+  "units": "mg/m³",
+  "basis": "The revised IDLH for magnesium oxide fume is 750 mg/m3 based on acute inhalation toxicity data in humans",
+  "niosh_rel": "The 1989 OSHA PEL may not be protective to workers."
+ },
+ "64-18-6": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/64186.html",
+  "needs_review": true,
+  "idlh": "30",
+  "units": "ppm",
+  "basis": "Based on acute inhalation toxicity data in animals, a value of about 250 ppm would have been appropriate for formic acid. However, the original IDLH for formic acid (30 ppm) is not being revised at this time.",
+  "niosh_rel": "5 ppm (9 mg/m"
+ },
+ "67-56-1": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/67561.html",
+  "needs_review": true,
+  "idlh": "6000",
+  "units": "ppm",
+  "basis": "The revised IDLH for methyl alcohol is 6,000 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "200 ppm (260 mg/m"
+ },
+ "74-93-1": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/74931.html",
+  "needs_review": true,
+  "idlh": "150",
+  "units": "ppm",
+  "basis": "The revised IDLH for methyl mercaptan is 150 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "0.5 ppm (1 mg/m"
+ },
+ "80-62-6": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/80626.html",
+  "needs_review": true,
+  "idlh": "1000",
+  "units": "ppm",
+  "basis": "The revised IDLH for methyl methacrylate is 1,000 ppm based on acute inhalation toxicity data in humans and animals",
+  "niosh_rel": "100 ppm (410 mg/m"
+ },
+ "96-33-3": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/96333.html",
+  "needs_review": true,
+  "idlh": "250",
+  "units": "ppm",
+  "basis": "The revised IDLH for methyl acrylate is 250 ppm based on acute inhalation data in animals",
+  "niosh_rel": "10 ppm (35 mg/m"
+ },
+ "74-89-5": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/74895.html",
+  "needs_review": true,
+  "idlh": "100",
+  "units": "ppm",
+  "basis": "Based on acute inhalation toxicity data in humans, the original IDLH for methylamine (100 ppm) is not being revised at this time.",
+  "niosh_rel": "10 ppm (12 mg/m"
+ },
+ "79-20-9": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/79209.html",
+  "needs_review": true,
+  "idlh": "3100",
+  "units": "ppm",
+  "basis": "the revised IDLH for methyl acetate is 3,100 ppm based strictly on safety considerations (i.e., being 10% of the lower explosive limit of 3.1%)",
+  "niosh_rel": "200 ppm (610 mg/m"
+ },
+ "108-88-3": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/108883.html",
+  "needs_review": true,
+  "idlh": "500",
+  "units": "ppm",
+  "basis": "The revised IDLH for toluene is 500 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "100 ppm (375 mg/m"
+ },
+ "624-83-9": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/624839.html",
+  "needs_review": true,
+  "idlh": "3",
+  "units": "ppm",
+  "basis": "The revised IDLH for methyl isocyanate is 3 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "0.02 ppm (0.05 mg/m"
+ },
+ "63-25-2": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/63252.html",
+  "needs_review": true,
+  "idlh": "100",
+  "units": "mg/m³",
+  "basis": "The revised IDLH for carbaryl is 100 mg/m3 based on acute toxicity data in animals",
+  "niosh_rel": "5 mg/m"
+ },
+ "108-87-2": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/108872.html",
+  "needs_review": true,
+  "idlh": "1200",
+  "units": "ppm",
+  "basis": "the revised IDLH for methylcyclohexane is 1,200 ppm based strictly on safety considerations (i.e., being 10% of the lower explosive limit of 1.2%)",
+  "niosh_rel": "400 ppm (1,600 mg/m"
+ },
+ "86-88-4": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/86884.html",
+  "needs_review": true,
+  "idlh": "100",
+  "units": "mg/m³",
+  "basis": "No inhalation toxicity data are available on which to base an IDLH for ANTU. However, based on acute oral toxicity data in humans and animals, the original IDLH for ANTU (100 mg/m3) is not being revised at this time.",
+  "niosh_rel": "0.3 mg/m3 TWA"
+ },
+ "91-20-3": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/91203.html",
+  "needs_review": true,
+  "idlh": "250",
+  "units": "ppm",
+  "basis": "the revised IDLH for naphthalene is 250 ppm based on acute oral toxicity data in humans",
+  "niosh_rel": "10 ppm (50 mg/m"
+ },
+ "8002-05-9": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/8002059.html",
+  "needs_review": true,
+  "idlh": "1100",
+  "units": "ppm",
+  "basis": "the revised IDLH for petroleum distillates (naphtha) is 1,100 ppm based strictly on safety considerations (i.e., being 10% of the lower explosive limit of 1.1%)",
+  "niosh_rel": "350 mg/m"
+ },
+ "13463-39-3": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/13463393.html",
+  "needs_review": true,
+  "idlh": "2",
+  "units": "ppm",
+  "basis": "the revised IDLH for nickel carbonyl is 2 ppm based on being 2,000 times the current OSHA PEL of 0.001 ppm",
+  "niosh_rel": "0.001 ppm (0.007 mg/m"
+ },
+ "98-95-3": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/98953.html",
+  "needs_review": true,
+  "idlh": "200",
+  "units": "ppm",
+  "basis": "Based on acute inhalation toxicity data in humans, the original IDLH for nitrobenzene (200 ppm) is not being revised at this time.",
+  "niosh_rel": "1 ppm (5 mg/m"
+ },
+ "75-52-5": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/75525.html",
+  "needs_review": true,
+  "idlh": "750",
+  "units": "ppm",
+  "basis": "The revised IDLH for nitromethane is 750 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "The 1989 OSHA PEL may not be protective to workers."
+ },
+ "79-24-3": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/79243.html",
+  "needs_review": true,
+  "idlh": "1000",
+  "units": "ppm",
+  "basis": "Based on acute inhalation toxicity data in animals, the original IDLH for nitroethane (1,000 ppm) is not being revised at this time.",
+  "niosh_rel": "100 ppm (310 mg/m"
+ },
+ "299-84-3": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/299843.html",
+  "needs_review": true,
+  "idlh": "300",
+  "units": "mg/m³",
+  "basis": "the revised IDLH for ronnel is 300 mg/m3 based on acute oral toxicity in animals. This may be a conservative value due to the lack of relevant acute toxicity data for workers.",
+  "niosh_rel": "10 mg/m"
+ },
+ "126-73-8": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/126738.html",
+  "needs_review": true,
+  "idlh": "30",
+  "units": "ppm",
+  "basis": "The revised IDLH for tributyl phosphate is 30 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "0.2 ppm (2.5 mg/m"
+ },
+ "56-38-2": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/56382.html",
+  "needs_review": true,
+  "idlh": "10",
+  "units": "mg/m³",
+  "basis": "The revised IDLH for parathion is 10 mg/m3 based on chronic inhalation toxicity data in humans",
+  "niosh_rel": "0.05 mg/m"
+ },
+ "10028-15-6": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/10028156.html",
+  "needs_review": true,
+  "idlh": "5",
+  "units": "ppm",
+  "basis": "The revised IDLH for ozone is 5 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "0.1 ppm (0.2 mg/m"
+ },
+ "630-08-0": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/630080.html",
+  "needs_review": true,
+  "idlh": "1200",
+  "units": "ppm",
+  "basis": "The revised IDLH for carbon monoxide is 1,200 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "35 ppm (40 mg/m"
+ },
+ "101-84-8": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/101848.html",
+  "needs_review": true,
+  "idlh": "100",
+  "units": "ppm",
+  "basis": "the revised IDLH for phenyl ether vapor is 100 ppm based on being 100 times the NIOSH REL or OSHA PEL",
+  "niosh_rel": "1 ppm (7 mg/m"
+ },
+ "7664-38-2": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/7664382.html",
+  "needs_review": true,
+  "idlh": "1000",
+  "units": "mg/m³",
+  "basis": "The revised IDLH for phosphoric acid is 1,000 mg/m3 based on acute oral toxicity data in animals",
+  "niosh_rel": "1 mg/m"
+ },
+ "109-66-0": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/109660.html",
+  "needs_review": true,
+  "idlh": "1500",
+  "units": "ppm",
+  "basis": "the revised IDLH for n-pentane is 1,500 ppm based strictly on safety considerations (i.e., being 10% of the lower explosive limit of 1.5%)",
+  "niosh_rel": "120 ppm (350 mg/m"
+ },
+ "107-87-9": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/107879.html",
+  "needs_review": true,
+  "idlh": "1500",
+  "units": "ppm",
+  "basis": "The revised IDLH for 2-pentanone is 1,500 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "150 ppm (530 mg/m"
+ },
+ "87-86-5": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/87865.html",
+  "needs_review": true,
+  "idlh": "2.5",
+  "units": "mg/m³",
+  "basis": "The revised IDLH for pentachlorophenol is 2.5 mg/m3 based on acute toxicity data in humans",
+  "niosh_rel": "0.5 mg/m"
+ },
+ "628-63-7": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/628637.html",
+  "needs_review": true,
+  "idlh": "1000",
+  "units": "ppm",
+  "basis": "The revised IDLH for n-amyl acetate is 1,000 ppm based on acute toxicity data in humans and animals",
+  "niosh_rel": "100 ppm (525 mg/m3) TWA"
+ },
+ "110-86-1": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/110861.html",
+  "needs_review": true,
+  "idlh": "1000",
+  "units": "ppm",
+  "basis": "The revised IDLH for pyridine is 1,000 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "5 ppm (15 mg/m"
+ },
+ "107-02-8": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/107028.html",
+  "needs_review": true,
+  "idlh": "2",
+  "units": "ppm",
+  "basis": "The revised IDLH for acrolein is 2 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "0.1 ppm (0.25 mg/m3) TWA, 0.3 ppm (0.8 mg/m3) STEL"
+ },
+ "79-06-1": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/79061.html",
+  "needs_review": true,
+  "idlh": "60",
+  "units": "mg/m³",
+  "basis": "No inhalation toxicity data are available on which to base an IDLH for acrylamide. Based on acute oral toxicity data in animals, a value of about 70 mg/m3 would have been appropriate",
+  "niosh_rel": "0.03 mg/m3 TWA [skin]; NIOSH considers acrylamide to be a potential occupational carcinogen as defined by the OSHA carci"
+ },
+ "107-13-1": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/107131.html",
+  "needs_review": true,
+  "idlh": "85",
+  "units": "ppm",
+  "basis": "The revised IDLH for acrylonitrile is 85 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "1 ppm TWA, 10 ppm 15-minute CEILING [skin]; NIOSH considers acrylonitrile to be a potential occupational carcinogen as d"
+ },
+ "55-63-0": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/55630.html",
+  "needs_review": true,
+  "idlh": "75",
+  "units": "mg/m³",
+  "basis": "The revised IDLH for nitroglycerine is 75 mg/m3 based on acute oral toxicity data in humans and animals",
+  "niosh_rel": "0.1 mg/m"
+ },
+ "71-23-8": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/71238.html",
+  "needs_review": true,
+  "idlh": "800",
+  "units": "ppm",
+  "basis": "The revised IDLH for n-propyl alcohol is 800 ppm based on acute inhalation toxicity data in humans and animals"
+ },
+ "109-60-4": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/109604.html",
+  "needs_review": true,
+  "idlh": "1700",
+  "units": "ppm",
+  "basis": "The revised IDLH for n-propyl acetate is 1,700 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "200 ppm (840 mg/m"
+ },
+ "7783-79-1": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/7783791.html",
+  "needs_review": true,
+  "idlh": "2",
+  "units": "ppm",
+  "basis": "The revised IDLH for selenium hexafluoride is 2 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "0.05 ppm (0.16 mg/m"
+ },
+ "7664-93-9": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/7664939.html",
+  "needs_review": true,
+  "idlh": "15",
+  "units": "mg/m³",
+  "basis": "The revised IDLH for sulfuric acid is 15 mg/m3 based on acute inhalation toxicity data in humans and animals",
+  "niosh_rel": "1 mg/m"
+ },
+ "8006-64-2": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/8006642.html",
+  "needs_review": true,
+  "idlh": "800",
+  "units": "ppm",
+  "basis": "The revised IDLH for turpentine is 800 ppm based on acute toxicity data in humans and animals",
+  "niosh_rel": "100 ppm (560 mg/m3) TWA"
+ },
+ "100-42-5": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/100425.html",
+  "needs_review": true,
+  "idlh": "700",
+  "units": "ppm",
+  "basis": "The revised IDLH for styrene is 700 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "50 ppm (215 mg/m"
+ },
+ "110-91-8": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/110918.html",
+  "needs_review": true,
+  "idlh": "1400",
+  "units": "ppm",
+  "basis": "the revised IDLH for morpholine is 1,400 ppm based strictly on safety considerations (i.e., being 10% of the lower explosive limit of 1.4%)",
+  "niosh_rel": "20 ppm (70 mg/m"
+ },
+ "109-99-9": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/109999.html",
+  "needs_review": true,
+  "idlh": "2000",
+  "units": "ppm",
+  "basis": "the revised IDLH is 2,000 ppm based strictly on safety considerations (i.e., being 10% of the lower explosive limit of 2%).",
+  "niosh_rel": "200 ppm (590 mg/m"
+ },
+ "137-26-8": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/137268.html",
+  "needs_review": true,
+  "idlh": "100",
+  "units": "mg/m³",
+  "basis": "The revised IDLH for thiram is 100 mg/m3 based on acute inhalation toxicity data in animals. This may be a conservative value due to the lack of relevant acute inhalation toxicity data for workers.",
+  "niosh_rel": "5 mg/m"
+ },
+ "509-14-8": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/509148.html",
+  "needs_review": true,
+  "idlh": "4",
+  "units": "ppm",
+  "basis": "Based on acute inhalation toxicity data in humans and animals, the revised IDLH for tetranitromethane is 4 ppm."
+ },
+ "56-23-5": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/56235.html",
+  "needs_review": true,
+  "idlh": "200",
+  "units": "ppm",
+  "basis": "The revised IDLH for carbon tetrachloride is 200 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "2 ppm (12.6 mg/m"
+ },
+ "127-18-4": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/127184.html",
+  "needs_review": true,
+  "idlh": "150",
+  "units": "ppm",
+  "basis": "The revised IDLH for tetrachloroethylene is 150 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "Minimize workplace exposure concentrations; NIOSH considers tetrachloroethylene to be a potential occupational carcinoge"
+ },
+ "78-10-4": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/78104.html",
+  "needs_review": true,
+  "idlh": "700",
+  "units": "ppm",
+  "basis": "The revised IDLH for ethyl silicate is 700 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "10 ppm (85 mg/m"
+ },
+ "13463-67-7": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/13463677.html",
+  "needs_review": true,
+  "idlh": "5000",
+  "units": "mg/m³",
+  "basis": "the revised IDLH for titanium dioxide is 5,000 mg/m3 based on being 500 times the OSHA PEL of 10 mg/m3 promulgated in 1989",
+  "niosh_rel": "None established; NIOSH considers titanium dioxide to be a potential occupational carcinogen as defined by the OSHA carc"
+ },
+ "75-25-2": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/75252.html",
+  "needs_review": true,
+  "idlh": "850",
+  "units": "ppm",
+  "basis": "The revised IDLH for bromoform is 850 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "0.5 ppm (5 mg/m3) TWA [skin]"
+ },
+ "115-86-6": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/115866.html",
+  "needs_review": true,
+  "idlh": "1000",
+  "units": "mg/m³",
+  "basis": "The revised IDLH for triphenyl phosphate is 1,000 mg/m3 based on acute oral toxicity data in animals",
+  "niosh_rel": "3 mg/m"
+ },
+ "67-66-3": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/67663.html",
+  "needs_review": true,
+  "idlh": "500",
+  "units": "ppm",
+  "basis": "The revised IDLH for chloroform is 500 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "2 ppm (9.78 mg/m"
+ },
+ "594-42-3": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/594423.html",
+  "needs_review": true,
+  "idlh": "10",
+  "units": "ppm",
+  "basis": "the original IDLH for perchloromethyl mercaptan (10 ppm) is not being revised at this time based on an analogy to phosgene which has a revised IDLH of 2 ppm",
+  "niosh_rel": "0.1 ppm (0.8 mg/m"
+ },
+ "76-06-2": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/76062.html",
+  "needs_review": true,
+  "idlh": "2",
+  "units": "ppm",
+  "basis": "The revised IDLH for chloropicrin is 2 ppm based on acute inhalation toxicity data in workers and animals",
+  "niosh_rel": "0.1 ppm (0.7 mg/m"
+ },
+ "75-69-4": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/75694.html",
+  "needs_review": true,
+  "idlh": "2000",
+  "units": "ppm",
+  "basis": "The revised IDLH for fluorotrichloromethane is 2,000 ppm based on acute toxicity data in animals and to be consistent with a closely-related chlorofluorocarbon, 1,1,2-trichloro-1,2,2-trifluoroethane which has a revised IDLH of 2,000 ppm",
+  "niosh_rel": "1,000 ppm (5,600 mg/m"
+ },
+ "8052-41-3": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/8052413.html",
+  "needs_review": true,
+  "idlh": "20000",
+  "units": "mg/m³",
+  "basis": "The revised IDLH for Stoddard solvent is 20,000 mg/m3 based on acute inhalation toxicity data in humans",
+  "niosh_rel": "350 mg/m3 TWA, 1,800 mg/m3 15-minute CEILING"
+ },
+ "75-15-0": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/75150.html",
+  "needs_review": true,
+  "idlh": "500",
+  "units": "ppm",
+  "basis": "Based on acute inhalation toxicity data in humans, the original IDLH for carbon disulfide (500 ppm) is not being revised at this time.",
+  "niosh_rel": "1 ppm (3 mg/m"
+ },
+ "124-38-9": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/124389.html",
+  "needs_review": true,
+  "idlh": "40000",
+  "units": "ppm",
+  "basis": "The revised IDLH for carbon dioxide is 40,000 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "5,000 ppm (9,000 mg/m"
+ },
+ "64-19-7": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/64197.html",
+  "needs_review": true,
+  "idlh": "50",
+  "units": "ppm",
+  "basis": "The revised IDLH for acetic acid is 50 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "10 ppm (25 mg/m3) TWA, 15 ppm (37 mg/m3) STEL"
+ },
+ "50-00-0": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/50000.html",
+  "needs_review": true,
+  "idlh": "20",
+  "units": "ppm",
+  "basis": "The revised IDLH for formaldehyde is 20 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "0.016 ppm TWA, 0.1 ppm 15-minute CEILING; NIOSH considers formaldehyde to be a potential occupational carcinogen as defi"
+ },
+ "10026-13-8": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/10026138.html",
+  "needs_review": true,
+  "idlh": "70",
+  "units": "mg/m³",
+  "basis": "The revised IDLH for phosphorus pentachloride is 70 mg/m3 based on acute inhalation toxicity data in animals",
+  "niosh_rel": "1 mg/m"
+ },
+ "7719-12-2": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/7719122.html",
+  "needs_review": true,
+  "idlh": "25",
+  "units": "ppm",
+  "basis": "The revised IDLH for phosphorus trichloride is 25 ppm based on acute inhalation toxicity data in humans and animals",
+  "niosh_rel": "0.2 ppm (1.5 mg/m"
+ },
+ "7782-41-4": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/7782414.html",
+  "needs_review": true,
+  "idlh": "25",
+  "units": "ppm",
+  "basis": "Based on acute inhalation toxicity data in humans, the original IDLH for fluorine (25 ppm) is not being revised at this time.",
+  "niosh_rel": "0.1 ppm (0.2 mg/m"
+ },
+ "98-00-0": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/98000.html",
+  "needs_review": true,
+  "idlh": "75",
+  "units": "ppm",
+  "basis": "The revised IDLH is 75 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "10 ppm (40 mg/m"
+ },
+ "98-01-1": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/98011.html",
+  "needs_review": true,
+  "idlh": "100",
+  "units": "ppm",
+  "basis": "The revised IDLH for furfural is 100 ppm based on acute inhalation toxicity data in humans and animals",
+  "niosh_rel": "The 1989 OSHA PEL may not be protective to workers."
+ },
+ "7782-50-5": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/7782505.html",
+  "needs_review": true,
+  "idlh": "10",
+  "units": "ppm",
+  "basis": "The revised IDLH for chlorine is 10 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "0.5 ppm (1.45 mg/m"
+ },
+ "10049-04-4": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/10049044.html",
+  "needs_review": true,
+  "idlh": "5",
+  "units": "ppm",
+  "basis": "The revised IDLH is 5 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "0.1 ppm (0.3 mg/m"
+ },
+ "108-90-7": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/108907.html",
+  "needs_review": true,
+  "idlh": "1000",
+  "units": "ppm",
+  "basis": "The revised IDLH for chlorobenzene is 1,000 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "The 1989 OSHA PEL may not be protective to workers."
+ },
+ "74-87-3": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/74873.html",
+  "needs_review": true,
+  "idlh": "2000",
+  "units": "ppm",
+  "basis": "The revised IDLH for methyl chloride is 2,000 ppm based on acute inhalation toxicity data in humans",
+  "niosh_rel": "None established; NIOSH considers methyl chloride to be a potential occupational carcinogen as defined by the OSHA carci"
+ },
+ "75-00-3": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/75003.html",
+  "needs_review": true,
+  "idlh": "3800",
+  "units": "ppm",
+  "basis": "the revised IDLH for ethyl chloride is 3,800 ppm based strictly on safety considerations (i.e., being 10% of the lower explosive limit of 3.8%)",
+  "niosh_rel": "Handle with caution in the workplace."
+ },
+ "110-82-7": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/110827.html",
+  "needs_review": true,
+  "idlh": "1300",
+  "units": "ppm",
+  "basis": "the revised IDLH for cyclohexane is 1,300 ppm based strictly on safety considerations",
+  "niosh_rel": "300 ppm (1,050 mg/m"
+ },
+ "108-94-1": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/108941.html",
+  "needs_review": true,
+  "idlh": "700",
+  "units": "ppm",
+  "basis": "The revised IDLH for cyclohexanone is 700 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "25 ppm (100 mg/m"
+ },
+ "110-83-8": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/110838.html",
+  "needs_review": true,
+  "idlh": "2000",
+  "units": "ppm",
+  "basis": "The revised IDLH for cyclohexene is 2,000 ppm based on acute toxicity data in animals. This may be a conservative value due to the lack of relevant acute toxicity data for workers",
+  "niosh_rel": "300 ppm (1,015 mg/m"
+ },
+ "542-92-7": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/542927.html",
+  "needs_review": true,
+  "idlh": "750",
+  "units": "ppm",
+  "basis": "The revised IDLH for cyclopentadiene is 750 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "75 ppm (200 mg/m"
+ },
+ "1314-13-2": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/1314132.html",
+  "needs_review": true,
+  "idlh": "500",
+  "units": "mg/m³",
+  "basis": "The revised IDLH for zinc oxide is 500 mg/m3 based on acute inhalation toxicity data in humans",
+  "niosh_rel": "Fume: 5 mg/m"
+ },
+ "64-17-5": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/64175.html",
+  "needs_review": true,
+  "idlh": "3300",
+  "units": "ppm",
+  "basis": "the revised IDLH for ethyl alcohol is 3,300 ppm based strictly on safety considerations (i.e., being 10% of the lower explosive limit of 3.3%).",
+  "niosh_rel": "1000 ppm (1,900 mg/m"
+ },
+ "75-08-1": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/75081.html",
+  "needs_review": true,
+  "idlh": "500",
+  "units": "ppm",
+  "basis": "The revised IDLH for ethyl mercaptan is 500 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "0.5 ppm (1.3 mg/m"
+ },
+ "25013-15-4": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/25013154.html",
+  "needs_review": true,
+  "idlh": "400",
+  "units": "ppm",
+  "basis": "The revised IDLH for vinyl toluene is 400 ppm based on acute inhalation toxicity data in humans. This may be a conservative value due to the lack of relevant acute toxicity data for workers exposed to concentrations above 400 ppm.",
+  "niosh_rel": "100 ppm (480 mg/m"
+ },
+ "75-04-7": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/75047.html",
+  "needs_review": true,
+  "idlh": "600",
+  "units": "ppm",
+  "basis": "The revised IDLH for ethylamine is 600 ppm based on acute inhalation toxicity data in animals",
+  "niosh_rel": "10 ppm (18 mg/m"
+ },
+ "141-78-6": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/141786.html",
+  "needs_review": true,
+  "idlh": "2000",
+  "units": "ppm",
+  "basis": "the revised IDLH for ethyl acetate is 2,000 ppm based strictly on safety considerations (i.e., being 10% of the lower explosive limit of 2.0%).",
+  "niosh_rel": "400 ppm (1,400 mg/m"
+ },
+ "100-41-4": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/100414.html",
+  "needs_review": true,
+  "idlh": "800",
+  "units": "ppm",
+  "basis": "the revised IDLH for ethyl benzene is 800 ppm based strictly on safety considerations (i.e., being 10% of the lower explosive limit of 0.8%)",
+  "niosh_rel": "100 ppm (435 mg/m"
+ },
+ "151-56-4": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/151564.html",
+  "needs_review": true,
+  "idlh": "100",
+  "units": "ppm",
+  "basis": "Based on acute inhalation toxicity data in humans, the original IDLH for ethyleneimine (100 ppm) is not being revised at this time",
+  "niosh_rel": "None established; NIOSH considers ethyleneimine to be a potential occupational carcinogen as defined by the OSHA carcino"
+ },
+ "140-88-5": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/140885.html",
+  "needs_review": true,
+  "idlh": "300",
+  "units": "ppm",
+  "basis": "The revised IDLH for ethyl acrylate is 300 ppm based on toxicity data in humans",
+  "niosh_rel": "None established; NIOSH considers ethyl acrylate to be a potential occupational carcinogen as defined by the OSHA carcin"
+ },
+ "60-29-7": {
+  "source": "NIOSH IDLH (cdc.gov/niosh/idlh)",
+  "source_url": "https://www.cdc.gov/niosh/idlh/60297.html",
+  "needs_review": true,
+  "idlh": "1900",
+  "units": "ppm",
+  "basis": "the revised IDLH for ethyl ether is 1,900 ppm based strictly on safety considerations (i.e., being 10% of the lower explosive limit of 1.9%).",
+  "niosh_rel": "The 1989 OSHA PEL may not be protective to workers."
+ }
+}
