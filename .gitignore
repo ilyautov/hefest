@@ -13,8 +13,11 @@ venv/
 .env
 
 # --- Генерируемые артефакты (восстанавливаются из corpus) ---
-# Векторные эмбеддинги — ~300M, пересоздаются скриптами build_corpus/ingest
+# Векторные эмбеддинги — ~300M, пересоздаются скриптами build_corpus/ingest.
+# Канонический embeddings_clean.npy хранится через Git LFS (см. .gitattributes),
+# остальные .npy (бэкапы, не-clean) — исключены.
 *.npy
+!data/embeddings_clean.npy
 
 # --- Резервные копии данных ---
 *.bak
