@@ -120,6 +120,15 @@
   .akind{flex:none;width:64px;color:var(--blue)}
   .ats{flex:none;color:var(--muted)}
 
+  /* контекстные кросс-ссылки на смежные экраны (карта склада, карточка диспетчера, СИЗ) */
+  .xlinks{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+  .xlink{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--orange);text-decoration:none;
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--r-sm);padding:9px 13px;max-width:100%;
+    transition:background .15s,border-color .15s}
+  .xlink:hover{background:var(--panel2);border-color:var(--orange)}
+  .xlink:focus-visible{outline:3px solid #5b9dffaa;outline-offset:2px}
+  .xlink svg{flex:none}
+
   .skeleton{display:none}.skeleton.on{display:block;margin-top:16px}
   .sk{height:14px;border-radius:6px;background:linear-gradient(90deg,#1a2436,#222e40,#1a2436);
     background-size:200% 100%;animation:sh 1.2s linear infinite;margin-bottom:12px}
@@ -160,6 +169,9 @@
     </div>
     <button class="go" id="go-compat">Проверить совместимость</button>
     <div id="out-compat"></div>
+    <div class="xlinks">
+      <a class="xlink" href="warehouse.html"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-6h6v6M3 13h18"/></svg>Открыть карту склада →</a>
+    </div>
   </section>
 
   <!-- GHS -->
@@ -188,6 +200,10 @@
     </div>
     <button class="go" id="go-zone">Рассчитать зону</button>
     <div id="out-zone"></div>
+    <div class="xlinks">
+      <a class="xlink" id="lnk-dispatch" href="dispatch.html"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>Оперативная карточка диспетчера →</a>
+      <a class="xlink" id="lnk-ppe" href="ppe.html"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 6v6c0 5 3.5 8 8 10 4.5-2 8-5 8-10V6l-8-4z"/></svg>Подбор СИЗ →</a>
+    </div>
   </section>
 
   <!-- QUALITY -->
@@ -247,7 +263,16 @@ async function loadSubs(){
 async function loadZoneSubs(){
   try{const d=await(await fetch(base()+'/zone/substances')).json();
     $('zsub').innerHTML=(d.available||[]).map(n=>`<option>${esc(n)}</option>`).join('');}catch(e){}
+  updateZoneLinks();
 }
+// контекстные ссылки вкладки «Зона»: подставляем выбранное вещество (URL-кодируем); пусто → без параметра
+function updateZoneLinks(){
+  const n=$('zsub').value.trim();
+  const qs=n?'?name='+encodeURIComponent(n):'';
+  $('lnk-dispatch').href='dispatch.html'+qs;
+  $('lnk-ppe').href='ppe.html'+qs;
+}
+$('zsub').addEventListener('change',updateZoneLinks);
 
 // --- COMPAT ---
 $('go-compat').onclick=async()=>{
