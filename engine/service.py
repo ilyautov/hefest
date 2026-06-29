@@ -992,6 +992,14 @@ def card(name: str):
                  f'острый порог: выше этого без изолирующего СИЗ опасно для жизни (NIOSH)</div>'
                  if idlh else "")
     sig = gh.get("signal_word") or ""
+    from urllib.parse import quote as _q
+    _enc = _q(s["name"])
+    _is_ahov = bool((ac and ac.get("ahov")) or ERG.get(s["name"].lower()))  # как в /emergency (учитывает ERG)
+    acts_html = ('<div class="acts">'
+                 f'<a href="/ppe.html?name={_enc}">Подбор СИЗ</a>'
+                 + (f'<a class="em" href="/dispatch.html?name={_enc}">Карточка диспетчера</a>'
+                    if _is_ahov else "")
+                 + "</div>")
     html_doc = f"""<!DOCTYPE html><html lang="ru"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>{e(s['name'])}</title>
 <style>body{{margin:0;background:#0a0e14;color:#e6edf3;font:16px/1.55 system-ui,-apple-system,sans-serif;padding:16px}}
@@ -1001,7 +1009,10 @@ def card(name: str):
 .idlh{{background:#241a08;border:1px solid #5a4216;color:#fcd9a0;border-radius:10px;padding:9px 12px;font-size:13px;margin-bottom:12px}}
 .f{{border-top:1px solid #28344a;padding:11px 0}}.k{{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#8b97a7;margin-bottom:3px}}
 .v{{font-size:15px}}.bt{{font-family:monospace;font-size:10px;color:#fbd56b;border:1px solid #5a4920;background:#3a2e12;padding:1px 6px;border-radius:5px}}
-.d{{margin-top:14px;font-size:12px;color:#8b97a7}}</style></head><body><div class="c">
+.d{{margin-top:14px;font-size:12px;color:#8b97a7}}
+.acts{{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}}
+.acts a{{flex:1;min-width:140px;text-align:center;text-decoration:none;padding:12px;border-radius:9px;font-size:14px;font-weight:600;background:#11202e;border:1px solid #284a5e;color:#7fd1ff}}
+.acts a.em{{background:#241208;border-color:#5a3a16;color:#ffb37a}}</style></head><body><div class="c">
 <h1>{e(s['name'])}</h1><div class="sub">{e(s.get('formula') or '')} · CAS {e(s.get('cas') or '—')}</div>
 {ahov_html}{f'<div class="sig">⚠ {e(sig)}</div>' if sig else ''}{idlh_html}
 {field("Класс опасности", s.get('hazard_class'))}
@@ -1009,6 +1020,7 @@ def card(name: str):
 {field("Первая помощь", g['first_aid']['value'], g['first_aid']['source'])}
 {field("Средства защиты (СИЗ)", g['ppe']['value'], g['ppe']['source'])}
 {field("Хранение", g['storage']['value'], g['storage']['source'])}
+{acts_html}
 <div class="d">Данные с пометкой «типовое» — общие по группе, сверьте с паспортом. Цена ошибки = здоровье.</div>
 </div></body></html>"""
     return HTMLResponse(html_doc)
