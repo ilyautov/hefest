@@ -121,6 +121,16 @@
   .erg-box .r b{color:#cfe2ff}
   .erg .note{font-size:11px;color:var(--muted);margin-top:9px;line-height:1.45}
 
+  /* кросс-ссылка на оперативную карточку диспетчера */
+  .dispatch-link{display:flex;align-items:center;gap:11px;margin-top:14px;text-decoration:none;
+    background:#1a1206;border:1px solid #5a4216;border-radius:var(--r-sm);padding:12px 15px;
+    color:var(--amber);font-weight:600;font-size:14px;transition:border-color .15s,background .15s}
+  .dispatch-link:hover{border-color:var(--orange);background:#241a08}
+  .dispatch-link:focus-visible{outline:3px solid #5b9dffaa;outline-offset:2px}
+  .dispatch-link .ic{color:var(--orange);flex:none}
+  .dispatch-link .dl-sub{display:block;font-weight:400;font-size:11.5px;color:var(--muted);margin-top:2px}
+  .dispatch-link .arr{margin-left:auto;flex:none;color:var(--orange)}
+
   .disc{margin-top:16px;background:#241a08;border:1px solid #5a4216;border-radius:var(--r-sm);
     padding:11px 13px;font-size:12.5px;color:#fcd9a0;display:flex;gap:9px}
   .disc .ic{color:var(--amber);flex:none;margin-top:1px}
@@ -207,6 +217,13 @@
       <div class="field"><span class="ic" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></span><div class="body"><div class="k">Аварийная заметка</div><div class="v" id="c-note">—</div></div></div>
       <div class="field" id="c-qrwrap" style="display:none"><span class="qrbox"><img id="c-qr" alt="QR на мобильную карточку" width="84" height="84"></span><div class="body"><div class="k">Карточка на телефон</div><div class="v">Наведите камеру — откроется эта же карточка на смартфоне у места аварии.</div></div></div>
       <div class="disc"><span class="ic" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span><span id="c-disc"></span></div>
+      <a class="dispatch-link" id="c-dispatch" href="#">
+        <span class="ic" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg></span>
+        <span>Развернуть оперативную карточку диспетчера
+          <span class="dl-sub">зона заражения (РД 52.04.253-90), первоочередные действия, чек-лист оповещения</span>
+        </span>
+        <span class="arr" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+      </a>
     </div>
   </section>
 </div>
@@ -293,6 +310,8 @@ async function lookup(){
   // QR на мобильную карточку (стикер у места аварии / на телефон реагирующего)
   $('c-qr').src=base()+'/qr/'+encodeURIComponent(d.substance);
   $('c-qrwrap').style.display='flex';
+  // кросс-ссылка на развёрнутую оперативную карточку диспетчера
+  $('c-dispatch').href='dispatch.html?name='+encodeURIComponent(d.substance);
   $('introbox').style.display='none';   // прячем подсказку после первой загрузки карточки
   $('card').classList.add('on');
 }

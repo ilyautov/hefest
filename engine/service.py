@@ -15,6 +15,7 @@ from retriever import HybridRetriever, SemanticRetriever
 from cache import SemanticCache
 from backends import get_llm_backend
 import compat, ghs_map, hygiene, baseline, registry, quiz, sanpin, pubchem, verification, physchem, sanpin_env, transport, answer_review, gost_sections, normative, waste
+import ppe, warehouse, inspection, waste_calc, dispatch  # расширение: СИЗ / карта склада / инспектор / класс отхода / диспетчер
 try:
     import segno  # QR (pure-python); если нет — /qr отключаем
 except ImportError:
@@ -48,7 +49,8 @@ async def _api_key_guard(request: Request, call_next):
 
 # --- Отдача UI самим сервисом: одна точка входа (один URL для пользователя) ------------------------
 _ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
-_UI_PAGES = {"home", "substance", "emergency", "label", "registry", "quiz", "guide", "safety", "console", "readiness", "reviews", "gost"}
+_UI_PAGES = {"home", "substance", "emergency", "label", "registry", "quiz", "guide", "safety", "console", "readiness", "reviews", "gost",
+             "ppe", "warehouse", "inspection", "waste", "dispatch"}
 if os.path.isdir(os.path.join(_ROOT, "assets")):
     app.mount("/assets", StaticFiles(directory=os.path.join(_ROOT, "assets")), name="assets")
 
@@ -901,6 +903,64 @@ def quiz_endpoint(name: str):
         return {"error": "вещество не найдено"}
     return quiz.build_quiz(s)
 
+# --- Расширение: инструменты для площадок (СИЗ / склад / инспектор / отходы / диспетчер) -----------
+@app.get("/ppe/{name}")
+def ppe_recommend(name: str, operation: str | None = None):
+    """Подбор СИЗ по веществу: паспортные (grade=passport) или типовые по группе (grade=baseline)."""
+    s, _ = _resolve_sub(name)
+    if not s:
+        return {"error": "вещество не найдено"}
+    r = ppe.recommend_ppe(s, operation)
+    hygiene.audit("ppe", name, {"grade": r["ppe"]["grade"]})
+    return r
+
+@app.get("/warehouse/{name}")
+def warehouse_map(name: str):
+    """Карта склада: зональный аудит совместимости (раскладка — demo-шаблон, вердикты из compat)."""
+    p = _resolve_plant(name)
+    if not p:
+        return {"error": "завод не найден", "known": [x["plant"] for x in R.plants.values()]}
+    return warehouse.audit(p, SUBS)
+
+@app.get("/inspection/{plant}")
+def inspection_readiness(plant: str):
+    """Режим инспектора: химическая готовность площадки ПО ДАННЫМ системы (не проверочный лист надзора)."""
+    p = _resolve_plant(plant)
+    if not p:
+        return {"error": "завод не найден", "known": [x["plant"] for x in R.plants.values()]}
+    return inspection.plant_readiness(p, SUBS, assemble=_assemble)
+
+class WasteComponentIn(BaseModel):
+    substance: str
+    Ci_fraction: float | None = None  # массовая доля 0..1
+
+class WasteEstimateIn(BaseModel):
+    components: list[WasteComponentIn]
+
+@app.post("/waste/estimate")
+def waste_estimate(req: WasteEstimateIn):
+    """Предварительный расчёт класса опасности ОТХОДА (I–V) по Приказу Минприроды № 536.
+    Класс не присваиваем при нехватке показателей — honest-gap, needs_review (см. waste_calc)."""
+    comps = [{"substance": c.substance, "Ci_fraction": c.Ci_fraction} for c in req.components]
+    return waste_calc.estimate_waste_class(comps)
+
+@app.get("/dispatch/{name}")
+def dispatch_card_endpoint(name: str, mass_kg: float | None = None, wind_ms: float = 1.0,
+                           temp_c: float = 20.0, stability: str = "изотермия",
+                           n_hours: float = 1.0, spill: str = "свободный",
+                           dike_h: float | None = None):
+    """Оперативная карточка диспетчера при аварии с АХОВ: зона (РД 52.04.253-90) +
+    первоочередные действия из /emergency + поведение по плотности + чек-лист оповещения.
+    Зоны — строго из методики; телефоны — плейсхолдеры предприятия; ничего не выдумываем."""
+    em = emergency(name)
+    if isinstance(em, dict) and em.get("error") and not em.get("substance"):
+        return em
+    weather = {"wind_ms": wind_ms, "temp_c": temp_c, "stability": stability,
+               "n_hours": n_hours, "spill": spill, "dike_h": dike_h}
+    r = dispatch.dispatch_card(name, mass_kg=mass_kg, weather=weather, emergency=em)
+    hygiene.audit("dispatch", name, {"mass_kg": mass_kg, "depth_km": r.get("zone", {}).get("depth_total_km")})
+    return r
+
 @app.get("/qr/{name}")
 def qr(name: str, request: Request, target: str | None = None):
     """QR-код (SVG), ведущий на карточку вещества — для стикера на ёмкости/рабочем месте."""
@@ -932,6 +992,14 @@ def card(name: str):
                  f'острый порог: выше этого без изолирующего СИЗ опасно для жизни (NIOSH)</div>'
                  if idlh else "")
     sig = gh.get("signal_word") or ""
+    from urllib.parse import quote as _q
+    _enc = _q(s["name"])
+    _is_ahov = bool((ac and ac.get("ahov")) or ERG.get(s["name"].lower()))  # как в /emergency (учитывает ERG)
+    acts_html = ('<div class="acts">'
+                 f'<a href="/ppe.html?name={_enc}">Подбор СИЗ</a>'
+                 + (f'<a class="em" href="/dispatch.html?name={_enc}">Карточка диспетчера</a>'
+                    if _is_ahov else "")
+                 + "</div>")
     html_doc = f"""<!DOCTYPE html><html lang="ru"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>{e(s['name'])}</title>
 <style>body{{margin:0;background:#0a0e14;color:#e6edf3;font:16px/1.55 system-ui,-apple-system,sans-serif;padding:16px}}
@@ -941,7 +1009,10 @@ def card(name: str):
 .idlh{{background:#241a08;border:1px solid #5a4216;color:#fcd9a0;border-radius:10px;padding:9px 12px;font-size:13px;margin-bottom:12px}}
 .f{{border-top:1px solid #28344a;padding:11px 0}}.k{{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#8b97a7;margin-bottom:3px}}
 .v{{font-size:15px}}.bt{{font-family:monospace;font-size:10px;color:#fbd56b;border:1px solid #5a4920;background:#3a2e12;padding:1px 6px;border-radius:5px}}
-.d{{margin-top:14px;font-size:12px;color:#8b97a7}}</style></head><body><div class="c">
+.d{{margin-top:14px;font-size:12px;color:#8b97a7}}
+.acts{{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}}
+.acts a{{flex:1;min-width:140px;text-align:center;text-decoration:none;padding:12px;border-radius:9px;font-size:14px;font-weight:600;background:#11202e;border:1px solid #284a5e;color:#7fd1ff}}
+.acts a.em{{background:#241208;border-color:#5a3a16;color:#ffb37a}}</style></head><body><div class="c">
 <h1>{e(s['name'])}</h1><div class="sub">{e(s.get('formula') or '')} · CAS {e(s.get('cas') or '—')}</div>
 {ahov_html}{f'<div class="sig">⚠ {e(sig)}</div>' if sig else ''}{idlh_html}
 {field("Класс опасности", s.get('hazard_class'))}
@@ -949,6 +1020,7 @@ def card(name: str):
 {field("Первая помощь", g['first_aid']['value'], g['first_aid']['source'])}
 {field("Средства защиты (СИЗ)", g['ppe']['value'], g['ppe']['source'])}
 {field("Хранение", g['storage']['value'], g['storage']['source'])}
+{acts_html}
 <div class="d">Данные с пометкой «типовое» — общие по группе, сверьте с паспортом. Цена ошибки = здоровье.</div>
 </div></body></html>"""
     return HTMLResponse(html_doc)
