@@ -46,6 +46,14 @@
   .btn:hover{border-color:var(--blue);background:var(--panel2)}
   .btn.pr{background:var(--blue);border-color:var(--blue);color:#fff}.btn.pr:hover{background:var(--blue-d)}
 
+  .xlinks{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin:-10px 0 22px}
+  .xlinks .lbl{font-size:12.5px;color:var(--muted);margin-right:2px}
+  .xlinks a.xl{cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;font:600 13.5px var(--sans);
+    background:var(--panel);border:1px solid var(--line);color:var(--txt);padding:0 14px;height:38px;border-radius:9px;transition:border-color .15s,background .15s}
+  .xlinks a.xl:hover{border-color:var(--blue);background:var(--panel2)}
+  .xlinks a.xl svg{flex:none}
+  .xlinks .for{font-size:12px;color:var(--muted)}
+
   .sum{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:22px}
   .m{flex:1;min-width:130px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:13px 15px}
   .m .v{font-family:var(--mono);font-size:23px;font-weight:700;font-variant-numeric:tabular-nums}
@@ -107,6 +115,14 @@
 
   <div class="exrow" id="ex"><span class="lbl">Быстрый выбор:</span></div>
 
+  <div class="xlinks" id="xlinks" style="display:none">
+    <span class="lbl">По площадке <span class="for" id="xplant"></span>:</span>
+    <a class="xl" id="xwh" href="#">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V8l9-5 9 5v13"/><path d="M3 21h18"/><rect x="8" y="13" width="8" height="8"/></svg>Карта склада</a>
+    <a class="xl" id="xinsp" href="#">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Режим инспектора</a>
+  </div>
+
   <div id="introbox" class="introbox">
     <h2>Что это и как пользоваться</h2>
     <ol>
@@ -164,11 +180,14 @@
         b.className='exchip';b.type='button';b.textContent=p.plant;
         b.onclick=()=>{$('plant').value=p.plant;loadPlant(p.plant);};
         ex.appendChild(b);});
+      // deep-link ?plant= — открыть завод сразу (для перехода с других экранов площадки)
+      const qp=new URLSearchParams(location.search).get('plant');
+      if(qp&&d.plants.some(p=>p.plant===qp)){$('plant').value=qp;loadPlant(qp);}
     }catch(e){$('plant').innerHTML='<option>ошибка загрузки</option>';}
   }
   function vbLabel(v){return v==='forbidden'?'нельзя':'осторожно';}
   async function loadPlant(name){
-    $('err').style.display='none';$('body').style.display='none';$('csv').style.display='none';
+    $('err').style.display='none';$('body').style.display='none';$('csv').style.display='none';$('xlinks').style.display='none';
     if(!name) return;
     let d;
     try{d=await(await fetch(base()+'/registry/'+enc(name))).json();}
@@ -211,6 +230,11 @@
 
     $('csv').href=base()+'/export/registry.csv?plant='+enc(name);
     $('csv').style.display='inline-flex';
+
+    $('xwh').href='warehouse.html?plant='+enc(name);
+    $('xinsp').href='inspection.html?plant='+enc(name);
+    $('xplant').textContent='«'+name+'»';
+    $('xlinks').style.display='flex';
     $('introbox').style.display='none';   // прячем подсказку «как пользоваться» после загрузки данных завода
     $('body').style.display='block';
   }

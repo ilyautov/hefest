@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Подбор СИЗ по веществу  ·  HEFEST</title>
+<style>
+  /* Dark Mode (OLED). Подбор средств индивидуальной защиты по веществу.
+     Дизайн-токены общие с safety.html / console.html / emergency.html. Системные шрифты (on-prem). */
+  :root{
+    --bg:#0f1419; --panel:#1a2230; --panel2:#222c3a; --line:#2b3647;
+    --txt:#eef2f7; --muted:#a8b3c2;
+    --blue:#5b9dff; --blue-d:#2563eb; --orange:#f9a23b; --red:#ff6b6b; --green:#3ecf8e; --amber:#ffce6b;
+    --r:12px; --r-sm:9px;
+    --mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono",Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1100px 480px at 80% -10%,#122036,transparent 60%),var(--bg);
+    color:var(--txt);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;min-height:100dvh}
+  .wrap{max-width:880px;margin:0 auto;padding:24px 18px 80px}
+  .top{display:flex;align-items:center;gap:12px;margin-bottom:4px}
+  .logo{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;
+    background:linear-gradient(145deg,#1b263b,#0f1722);border:1px solid var(--line);color:var(--orange);flex:none}
+  h1{font-size:19px;margin:0;font-weight:600;letter-spacing:.2px}
+  .status{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);font-family:var(--sans)}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+  .dot.ok{background:var(--green);box-shadow:0 0 10px #3ecf8e88}
+  .dot.off{background:var(--red);box-shadow:0 0 10px #ff6b6b88}
+  .sub{color:var(--muted);font-size:13px;margin:2px 0 20px}
+  .sub a{color:var(--blue);text-decoration:none}.sub a:hover{text-decoration:underline}
+
+  .hint{font-size:13px;color:var(--muted);margin:0 0 14px;line-height:1.55}
+  label.fld{display:block;font-size:12px;color:var(--muted);margin:0 0 6px}
+  input,select{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-sm);color:var(--txt);
+    padding:12px 13px;font:14px var(--sans);outline:none;transition:border-color .15s,box-shadow .15s;width:100%}
+  input::placeholder{color:#5f6c7e}
+  input:focus-visible,select:focus-visible{border-color:var(--blue);box-shadow:0 0 0 3px #5b9dff33}
+  .row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;align-items:flex-end}
+  .row>div{flex:1;min-width:160px}
+  button.go{background:var(--orange);color:#241204;border:0;border-radius:var(--r-sm);min-height:46px;padding:0 22px;
+    font-weight:600;font-size:15px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:filter .15s,transform .06s}
+  button.go:hover{filter:brightness(1.07)}button.go:active{transform:translateY(1px)}
+  button.go:focus-visible{outline:3px solid #5b9dffaa;outline-offset:2px}
+  button.go[disabled]{opacity:.55;cursor:progress}
+
+  /* чипы быстрого выбора */
+  .chips{display:flex;flex-wrap:wrap;gap:7px;margin:-2px 0 16px}
+  .chips .lbl{font-size:12px;color:var(--muted);align-self:center;margin-right:2px}
+  .chip{font:13px var(--sans);color:#dbe3ee;background:var(--panel);border:1px solid var(--line);
+    padding:6px 13px;border-radius:999px;cursor:pointer;transition:border-color .15s,background .15s,color .15s}
+  .chip:hover{border-color:var(--orange);color:var(--orange)}
+  .chip:active{transform:translateY(1px)}
+  .chip:focus-visible{outline:2px solid #5b9dffaa;outline-offset:2px}
+  .chip.on{background:#2a230f;border-color:var(--orange);color:var(--orange);font-weight:600}
+
+  .msg{display:none;border-radius:var(--r);padding:13px 15px;margin:12px 0;font-size:14px;align-items:center;gap:10px}
+  .msg.on{display:flex}.msg.err{background:#2a1414;border:1px solid #4a2424;color:#ffb4b4}
+
+  /* result card */
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-top:16px;
+    opacity:0;transform:translateY(8px);animation:rise .25s ease forwards}
+  @keyframes rise{to{opacity:1;transform:none}}
+  .vstrip{height:5px}
+  .vstrip.passport{background:var(--green)}.vstrip.baseline{background:#5a6577}
+  .card .in{padding:18px}
+  .head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+  .vpair{font-weight:600;font-size:18px}
+  .gradebadge{font-weight:700;font-size:12px;letter-spacing:.5px;padding:6px 12px;border-radius:8px;text-transform:uppercase}
+  .gradebadge.passport{background:#13301f;color:#6ee7a8;border:1px solid #1f5236}
+  .gradebadge.baseline{background:#222c3a;color:#c4cfdc;border:1px solid var(--line)}
+  .groups{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 4px}
+  .gchip{font-family:var(--mono);font-size:11.5px;color:#b9c6d6;background:var(--panel2);border:1px solid var(--line);padding:3px 9px;border-radius:7px}
+
+  .discbox{background:#2a230f;border:1px solid #5a4920;color:#fbd56b;border-radius:var(--r-sm);
+    padding:11px 13px;margin:14px 0;font-size:13px;line-height:1.5;display:flex;gap:9px;align-items:flex-start}
+  .discbox svg{flex:none;margin-top:2px}
+
+  /* категории СИЗ */
+  .ppegrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:14px 0 4px}
+  .ppecat{background:var(--panel2);border:1px solid var(--line);border-radius:var(--r-sm);padding:13px 14px}
+  .ppecat h4{margin:0 0 9px;font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px;
+    display:flex;align-items:center;gap:7px}
+  .ppecat h4 svg{color:var(--orange);flex:none}
+  .ppecat ul{list-style:none;padding:0;margin:0}
+  .ppecat li{font-size:13.5px;color:#dbe3ee;padding:4px 0 4px 16px;position:relative;line-height:1.45}
+  .ppecat li:before{content:"";position:absolute;left:2px;top:11px;width:6px;height:6px;border-radius:50%;background:var(--orange)}
+  .ppecat.empty li{color:var(--muted)}.ppecat.empty li:before{background:#46505f}
+
+  /* контекст: класс/ПДК/GHS */
+  .ctx{display:flex;flex-wrap:wrap;gap:18px;margin:16px 0 4px;padding-top:14px;border-top:1px solid var(--line)}
+  .ctx .item{min-width:120px}
+  .ctx .l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+  .ctx .v{font-family:var(--mono);font-size:18px;font-weight:700;color:var(--txt);font-variant-numeric:tabular-nums}
+  .ctx .v small{font-size:12px;color:var(--muted);font-weight:500;margin-left:4px}
+  .ctx .src{font-size:11px;color:#7d8a9c;margin-top:3px;line-height:1.4}
+  .ghschips{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+  .ghschip{font-size:11.5px;color:#fbd56b;background:#2a230f;border:1px solid #5a4920;padding:3px 9px;border-radius:7px}
+  .nodata{color:var(--muted);font-style:italic;font-size:13px}
+
+  .cite{font-family:var(--mono);font-size:12px;color:var(--muted);background:#0e1622;border-left:2px solid var(--line);
+    padding:8px 11px;border-radius:0 7px 7px 0;margin-top:14px;line-height:1.5}
+  .opnote{font-size:12.5px;color:var(--amber);margin-top:12px;line-height:1.5}
+  .disc{font-size:11.5px;color:var(--muted);margin-top:14px;line-height:1.5}
+
+  .skeleton{display:none}.skeleton.on{display:block;margin-top:16px}
+  .sk{height:14px;border-radius:6px;background:linear-gradient(90deg,#1a2436,#222e40,#1a2436);
+    background-size:200% 100%;animation:sh 1.2s linear infinite;margin-bottom:12px}
+  @keyframes sh{to{background-position:-200% 0}}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <span class="logo" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 6v6c0 5 3.5 8 8 10 4.5-2 8-5 8-10V6l-8-4z"/><path d="M9 12l2 2 4-4"/></svg></span>
+    <h1>Подбор СИЗ по веществу</h1>
+    <div class="status" aria-live="polite"><span class="dot" id="dot"></span><span id="st">проверка…</span></div>
+  </div>
+  <div style="margin:6px 0 2px"><a href="home.html" style="color:var(--blue);text-decoration:none;font-size:14px;font-weight:500">← На главную</a></div>
+  <div class="sub">Средства индивидуальной защиты по веществу · по категориям · с провенансом ·
+    <a href="safety.html">операции и хранение →</a> · <a href="emergency.html">аварийные карточки →</a></div>
+
+  <div class="hint">Введите вещество — система покажет рекомендованные СИЗ, разложенные по категориям
+    (органы дыхания · руки · глаза и лицо · кожа и тело). <b style="color:var(--green)">Зелёный бейдж</b> —
+    данные из паспорта вещества. <b style="color:#c4cfdc">Серый бейдж</b> — типовые меры по химической
+    группе (НЕ из паспорта, требуют проверки эксперта). Где данных нет — так и написано.</div>
+
+  <div class="row">
+    <div><label class="fld" for="name">Вещество</label>
+      <input id="name" list="subs" placeholder="напр. серная кислота" autocomplete="off"></div>
+    <div style="flex:0 1 240px"><label class="fld" for="op">Операция (необязательно)</label>
+      <select id="op">
+        <option value="">— любая / общие СИЗ —</option>
+        <option value="хранение">хранение</option>
+        <option value="перелив">перелив</option>
+        <option value="авария">авария</option>
+        <option value="уборка пролива">уборка пролива</option>
+      </select></div>
+    <div style="flex:0 0 auto;min-width:0"><button class="go" id="go">Подобрать СИЗ</button></div>
+  </div>
+
+  <div class="chips" id="chips"><span class="lbl">Примеры:</span></div>
+
+  <div id="err" class="msg err" role="alert"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg><span id="errt"></span></div>
+
+  <div id="sk" class="skeleton"><div class="sk" style="width:55%;height:18px"></div><div class="sk" style="width:100%"></div><div class="sk" style="width:85%"></div></div>
+  <div id="out"></div>
+
+  <input type="hidden" id="base" value="http://127.0.0.1:8000"><!-- адрес берётся из location.origin -->
+</div>
+
+<datalist id="subs"></datalist>
+
+<script>
+const $=id=>document.getElementById(id);
+const base=()=>{const v=$('base').value.replace(/\/+$/,'');return location.protocol.indexOf('http')===0?location.origin:v;};
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+// Иконки категорий СИЗ (Lucide-style).
+const CAT_ICON={
+  respiratory:'<path d="M3 14h4l1 3h3M21 14h-4l-1 3h-3"/><circle cx="6" cy="17" r="3"/><circle cx="18" cy="17" r="3"/><path d="M12 5v8M8 5h8"/>',
+  hands:'<path d="M18 11V6a2 2 0 0 0-4 0M14 10V4a2 2 0 0 0-4 0v2M10 10.5V6a2 2 0 0 0-4 0v8a6 6 0 0 0 6 6h2a6 6 0 0 0 6-6v-3a2 2 0 0 0-4 0"/>',
+  eyes_face:'<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>',
+  skin:'<path d="M20 6 16 4l-2 2h-4L8 4 4 6l2 4v10h12V10z"/>',
+  other:'<circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/>'
+};
+const CAT_ORDER=['respiratory','hands','eyes_face','skin','other'];
+const CAT_LABEL={respiratory:'органы дыхания',hands:'руки',eyes_face:'глаза и лицо',skin:'кожа и тело',other:'прочее / общие меры'};
+
+async function health(){
+  try{const d=await(await fetch(base()+'/health',{signal:AbortSignal.timeout(4000)})).json();
+    $('dot').className='dot ok';$('st').textContent='на связи · '+(d.substances||0)+' веществ';
+    loadSubs();
+  }catch(e){$('dot').className='dot off';$('st').textContent='нет связи';}
+}
+function showErr(t){$('errt').textContent=t;$('err').classList.add('on');}
+function clearErr(){$('err').classList.remove('on');}
+
+async function loadSubs(){
+  try{const d=await(await fetch(base()+'/substances/names?limit=400')).json();
+    $('subs').innerHTML=d.names.map(n=>`<option value="${esc(n)}">`).join('');}catch(e){}
+}
+
+function ctxItem(label,obj,unit){
+  if(!obj||obj.value==null||obj.value===''||(Array.isArray(obj.value)&&!obj.value.length))
+    return `<div class="item"><div class="l">${esc(label)}</div><div class="nodata">нет данных</div></div>`;
+  const u=unit?`<small>${esc(unit)}</small>`:'';
+  return `<div class="item"><div class="l">${esc(label)}</div>
+    <div class="v">${esc(obj.value)}${u}</div>
+    ${obj.source?`<div class="src">${esc(obj.source)}</div>`:''}</div>`;
+}
+
+function render(r){
+  const grade=r.ppe.grade; // passport | baseline
+  const gradeLabel=grade==='passport'?'из паспорта':'типовое по группе';
+  const groups=(r.groups||[]).map(g=>`<span class="gchip">${esc(g)}</span>`).join('') ||
+    '<span class="gchip">группа не определена</span>';
+
+  // категории СИЗ
+  const cats=r.categories||{};
+  const cells=CAT_ORDER.map(k=>{
+    const items=cats[k]||[];
+    const empty=items.length?'':' empty';
+    const lis=items.length?items.map(i=>`<li>${esc(i)}</li>`).join(''):'<li>не указано в источнике</li>';
+    return `<div class="ppecat${empty}"><h4><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${CAT_ICON[k]||''}</svg>${esc(CAT_LABEL[k]||k)}</h4><ul>${lis}</ul></div>`;
+  }).join('');
+
+  // дисклеймер для baseline
+  const disc=r.ppe.disclaimer?`<div class="discbox"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.3 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.3a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg><span>${esc(r.ppe.disclaimer)}</span></div>`:'';
+
+  // контекст: класс / ПДК / GHS
+  const c=r.context||{};
+  const ghs=c.ghs||{};
+  const ghsBlock=(ghs.value&&ghs.value.length)
+    ? `<div class="item" style="flex:1 1 100%"><div class="l">знаки опасности (GHS)</div>
+        <div class="ghschips">${ghs.value.map(g=>`<span class="ghschip">${esc(g)}</span>`).join('')}</div>
+        ${ghs.source?`<div class="src">${esc(ghs.source)}</div>`:''}</div>`
+    : `<div class="item" style="flex:1 1 100%"><div class="l">знаки опасности (GHS)</div><div class="nodata">нет данных</div></div>`;
+
+  const cite=r.ppe.citation?`<div class="cite">источник: ${esc(r.ppe.citation)}</div>`:'';
+  const op=(r.operation&&r.operation.note)?`<div class="opnote">⚠ ${esc(r.operation.note)}</div>`:'';
+
+  $('out').innerHTML=`<div class="card"><div class="vstrip ${grade}"></div><div class="in">
+    <div class="head"><span class="vpair">${esc(r.substance)}</span>
+      <span class="gradebadge ${grade}">${esc(gradeLabel)}</span></div>
+    <div class="groups">${groups}</div>
+    <div class="src" style="color:#7d8a9c;font-size:12px">${esc(r.ppe.source)}</div>
+    ${disc}
+    <div class="ppegrid">${cells}</div>
+    <div class="ctx">
+      ${ctxItem('класс опасности',c.hazard_class)}
+      ${ctxItem('ПДК р.з.',c.pdk_mgm3,c.pdk_mgm3&&c.pdk_mgm3.unit)}
+      ${ghsBlock}
+    </div>
+    ${cite}${op}
+    <div class="disc">Полнота данных: ${esc(r.confidence||'needs_review')}. Перед выдачей СИЗ сверьте с действующим паспортом безопасности вещества и нормами вашего объекта.</div>
+  </div></div>`;
+}
+
+async function run(){
+  const n=$('name').value.trim();
+  if(!n){showErr('Укажите вещество.');return;}
+  clearErr(); $('out').innerHTML=''; $('sk').classList.add('on'); $('go').disabled=true;
+  const op=$('op').value;
+  try{
+    const url=base()+'/ppe/'+encodeURIComponent(n)+(op?'?operation='+encodeURIComponent(op):'');
+    const r=await(await fetch(url)).json();
+    $('sk').classList.remove('on'); $('go').disabled=false;
+    if(r.error){showErr(r.error);return;}
+    render(r);
+  }catch(e){$('sk').classList.remove('on');$('go').disabled=false;showErr('Система недоступна.');}
+}
+
+// Чипы быстрого выбора — показательные вещества с паспортными СИЗ.
+const CHIPS=['хлор','аммиак','серная кислота','метанол'];
+function syncChips(){
+  const cur=$('name').value.trim().toLowerCase();
+  $('chips').querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c.dataset.name.toLowerCase()===cur));
+}
+(function buildChips(){
+  const box=$('chips');
+  CHIPS.forEach(name=>{
+    const b=document.createElement('button');
+    b.type='button';b.className='chip';b.dataset.name=name;b.textContent=name;
+    b.onclick=()=>{$('name').value=name;syncChips();run();};
+    box.appendChild(b);
+  });
+})();
+
+$('go').onclick=run;
+$('name').addEventListener('keydown',e=>{if(e.key==='Enter')run();});
+$('name').addEventListener('input',syncChips);
+$('base').addEventListener('change',health);
+health();
+
+// Автозагрузка: ?name= из URL, иначе по умолчанию демонстрируем «хлор» (паспортный грейд).
+(function autoload(){
+  let n='';
+  const m=location.search.match(/[?&]name=([^&]*)/);
+  if(m){try{n=decodeURIComponent(m[1].replace(/\+/g,' '));}catch(e){n=m[1];}}
+  n=n.trim()||'хлор';
+  $('name').value=n;syncChips();run();
+})();
+</script>
+</body>
+</html>

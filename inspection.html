@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Режим инспектора — химическая готовность площадки  ·  HEFEST</title>
+<style>
+  :root{
+    --bg:#0f1419; --panel:#1a2230; --panel2:#222c3a; --line:#2b3647;
+    --txt:#eef2f7; --muted:#a8b3c2;
+    --blue:#5b9dff; --blue-d:#2563eb; --orange:#f9a23b; --red:#ff6b6b; --green:#3ecf8e; --amber:#ffce6b;
+    --r:14px; --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1200px 520px at 75% -12%,#13233c,transparent 62%),var(--bg);
+    color:var(--txt);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;min-height:100dvh}
+  .wrap{max-width:900px;margin:0 auto;padding:34px 18px 80px}
+  .top{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+  a.back{color:var(--muted);text-decoration:none;font-size:13px}
+  a.back:hover{color:var(--blue)}
+  h1{font-size:23px;margin:0;font-weight:700}
+  .status{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted)}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+  .dot.ok{background:var(--green)}.dot.off{background:var(--red)}
+  .lead{color:var(--muted);font-size:14.5px;margin:8px 0 18px;max-width:730px;line-height:1.55}
+
+  .disc{display:flex;gap:11px;background:rgba(249,162,59,.07);border:1px solid rgba(249,162,59,.34);
+    border-radius:var(--r);padding:13px 15px;margin-bottom:20px;font-size:13.5px;color:#ffdfb0;line-height:1.5}
+  .disc b{color:var(--amber)}
+  .disc .ic{font-size:16px;line-height:1.3}
+
+  .pick{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+  .pick label{font-size:13px;color:var(--muted)}
+  select{background:var(--panel);border:1px solid var(--line);border-radius:9px;color:var(--txt);
+    padding:9px 12px;font:14px var(--sans);min-width:260px;cursor:pointer}
+
+  .chips{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:20px}
+  .chips .clbl{font-size:12px;color:#7d8aa0;margin-right:2px}
+  .chip{font:13px var(--sans);color:var(--muted);background:var(--panel2);border:1px solid var(--line);
+    border-radius:999px;padding:5px 12px;cursor:pointer;transition:all .15s ease;white-space:nowrap}
+  .chip:hover{color:var(--txt);border-color:var(--blue)}
+  .chip.active{color:#fff;background:rgba(91,157,255,.16);border-color:var(--blue)}
+
+  .big{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:24px;margin-bottom:18px}
+  .big .ttl{font-size:13px;color:var(--muted);margin-bottom:10px}
+  .pct{font-family:var(--mono);font-size:46px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+  .pct+small{display:block;font-size:14px;color:var(--muted);font-weight:600;margin-top:6px}
+  .pbar{height:12px;border-radius:7px;background:#1b2433;overflow:hidden;margin:16px 0 8px}
+  .pbar i{display:block;height:100%;background:linear-gradient(90deg,var(--green),#0e9f6e);transition:width .6s ease}
+  .pcap{font-size:13px;color:var(--muted)}
+
+  .sec{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:6px 4px 10px;margin-bottom:16px}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{text-align:left;padding:12px 14px;border-bottom:1px solid #1b2433;vertical-align:top}
+  th{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:600}
+  tr:last-child td{border-bottom:none}
+  td.m-lbl b{color:var(--txt);font-weight:600}
+  td.m-lbl .note{display:block;color:var(--muted);font-size:12.5px;margin-top:3px;line-height:1.45}
+  td.m-cov{font-family:var(--mono);font-variant-numeric:tabular-nums;color:#cdd7e3;white-space:nowrap}
+  .badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-family:var(--mono);
+    padding:4px 9px;border-radius:7px;white-space:nowrap}
+  .badge.ok{border:1px solid rgba(62,207,142,.4);background:rgba(62,207,142,.08);color:var(--green)}
+  .badge.partial{border:1px solid rgba(255,206,107,.4);background:rgba(255,206,107,.07);color:var(--amber)}
+  .badge.gap{border:1px solid rgba(255,107,107,.4);background:rgba(255,107,107,.08);color:var(--red)}
+  .mini{height:7px;border-radius:5px;background:#1b2433;overflow:hidden;margin-top:8px;max-width:120px}
+  .mini i{display:block;height:100%}
+  .mini i.ok{background:var(--green)}.mini i.partial{background:var(--amber)}.mini i.gap{background:var(--red)}
+  .foot{font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.5}
+  .empty{color:var(--muted);font-size:14px;padding:24px;text-align:center}
+  @media(max-width:560px){
+    table{table-layout:fixed}
+    th,td{padding:10px 8px}
+    th:nth-child(2),td:nth-child(2){width:60px}
+    th:nth-child(3),td:nth-child(3){width:96px}
+    td.m-cov{white-space:normal;word-break:break-word}
+    td.m-lbl{overflow-wrap:anywhere}
+    .badge{white-space:normal}
+  }
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="back" href="home.html">← на главную</a>
+    <h1>Режим инспектора</h1>
+    <div class="status" aria-live="polite"><span class="dot" id="dot"></span><span id="st">проверка…</span></div>
+  </div>
+  <div class="lead">Химическая готовность площадки к проверке — измеримые метрики, <b>выведенные из данных
+    системы</b> с провенансом: покрытие ПДК, маркировки СГС, класса опасности, экспертной верификации,
+    совместимости хранения, актуальности нормативной базы и критичных разделов ГОСТ 30333.</div>
+
+  <div class="disc">
+    <span class="ic">⚠️</span>
+    <span><b>Это не проверочный лист надзора.</b> Дашборд показывает химическую готовность по данным
+      системы и НЕ воспроизводит официальный проверочный лист Ростехнадзора/Роспотребнадзора и не цитирует
+      требования надзора. Сверку этих метрик с актуальным проверочным листом надзора выполняет
+      ответственный специалист предприятия.</span>
+  </div>
+
+  <div class="pick">
+    <label for="plant">Площадка:</label>
+    <select id="plant"><option value="">— загрузка списка —</option></select>
+  </div>
+  <div class="chips" id="chips"><span class="clbl">Быстрый переход:</span></div>
+
+  <div class="big">
+    <div class="ttl">Общая химическая готовность <span style="color:#7d8aa0">(по данным системы)</span></div>
+    <div><span class="pct" id="pct">—</span><small id="psub">выберите площадку</small></div>
+    <div class="pbar"><i id="pbar" style="width:0%"></i></div>
+    <div class="pcap" id="pcap">—</div>
+  </div>
+
+  <div class="sec">
+    <table>
+      <thead><tr><th>Метрика готовности (из данных системы)</th><th>Покрытие</th><th>Статус</th></tr></thead>
+      <tbody id="rows"><tr><td colspan="3" class="empty">Выберите площадку, чтобы построить дашборд.</td></tr></tbody>
+    </table>
+    <div class="foot" id="foot"></div>
+  </div>
+
+  <input type="hidden" id="base" value="http://127.0.0.1:8000">
+</div>
+<script>
+  const $=id=>document.getElementById(id);
+  const base=()=>{const v=$('base').value.replace(/\/+$/,'');return location.protocol.indexOf('http')===0?location.origin:v;};
+  const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const STBADGE={ok:'✓ закрыто',partial:'~ частично',gap:'! пробел'};
+  const fmt=n=>(n==null?'—':Number(n).toLocaleString('ru'));
+
+  async function loadPlants(){
+    let d;
+    try{ d=await(await fetch(base()+'/registry',{signal:AbortSignal.timeout(5000)})).json();
+      $('dot').className='dot ok';$('st').textContent='система на связи'; }
+    catch(e){ $('dot').className='dot off';$('st').textContent='нет связи';
+      $('plant').innerHTML='<option value="">нет связи с системой</option>';
+      $('pcap').textContent='нет связи с системой'; return; }
+    const ps=(d.plants||[]).slice().sort((a,b)=>a.plant.localeCompare(b.plant,'ru'));
+    $('plant').innerHTML='<option value="">— выберите площадку —</option>'+
+      ps.map(p=>`<option value="${esc(p.plant)}">${esc(p.plant)} (${p.substances} в-в)</option>`).join('');
+
+    // Чипы-быстрого перехода: показательная площадка + крупнейшие по числу веществ
+    const DEMO='ПЛОЩАДКА';
+    const bySubs=ps.slice().sort((a,b)=>(b.substances||0)-(a.substances||0));
+    const chips=[]; const seen=new Set();
+    const pick=n=>{ if(n&&!seen.has(n)){ seen.add(n); chips.push(n); } };
+    pick(ps.find(p=>p.plant===DEMO)?.plant);
+    bySubs.forEach(p=>{ if(chips.length<3) pick(p.plant); });
+    $('chips').innerHTML='<span class="clbl">Быстрый переход:</span>'+
+      chips.map(n=>`<button class="chip" type="button" data-plant="${esc(n)}">${esc(n)}</button>`).join('');
+    $('chips').querySelectorAll('.chip').forEach(b=>b.addEventListener('click',()=>select(b.dataset.plant)));
+
+    // deep-link: ?plant=<имя> сразу строит дашборд (для ссылок и закладок)
+    const want=new URLSearchParams(location.search).get('plant');
+    let initial='';
+    if(want){ const opt=[...$('plant').options].find(o=>o.value.toLowerCase()===want.toLowerCase());
+      if(opt) initial=opt.value; }
+    // По умолчанию — показательная площадка (или первая), чтобы экран не был пустым
+    if(!initial) initial=(ps.find(p=>p.plant===DEMO)||ps[0]||{}).plant||'';
+    if(initial) select(initial);
+  }
+
+  // Выбрать площадку: синхронизирует селект, активный чип и строит дашборд
+  function select(name){
+    $('plant').value=name;
+    $('chips').querySelectorAll('.chip').forEach(b=>b.classList.toggle('active',b.dataset.plant===name));
+    loadPlant(name);
+  }
+
+  function metricRow(m){
+    const pct=m.total>0?Math.round(100*m.covered/m.total):0;
+    return `<tr>
+      <td class="m-lbl"><b>${esc(m.label)}</b>${m.note?`<span class="note">${esc(m.note)}</span>`:''}
+        <div class="mini"><i class="${esc(m.status)}" style="width:${Math.max(pct,2)}%"></i></div></td>
+      <td class="m-cov">${fmt(m.covered)} / ${fmt(m.total)}</td>
+      <td><span class="badge ${esc(m.status)}">${esc(STBADGE[m.status]||m.status)}</span></td>
+    </tr>`;
+  }
+
+  async function loadPlant(name){
+    if(!name){ $('rows').innerHTML='<tr><td colspan="3" class="empty">Выберите площадку, чтобы построить дашборд.</td></tr>';
+      $('pct').textContent='—';$('psub').textContent='выберите площадку';$('pbar').style.width='0%';$('pcap').textContent='—';$('foot').textContent=''; return; }
+    $('pcap').textContent='считаем готовность…';
+    let d;
+    try{ d=await(await fetch(base()+'/inspection/'+encodeURIComponent(name),{signal:AbortSignal.timeout(8000)})).json(); }
+    catch(e){ $('pcap').textContent='ошибка запроса'; return; }
+    if(d.error){ $('rows').innerHTML=`<tr><td colspan="3" class="empty">${esc(d.error)}</td></tr>`;
+      $('pct').textContent='—';$('pcap').textContent=esc(d.error); return; }
+
+    const pct=d.progress_pct!=null?d.progress_pct:0;
+    $('pct').textContent=pct+'%';
+    $('pct').style.color = pct>=80?'var(--green)':pct>0?'var(--amber)':'var(--red)';
+    $('psub').textContent='химической готовности по данным';
+    $('pbar').style.width=Math.max(pct,1)+'%';
+    const ok=(d.metrics||[]).filter(m=>m.status==='ok').length, tot=(d.metrics||[]).length;
+    $('pcap').textContent=`${esc(d.plant)} · ${fmt(d.substances_total)} веществ · ${ok} из ${tot} метрик закрыто`;
+    $('rows').innerHTML=(d.metrics||[]).map(metricRow).join('')||'<tr><td colspan="3" class="empty">нет метрик</td></tr>';
+    let foot=esc(d.basis||'');
+    if(d.unmatched&&d.unmatched.length) foot+=` Вне базы (нет карточки): ${esc(d.unmatched.join(', '))}.`;
+    $('foot').textContent=foot;
+  }
+
+  $('plant').addEventListener('change',e=>select(e.target.value));
+  $('base').addEventListener('change',loadPlants);
+  loadPlants();
+</script>
+</body>
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Оперативная карточка диспетчера · HEFEST</title>
+<style>
+  /* Dark Mode ops-дашборд. Крупный шрифт и высокий контраст — читаемость в стрессе.
+     Системные шрифты (on-prem, без CDN). Моно — для цифр (зона/ООН/IDLH). */
+  :root{
+    --bg:#0f1419; --panel:#1a2230; --panel2:#222c3a; --line:#2b3647;
+    --txt:#f3f6fa; --muted:#aab6c5;
+    --blue:#5b9dff; --orange:#f9a23b; --red:#ff6b6b; --green:#3ecf8e; --amber:#ffce6b;
+    --r:14px; --r-sm:10px;
+    --mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono",Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:radial-gradient(1100px 480px at 80% -10%,#152338 0%,transparent 60%),var(--bg);
+    color:var(--txt);font:17px/1.55 var(--sans);-webkit-font-smoothing:antialiased;min-height:100dvh}
+  .wrap{max-width:860px;margin:0 auto;padding:24px 18px 80px}
+
+  /* header */
+  .top{display:flex;align-items:center;gap:12px;margin-bottom:4px}
+  .logo{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;
+    background:linear-gradient(145deg,#1b263b,#0f1722);border:1px solid var(--line);color:var(--orange);flex:none;font-size:22px}
+  h1{font-size:21px;margin:0;font-weight:700;letter-spacing:.2px}
+  .status{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);font-family:var(--mono)}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--muted)}
+  .dot.ok{background:var(--green);box-shadow:0 0 10px #3ecf8e88}
+  .dot.off{background:var(--red);box-shadow:0 0 10px #ff6b6b88}
+  .sub{color:var(--muted);font-size:14px;margin:4px 0 14px}
+  a.nav{color:var(--blue);text-decoration:none;font-size:14px}
+  a.nav:hover{text-decoration:underline}
+
+  /* tool-note banner — всегда на виду */
+  .toolnote{background:#23190b;border:1px solid #5a4012;color:var(--amber);border-radius:var(--r);
+    padding:12px 15px;font-size:13.5px;line-height:1.5;margin-bottom:16px;display:flex;gap:10px}
+  .toolnote b{color:#ffe0a0}
+
+  /* quick-pick chips */
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+  .chiplbl{width:100%;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin:0 0 1px 2px}
+  .chip{width:auto;min-height:0;margin:0;font-family:var(--sans);font-size:14.5px;font-weight:600;color:var(--txt);
+    background:var(--panel2);border:1px solid var(--line);border-radius:999px;
+    padding:8px 15px;cursor:pointer;line-height:1;white-space:nowrap;transition:filter .12s,border-color .12s}
+  .chip:hover{filter:brightness(1.18);border-color:var(--blue)}
+  .chip:active{transform:translateY(1px)}
+  .chip.on{background:#23314a;border-color:var(--blue);color:#cfe0ff}
+
+  /* form */
+  .form{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:14px}
+  .row{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:10px;margin-bottom:10px}
+  label.fld{display:block;font-size:12px;color:var(--muted);margin:0 0 4px 2px;text-transform:uppercase;letter-spacing:.4px}
+  input,select{width:100%;background:#11192a;border:1px solid var(--line);border-radius:var(--r-sm);
+    color:var(--txt);padding:13px 13px;font-size:16px;font-family:var(--sans);outline:none}
+  input:focus-visible,select:focus-visible{border-color:var(--blue);box-shadow:0 0 0 3px #5b9dff33}
+  .grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+  details.adv{margin-top:6px}
+  details.adv summary{cursor:pointer;color:var(--blue);font-size:13.5px;padding:4px 0}
+  button{width:100%;background:var(--orange);color:#241204;border:0;border-radius:var(--r-sm);min-height:54px;
+    padding:0 20px;font-weight:700;font-size:17px;cursor:pointer;margin-top:6px}
+  button:hover{filter:brightness(1.07)} button:active{transform:translateY(1px)}
+  button[disabled]{opacity:.55;cursor:progress}
+
+  /* states */
+  .msg{display:none;border-radius:var(--r);padding:13px 15px;margin-bottom:10px;font-size:14.5px}
+  .msg.on{display:block}
+  .msg.err{background:#2a1414;border:1px solid #4a2424;color:#ffb4b4}
+
+  /* output blocks */
+  #out{display:none}
+  #out.on{display:block}
+  .block{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
+    padding:16px 18px;margin-bottom:12px;border-left:5px solid var(--line)}
+  .block.zone{border-left-color:var(--blue)}
+  .block.ppe{border-left-color:var(--red)}
+  .block.aid{border-left-color:var(--green)}
+  .block.shelter{border-left-color:var(--amber)}
+  .block.notify{border-left-color:var(--orange)}
+  .bhead{font-size:13px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin:0 0 8px;font-weight:700}
+  .ident{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;margin-bottom:6px}
+  .name{font-size:26px;font-weight:800;letter-spacing:.2px}
+  .tag{font-family:var(--mono);font-size:13px;padding:3px 9px;border-radius:7px;background:var(--panel2);
+    border:1px solid var(--line);color:var(--txt)}
+  .tag.ahov{background:#3a1414;border-color:#5a2222;color:#ffb4b4}
+  .tag.idlh{background:#23190b;border-color:#5a4012;color:var(--amber)}
+
+  .zonebig{font-family:var(--mono);font-size:52px;font-weight:800;line-height:1;color:var(--blue);margin:4px 0 2px}
+  .zonebig small{font-size:22px;color:var(--muted);font-weight:600}
+  .zonemeta{font-size:13.5px;color:var(--muted);margin-top:6px;line-height:1.5}
+  .pill{display:inline-block;font-family:var(--mono);font-size:12.5px;background:var(--panel2);
+    border:1px solid var(--line);border-radius:6px;padding:2px 8px;margin:3px 6px 0 0}
+
+  .bigtext{font-size:18px;line-height:1.55}
+  .src{font-size:12px;color:var(--muted);margin-top:8px;font-style:italic}
+  .nodata{color:var(--amber);font-style:italic}
+
+  /* notify checklist */
+  table.notify{width:100%;border-collapse:collapse;font-size:14.5px}
+  table.notify td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+  table.notify .ord{font-family:var(--mono);color:var(--orange);font-weight:700;width:28px}
+  table.notify .role{font-weight:600}
+  table.notify .why{display:block;font-size:12px;color:var(--muted);font-weight:400;margin-top:2px}
+  table.notify input.ph{padding:9px 10px;font-size:14px}
+  .notifynote{font-size:13px;color:var(--muted);margin:4px 0 12px}
+
+  .foot{color:var(--muted);font-size:12px;text-align:center;margin-top:20px;line-height:1.6}
+
+  @media(max-width:560px){
+    .row{grid-template-columns:minmax(0,1fr)}
+    .grid4{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .zonebig{font-size:42px}
+    .name{font-size:22px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="logo">⚠️</div>
+    <div>
+      <h1>Оперативная карточка диспетчера</h1>
+    </div>
+    <div class="status"><span id="dot" class="dot"></span><span id="stat">проверка…</span></div>
+  </div>
+  <div class="sub">Авария с АХОВ: зона заражения → первоочередные действия → кого оповестить.
+    <a class="nav" href="/home.html">← на главную</a> · <a class="nav" href="/emergency.html">аварийная карточка</a></div>
+
+  <div class="toolnote">
+    <span>⚠️</span>
+    <span><b>Инструмент-подсказка.</b> Прогноз зоны — по типовой методике <b>РД&nbsp;52.04.253-90</b>
+    (колонка ветра 1&nbsp;м/с, консервативно). Не заменяет утверждённый расчёт объекта и ПЛАС.
+    Решение и ответственность — за человеком.</span>
+  </div>
+
+  <div class="chips" id="chips"><span class="chiplbl">Быстрый выбор АХОВ</span></div>
+
+  <div class="form">
+    <div class="row">
+      <div>
+        <label class="fld" for="sub">Вещество (АХОВ)</label>
+        <input id="sub" list="subs" placeholder="например: хлор, аммиак" autocomplete="off">
+        <datalist id="subs"></datalist>
+      </div>
+      <div>
+        <label class="fld" for="mass">Масса выброса, кг</label>
+        <input id="mass" type="number" min="0" step="any" placeholder="напр. 1000">
+      </div>
+    </div>
+    <details class="adv">
+      <summary>Метео и условия разлива (опционально)</summary>
+      <div class="grid4" style="margin-top:10px">
+        <div><label class="fld" for="wind">Ветер, м/с</label><input id="wind" type="number" step="any" value="1"></div>
+        <div><label class="fld" for="temp">Темп., °C</label><input id="temp" type="number" step="any" value="20"></div>
+        <div><label class="fld" for="stab">Устойчивость</label>
+          <select id="stab"><option>инверсия</option><option selected>изотермия</option><option>конвекция</option></select></div>
+        <div><label class="fld" for="spill">Разлив</label>
+          <select id="spill"><option value="свободный">свободный</option><option value="поддон">в поддон</option></select></div>
+      </div>
+    </details>
+    <button id="go">Построить карточку</button>
+  </div>
+
+  <div id="err" class="msg err"></div>
+
+  <div id="out">
+    <!-- идентификация -->
+    <div class="block" id="b-ident"></div>
+    <!-- зона -->
+    <div class="block zone" id="b-zone"></div>
+    <!-- СИЗ -->
+    <div class="block ppe" id="b-ppe"></div>
+    <!-- первая помощь -->
+    <div class="block aid" id="b-aid"></div>
+    <!-- укрытие/эвакуация -->
+    <div class="block shelter" id="b-shelter"></div>
+    <!-- оповещение -->
+    <div class="block notify" id="b-notify"></div>
+  </div>
+
+  <div class="foot">HEFEST · on-prem · методика РД 52.04.253-90 · все значения needs_review до подписи эксперта завода</div>
+</div>
+
+<input type="hidden" id="base" value="http://127.0.0.1:8012">
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>(s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const base=()=>{const v=$('base').value.replace(/\/+$/,'');return location.protocol.indexOf('http')===0?location.origin:v;};
+
+async function health(){
+  try{const d=await(await fetch(base()+'/health',{signal:AbortSignal.timeout(4000)})).json();
+    $('dot').className='dot ok';$('stat').textContent=(d.substances||'?')+' веществ';}
+  catch(e){$('dot').className='dot off';$('stat').textContent='нет связи';}
+}
+async function loadNames(){
+  try{const d=await(await fetch(base()+'/substances/names?limit=600')).json();
+    $('subs').innerHTML=(d.names||[]).map(n=>'<option value="'+esc(n)+'">').join('');}catch(e){}
+}
+
+const DEFAULT_MASS='1000';
+// Узнаваемые АХОВ для чипов (порядок предпочтения). Реально показываем только те,
+// что вернул /zone/substances .available — ничего не выдумываем.
+const CHIP_PREF=['хлор','аммиак','сероводород','фосген','диоксид серы','хлороводород'];
+
+function syncChips(){
+  const cur=$('sub').value.trim().toLowerCase();
+  document.querySelectorAll('.chip').forEach(c=>{
+    c.classList.toggle('on',c.dataset.name.toLowerCase()===cur);
+  });
+}
+
+async function loadChips(){
+  let avail=[];
+  try{const d=await(await fetch(base()+'/zone/substances')).json();avail=d.available||[];}catch(e){}
+  if(!avail.length)return;
+  const low=avail.map(s=>s.toLowerCase());
+  // сначала узнаваемые из CHIP_PREF, затем добиваем из .available до 5
+  let picks=CHIP_PREF.filter(n=>low.includes(n.toLowerCase()));
+  for(const s of avail){ if(picks.length>=5)break; if(!picks.some(p=>p.toLowerCase()===s.toLowerCase()))picks.push(s); }
+  picks=picks.slice(0,5);
+  const box=$('chips');
+  picks.forEach(n=>{
+    const b=document.createElement('button');
+    b.type='button';b.className='chip';b.dataset.name=n;b.textContent=n;
+    b.addEventListener('click',()=>{
+      $('sub').value=n;
+      if(!$('mass').value)$('mass').value=DEFAULT_MASS;
+      syncChips();run();
+    });
+    box.appendChild(b);
+  });
+  syncChips();
+}
+
+function showErr(m){$('err').textContent=m;$('err').className='msg err on';$('out').className='';}
+function clearErr(){$('err').className='msg err';}
+
+function renderIdent(d){
+  const i=d.identification||{};
+  const idlh=i.idlh||{};
+  let tags='';
+  if(i.is_ahov) tags+='<span class="tag ahov">АХОВ</span>';
+  if(i.un_number) tags+='<span class="tag">ООН '+esc(i.un_number)+'</span>';
+  if(i.adr_class) tags+='<span class="tag">ДОПОГ '+esc(i.adr_class)+'</span>';
+  if(i.hazard_class) tags+='<span class="tag">класс опасн. '+esc(i.hazard_class)+'</span>';
+  if(i.pdk_mgm3) tags+='<span class="tag">ПДК '+esc(i.pdk_mgm3)+' мг/м³</span>';
+  if(idlh.idlh) tags+='<span class="tag idlh">IDLH '+esc(idlh.idlh)+' '+esc(idlh.units||'')+'</span>';
+  $('b-ident').innerHTML='<div class="ident"><span class="name">'+esc(d.substance)+'</span></div>'+
+    '<div class="ident">'+(tags||'<span class="nodata">идентификация: нет данных</span>')+'</div>'+
+    '<div class="src">'+esc(i.source||'')+'</div>';
+}
+
+function renderZone(d){
+  const z=d.zone||{};
+  let html='<p class="bhead">Зона заражения</p>';
+  if(z.status==='ok'){
+    html+='<div class="zonebig">'+esc(z.depth_total_km)+' <small>км (глубина)</small></div>';
+    html+='<div>'+
+      '<span class="pill">первичное облако '+esc(z.depth_primary_km)+' км</span>'+
+      '<span class="pill">вторичное облако '+esc(z.depth_secondary_km)+' км</span>'+
+      (z.input?('<span class="pill">выброс '+esc(z.input.q0_t)+' т</span>'+
+        '<span class="pill">ветер '+esc(z.input.wind_ms)+' м/с</span>'+
+        '<span class="pill">'+esc(z.input.temp_c)+' °C</span>'+
+        '<span class="pill">'+esc(z.input.stability)+'</span>'):'')+
+      '</div>';
+    html+='<div class="zonemeta">Направление переноса — по фактическому ветру. '+esc(z.method||'')+'</div>';
+    if(z.disclaimer) html+='<div class="src">'+esc(z.disclaimer)+'</div>';
+  } else {
+    html+='<div class="bigtext nodata">'+esc(z.reason||z.status||'зона не рассчитана')+'</div>';
+  }
+  // ERG-2024 как дополнительный ориентир (если есть)
+  const e=d.erg_distances;
+  if(e){
+    html+='<div class="zonemeta" style="margin-top:10px"><b>Ориентир ERG-2024</b> (первое реагирование): '+
+      'изоляция '+esc(e.isolation_small_m)+' м (малый разлив) … '+esc(e.isolation_large_m)+' м (большой); '+
+      'защита подветренно днём до '+esc(e.protect_small_day_km)+'–'+esc(e.protect_large_day_km)+' км, '+
+      'ночью до '+esc(e.protect_small_night_km)+'–'+esc(e.protect_large_night_km)+' км.</div>';
+  }
+  $('b-zone').innerHTML=html;
+}
+
+function renderAction(elId,title,obj){
+  let v=obj&&obj.value, present=obj&&obj.present;
+  let html='<p class="bhead">'+title+'</p>';
+  html+='<div class="bigtext'+(present?'':' nodata')+'">'+esc(v||'нет данных')+'</div>';
+  if(present&&obj.source) html+='<div class="src">источник: '+esc(obj.source)+'</div>';
+  $(elId).innerHTML=html;
+}
+
+function renderShelter(d){
+  const s=d.shelter_evacuation||{};
+  let html='<p class="bhead">Укрытие / эвакуация</p>';
+  if(s.status==='ok'){
+    html+='<div class="bigtext">'+esc(s.behavior)+'</div>';
+    html+='<div class="src">'+esc(s.source)+'</div>';
+  } else {
+    html+='<div class="bigtext nodata">Поведение по плотности газа: нет данных'+
+      (s.reason?(' — '+esc(s.reason)):'')+'. Не предполагать.</div>';
+  }
+  $('b-shelter').innerHTML=html;
+}
+
+function renderNotify(d){
+  const n=d.notify||{};
+  let html='<p class="bhead">Оповещение — чек-лист</p>';
+  html+='<div class="notifynote">'+esc(n.note||'')+' Поля заполняет предприятие.</div>';
+  html+='<table class="notify"><tbody>';
+  (n.items||[]).forEach(it=>{
+    html+='<tr><td class="ord">'+esc(it.order)+'</td>'+
+      '<td class="role">'+esc(it.role)+'<span class="why">'+esc(it.purpose)+'</span></td>'+
+      '<td><input class="ph" placeholder="телефон ___" aria-label="телефон"></td>'+
+      '<td><input class="ph" placeholder="ответственный ___" aria-label="ответственный"></td></tr>';
+  });
+  html+='</tbody></table>';
+  $('b-notify').innerHTML=html;
+}
+
+async function run(noScroll){
+  const name=$('sub').value.trim();
+  if(!name){showErr('Укажите вещество.');return;}
+  clearErr();$('go').disabled=true;
+  const p=new URLSearchParams();
+  if($('mass').value) p.set('mass_kg',$('mass').value);
+  if($('wind').value) p.set('wind_ms',$('wind').value);
+  if($('temp').value) p.set('temp_c',$('temp').value);
+  if($('stab').value) p.set('stability',$('stab').value);
+  if($('spill').value) p.set('spill',$('spill').value);
+  try{
+    const r=await fetch(base()+'/dispatch/'+encodeURIComponent(name)+'?'+p.toString(),{signal:AbortSignal.timeout(9000)});
+    const d=await r.json();
+    if(d.error){showErr(d.error);return;}
+    renderIdent(d);renderZone(d);
+    renderAction('b-ppe','СИЗ — что надеть',d.actions&&d.actions.ppe);
+    renderAction('b-aid','Первая помощь',d.actions&&d.actions.first_aid);
+    renderShelter(d);renderNotify(d);
+    $('out').className='on';syncChips();
+    if(!noScroll)window.scrollTo({top:$('out').offsetTop-10,behavior:'smooth'});
+  }catch(e){showErr('Ошибка запроса: '+e.message);}
+  finally{$('go').disabled=false;}
+}
+
+$('go').addEventListener('click',run);
+$('sub').addEventListener('keydown',e=>{if(e.key==='Enter')run();});
+$('sub').addEventListener('input',syncChips);
+$('mass').addEventListener('keydown',e=>{if(e.key==='Enter')run();});
+
+// Автозагрузка: ?name= и (опц.) ?mass_kg= из URL. Если name не задан — дефолт хлор/1000 кг,
+// чтобы экран не открывался пустым (демо).
+async function init(){
+  health();loadNames();
+  await loadChips();
+  const q=new URLSearchParams(location.search);
+  const name=(q.get('name')||'хлор').trim();
+  const mass=(q.get('mass_kg')||DEFAULT_MASS).trim();
+  $('sub').value=name;
+  if(mass)$('mass').value=mass;
+  syncChips();
+  run(true); // без авто-скролла на старте — чипы и дисклеймер остаются на виду
+}
+init();
+</script>
+</body>
+</html>

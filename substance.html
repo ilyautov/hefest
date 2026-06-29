@@ -178,6 +178,13 @@
   .acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
   .acts a{text-decoration:none;color:var(--blue);background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:9px 14px;font-size:13px;font-weight:600}
   .acts a:hover{border-color:var(--blue);background:var(--panel2)}
+  .tools{margin:18px 0 6px}
+  .tools .tl{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:9px}
+  .tools .trow{display:flex;flex-wrap:wrap;gap:10px}
+  .tools a{display:inline-flex;align-items:center;gap:8px;text-decoration:none;color:var(--orange);
+    background:var(--panel);border:1px solid #4a371c;border-radius:9px;padding:9px 14px;font-size:13px;font-weight:600;transition:border-color .15s,background .15s}
+  .tools a:hover{border-color:var(--orange);background:var(--panel2)}
+  .tools a svg{flex:none}
   .cfg{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:24px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
   .cfg input{background:var(--panel);border:1px solid var(--line);border-radius:7px;color:var(--txt);padding:6px 9px;font:12px var(--mono);min-width:200px}
   @media(max-width:560px){.erg-grid{grid-template-columns:1fr}.fields .f .k{width:110px}}
@@ -240,6 +247,7 @@
     <div class="sec" id="s-gost"><h2><span class="ic" style="color:var(--blue)">▤</span> Соответствие ГОСТ 30333: карта 16 разделов паспорта <a href="gost.html" style="font-size:12px;font-weight:400;color:var(--muted);text-decoration:none;margin-left:6px">дашборд →</a></h2><div id="o-gost"></div></div>
 
     <div class="acts" id="o-acts"></div>
+    <div class="tools" id="o-tools" style="display:none"><div class="tl">Связанные инструменты</div><div class="trow" id="o-tools-row"></div></div>
     <div class="disclaimer">
       <b>Система поддержки принятия решений.</b> Первоисточник — действующий паспорт безопасности (ГОСТ 30333)
       и нормативы (ГН/СанПиН 1.2.3685-21). Значения с пометкой «требует проверки» не подтверждены экспертом
@@ -488,6 +496,12 @@
       `<a href="quiz.html?name=${enc(s.name)}">${_ai('<circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 1 1 4 2.8c-.8.4-1.6 1.1-1.6 2.2"/><path d="M12 17h.01"/>')}проверка знаний</a>`+
       `<a href="${base()}/card/${enc(s.name)}" target="_blank">${_ai('<rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/>')}карточка + QR</a>`+
       `<a href="emergency.html?name=${enc(s.name)}">${_ai('<path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17h.01"/>')}аварийная карточка</a>`;
+
+    // связанные инструменты (deep-link по имени вещества) — только навигация, имя берётся из карточки
+    $('o-tools-row').innerHTML=
+      `<a href="ppe.html?name=${enc(s.name)}">${_ai('<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>')}Подбор СИЗ</a>`+
+      `<a href="dispatch.html?name=${enc(s.name)}">${_ai('<path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17h.01"/>')}Карточка диспетчера</a>`;
+    $('o-tools').style.display='block';
 
     $('intro').style.display='none';   // прячем подсказку «как пользоваться» после первой загрузки
     $('out').style.display='block';
