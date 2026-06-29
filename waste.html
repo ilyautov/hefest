@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Класс отхода (предварительно)  ·  HEFEST</title>
+<style>
+  :root{
+    --bg:#0f1419; --panel:#1a2230; --panel2:#222c3a; --line:#2b3647;
+    --txt:#eef2f7; --muted:#a8b3c2;
+    --blue:#5b9dff; --blue-d:#2563eb; --orange:#f9a23b; --red:#ff6b6b; --green:#3ecf8e; --amber:#ffce6b;
+    --r:14px; --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1200px 520px at 75% -12%,#13233c,transparent 62%),var(--bg);
+    color:var(--txt);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;min-height:100dvh}
+  .wrap{max-width:820px;margin:0 auto;padding:32px 18px 80px}
+  h1{font-size:23px;margin:0;font-weight:700}
+  a.back{color:var(--muted);text-decoration:none;font-size:13px}
+  a.back:hover{color:var(--blue)}
+  .lead{color:var(--muted);font-size:14px;margin:4px 0 18px;max-width:720px}
+  .btn{cursor:pointer;background:var(--panel);border:1px solid var(--line);border-radius:9px;color:var(--txt);
+    padding:11px 15px;font:14px var(--sans);font-weight:600;display:inline-flex;align-items:center;gap:7px}
+  .btn:hover{border-color:var(--blue);background:var(--panel2)}
+  .btn.pr{background:var(--blue);border-color:var(--blue);color:#fff}.btn.pr:hover{background:var(--blue-d)}
+  .btn.sm{padding:8px 12px;font-size:13px}
+  input.q,input.f{background:var(--panel);border:1px solid var(--line);border-radius:9px;color:var(--txt);
+    padding:10px 12px;font:15px var(--sans)}
+  datalist{display:none}
+  .err{color:#ff8d8d;font-size:14px;margin:10px 0}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin-bottom:16px}
+  .card h2{font-size:16px;margin:0 0 12px;font-weight:700}
+  .crow{display:flex;gap:10px;align-items:center;margin-bottom:9px}
+  .crow .q{flex:1;min-width:0}
+  .crow .f{width:108px}
+  .crow .unit{font-size:12.5px;color:var(--muted);white-space:nowrap}
+  .crow .rm{cursor:pointer;background:none;border:none;color:var(--muted);font-size:20px;line-height:1;padding:0 4px}
+  .crow .rm:hover{color:var(--red)}
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
+  .hint{font-size:12.5px;color:var(--muted);margin-top:8px}
+  .exrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0 0}
+  .exrow .lbl{font-size:12.5px;color:var(--muted)}
+  .exchip{cursor:pointer;font-size:13px;background:var(--panel2);border:1px solid var(--line);color:var(--txt);
+    padding:6px 11px;border-radius:8px}
+  .exchip:hover{border-color:var(--blue)}
+
+  /* БОЛЬШАЯ ПЛАШКА «требует эколога» */
+  .ecologist{display:flex;gap:14px;align-items:flex-start;background:#2a1d10;border:1px solid #6b4a18;
+    border-radius:var(--r);padding:16px 18px;margin-bottom:18px}
+  .ecologist .ic{flex:none;width:30px;height:30px;color:var(--amber)}
+  .ecologist b{color:var(--amber)}
+  .ecologist .t{font-size:13.5px;line-height:1.5;color:#f0e3cc}
+
+  /* ИТОГ */
+  .verdict{border-radius:var(--r);padding:18px 20px;margin-bottom:16px;border:1px solid var(--line)}
+  .verdict.gap{background:#1b2433}
+  .verdict.calc{background:#11271c;border-color:#2c6b4a}
+  .verdict .big{font-size:21px;font-weight:800;margin:0 0 4px}
+  .verdict.gap .big{color:var(--amber)}
+  .verdict.calc .big{color:var(--green)}
+  .verdict .sub{font-size:13.5px;color:var(--muted);line-height:1.55}
+  .kv{font-family:var(--mono);font-size:13px;color:var(--muted);margin-top:8px}
+
+  .comp{border:1px solid var(--line);border-radius:11px;padding:13px 15px;margin-bottom:10px;background:var(--panel2)}
+  .comp .nm{font-weight:700;font-size:15px}
+  .comp .nm .cas{font-family:var(--mono);font-size:12px;color:var(--muted);font-weight:400;margin-left:6px}
+  .comp .wi{float:right;font-family:var(--mono);font-size:12.5px;color:var(--amber);
+    background:#2a1d10;border:1px solid #6b4a18;border-radius:6px;padding:2px 8px}
+  .comp .notfound .wi{color:var(--red);background:#2a1414;border-color:#6b2a2a}
+  .ind{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+  .pill{font-size:12px;border-radius:7px;padding:3px 9px;border:1px solid var(--line);font-family:var(--mono)}
+  .pill.has{background:#15233a;border-color:#2b4a72;color:#bcd6ff}
+  .pill.miss{background:#241a1a;border-color:#5a3030;color:#e3a6a6}
+  .comp .reason{font-size:12.5px;color:var(--muted);margin-top:9px;line-height:1.45}
+
+  .miss-overall{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;margin-bottom:16px}
+  .miss-overall h3{font-size:14px;margin:0 0 10px}
+  .miss-overall ul{margin:0;padding-left:18px}
+  .miss-overall li{font-size:13px;color:var(--muted);margin-bottom:5px}
+  .blockers li{color:#e3c08a}
+  .miss-overall.why{background:#1b2433;border-color:#3a4b66}
+  .miss-overall.why h3{color:var(--orange);font-size:15px}
+  .why .why-lead{font-size:13px;color:var(--muted);line-height:1.55;margin:0 0 11px}
+  .why .why-lead b{color:var(--txt)}
+  .frame{font-size:12.5px;color:var(--muted);font-family:var(--mono);margin-top:14px;line-height:1.6}
+  .frame b{color:var(--txt)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><h1>Класс отхода — предварительный расчёт</h1></div>
+  <div style="margin:-2px 0 14px"><a class="back" href="home.html">← на главную</a></div>
+  <div class="lead">Введите СОСТАВ отхода (компоненты и их массовые доли) — система применит расчётную
+    формулу <b style="color:var(--txt)">K = Σ(Ci/Wi)</b> по Приказу Минприроды № 536 и честно покажет,
+    чего не хватает. <b style="color:var(--txt)">Класс I–V — это класс ОТХОДА</b> (отдельная шкала
+    от класса вещества 1–4 по ГОСТ 12.1.007).</div>
+
+  <div class="card">
+    <h2>Состав отхода</h2>
+    <div id="rows"></div>
+    <div class="toolbar">
+      <button class="btn sm" id="add">+ компонент</button>
+      <button class="btn pr" id="go">Рассчитать класс</button>
+      <button class="btn sm" id="ex1" type="button">⬇ Загрузить пример</button>
+    </div>
+    <div class="hint">Доля — массовая доля компонента (0…1 или %). Сумма обычно ≤ 1; остаток — нетоксичная
+      матрица/влага. Числа из источников НЕ пересчитываются.</div>
+    <div class="exrow"><span class="lbl">Готовые составы:</span>
+      <button class="exchip" data-ex="h2so4-nh3" type="button">серная кислота 0.5 + аммиак 0.5</button>
+      <button class="exchip" data-ex="naoh" type="button">гидроксид натрия 0.4</button></div>
+  </div>
+  <div id="err" class="err" style="display:none"></div>
+
+  <div id="out"></div>
+
+  <input type="hidden" id="base" value="http://127.0.0.1:8000">
+</div>
+
+<datalist id="names"></datalist>
+
+<script>
+  const $=id=>document.getElementById(id);
+  const base=()=>{const v=$('base').value.replace(/\/+$/,'');return location.protocol.indexOf('http')===0?location.origin:v;};
+  const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const enc=encodeURIComponent;
+
+  // --- строки состава ---
+  function addRow(name='', frac=''){
+    const div=document.createElement('div');
+    div.className='crow';
+    div.innerHTML=`
+      <input class="q" list="names" placeholder="вещество (например, серная кислота)" autocomplete="off" value="${esc(name)}">
+      <input class="f" type="text" inputmode="decimal" placeholder="доля" value="${esc(frac)}">
+      <span class="unit">доля (0…1)</span>
+      <button class="rm" title="удалить" type="button">×</button>`;
+    div.querySelector('.rm').onclick=()=>{div.remove(); if(!$('rows').children.length) addRow();};
+    const q=div.querySelector('.q');
+    let t=null;
+    q.addEventListener('input',()=>{clearTimeout(t);t=setTimeout(async()=>{
+      const p=q.value.trim(); if(p.length<2) return;
+      try{const d=await(await fetch(base()+'/substances/names?prefix='+enc(p)+'&limit=12')).json();
+        $('names').innerHTML=(d.names||[]).map(n=>`<option value="${esc(n)}">`).join('');
+      }catch(e){}
+    },180);});
+    q.addEventListener('keydown',e=>{if(e.key==='Enter')calc();});
+    $('rows').appendChild(div);
+    return div;
+  }
+  $('add').onclick=()=>addRow();
+  const EXAMPLES={
+    'h2so4-nh3':[['серная кислота','0.5'],['аммиак','0.5']],
+    'naoh':[['гидроксид натрия','0.4']]
+  };
+  function loadExample(key){
+    const ex=EXAMPLES[key]||EXAMPLES['h2so4-nh3'];
+    $('rows').innerHTML='';
+    ex.forEach(([n,f])=>addRow(n,f));
+    calc();
+  }
+  $('ex1').onclick=()=>loadExample('h2so4-nh3');
+  document.querySelectorAll('.exchip').forEach(c=>c.onclick=()=>loadExample(c.dataset.ex));
+
+  function readComponents(){
+    const out=[];
+    for(const r of $('rows').children){
+      const name=r.querySelector('.q').value.trim();
+      let fv=r.querySelector('.f').value.trim().replace(',', '.');
+      if(!name) continue;
+      let frac=fv===''?null:parseFloat(fv);
+      if(frac!=null && frac>1) frac=frac/100; // принимаем проценты
+      out.push({substance:name, Ci_fraction:frac});
+    }
+    return out;
+  }
+
+  // --- рендер ---
+  function render(res){
+    const gap = res.class==null;
+    const ecologist=`
+      <div class="ecologist">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+        <div class="t"><b>Итог требует проверки эколога предприятия.</b> Это ПРЕДВАРИТЕЛЬНЫЙ расчёт по
+          формуле приказа 536. <b>Код по ФККО и окончательный класс отхода присваивает эколог</b> —
+          система их не выдумывает (каталог ФККО организован по типу/происхождению отхода, не по CAS).</div>
+      </div>`;
+
+    const vClass = gap
+      ? `<div class="verdict gap"><p class="big">Класс не определён — не хватает показателей</p>
+           <div class="sub">${esc(res.note)}</div>
+           <div class="kv">формула: ${esc(res.formula||'')}</div></div>`
+      : `<div class="verdict calc"><p class="big">Предварительно: класс ${esc(res.class)} (из I–V)</p>
+           <div class="sub">${esc(res.note)}</div>
+           <div class="kv">K = ${esc(res.K)} · ${esc(res.formula||'')}</div></div>`;
+
+    const comps=(res.per_component||[]).map(pc=>{
+      const has=(pc.used_indicators||[]).map(u=>`<span class="pill has" title="${esc(u.source||'')}">${esc(u.indicator.split(' —')[0])} = ${esc(u.value)}${u.units?' '+esc(u.units):''}</span>`).join('');
+      const miss=(pc.missing||[]).map(m=>`<span class="pill miss">${esc(m.split(' —')[0])} — нет</span>`).join('');
+      const wi = pc.wi==='нет данных' ? 'Wi: нет данных' : 'Wi = '+esc(pc.wi);
+      return `<div class="comp ${pc.matched?'':'notfound'}">
+          <span class="wi">${wi}</span>
+          <div class="nm">${esc(pc.substance)}${pc.cas?`<span class="cas">CAS ${esc(pc.cas)}</span>`:''}
+            ${pc.matched?'':'<span style="color:var(--red);font-size:12.5px;font-weight:400"> · не найдено в базе</span>'}</div>
+          <div class="ind">${has}${miss}</div>
+          ${pc.reason?`<div class="reason">⚠ ${esc(pc.reason)}</div>`:''}
+        </div>`;
+    }).join('');
+
+    const missOverall = (res.missing_overall||[]).length
+      ? `<div class="miss-overall"><h3>Нет данных по показателям (по всему составу)</h3>
+           <ul>${res.missing_overall.map(m=>`<li>${esc(m)}</li>`).join('')}</ul></div>` : '';
+
+    const blockers = (res.blockers||[]).length
+      ? `<div class="miss-overall why">
+           <h3>${gap?'Почему не присвоен класс':'Что догрузить для полного расчёта'}</h3>
+           ${gap?`<p class="why-lead">Это не сбой — система <b>осознанно не присваивает класс</b>, пока нет
+              всех первичных показателей и таблицы баллов приказа № 536. Выдумывать нормативные числа
+              нельзя (цена ошибки — здоровье и штраф). Чтобы расчёт стал полным, нужно догрузить:</p>`:''}
+           <ul class="blockers">${res.blockers.map(b=>`<li>${esc(b)}</li>`).join('')}</ul></div>` : '';
+
+    $('out').innerHTML = ecologist + vClass +
+      `<div class="card"><h2>Компоненты</h2>${comps||'<div class="sub">нет компонентов</div>'}</div>` +
+      missOverall + blockers +
+      `<div class="frame">Шкала: <b>${esc(res.scale||'')}</b><br>
+        Сумма долей: <b>${esc(res.fraction_sum)}</b> · компонентов: <b>${esc(res.components_total)}</b><br>
+        Норматив: <b>${esc(res.framework_ref||'')}</b> · needs_review: <b>${esc(res.needs_review)}</b></div>`;
+  }
+
+  async function calc(){
+    $('err').style.display='none';
+    const comps=readComponents();
+    if(!comps.length){$('err').textContent='добавьте хотя бы один компонент';$('err').style.display='block';return;}
+    try{
+      const r=await fetch(base()+'/waste/estimate',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({components:comps})});
+      const res=await r.json();
+      if(res.error){$('err').textContent=res.error;$('err').style.display='block';return;}
+      render(res);
+    }catch(e){$('err').textContent='ошибка запроса к /waste/estimate';$('err').style.display='block';}
+  }
+  $('go').onclick=calc;
+
+  // init — сразу показываем демо-состав и считаем, чтобы экран не был пустым
+  loadExample('h2so4-nh3');
+  fetch(base()+'/health').catch(()=>{});
+</script>
+</body>
+</html>
