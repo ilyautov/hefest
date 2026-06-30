@@ -35,6 +35,10 @@ data/qdrant_local/
 screenshots/
 arch-doc.png
 
+# --- Презентационные PDF: артефакты сборки (в репо только шаблоны+скрипты) ---
+docs/brochure/*.pdf
+docs/brochure/*_embed.html
+
 # --- Тяжёлые исходные справочники (входной материал, не код) ---
 # Хранятся вне VCS; при необходимости — Git LFS
 engine/*.pdf
