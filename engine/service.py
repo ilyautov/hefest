@@ -15,7 +15,7 @@ from retriever import HybridRetriever, SemanticRetriever
 from cache import SemanticCache
 from backends import get_llm_backend
 import compat, ghs_map, hygiene, baseline, registry, quiz, sanpin, pubchem, verification, physchem, sanpin_env, transport, answer_review, gost_sections, normative, waste
-import ppe, warehouse, inspection, waste_calc, dispatch  # расширение: СИЗ / карта склада / инспектор / класс отхода / диспетчер
+import ppe, warehouse, inspection, waste_calc, dispatch, shift_alert  # расширение: СИЗ / карта склада / инспектор / класс отхода / диспетчер / реакция на превышение
 try:
     import segno  # QR (pure-python); если нет — /qr отключаем
 except ImportError:
@@ -50,7 +50,7 @@ async def _api_key_guard(request: Request, call_next):
 # --- Отдача UI самим сервисом: одна точка входа (один URL для пользователя) ------------------------
 _ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 _UI_PAGES = {"home", "substance", "emergency", "label", "registry", "quiz", "guide", "safety", "console", "readiness", "reviews", "gost",
-             "ppe", "warehouse", "inspection", "waste", "dispatch"}
+             "ppe", "warehouse", "inspection", "waste", "dispatch", "shift"}
 if os.path.isdir(os.path.join(_ROOT, "assets")):
     app.mount("/assets", StaticFiles(directory=os.path.join(_ROOT, "assets")), name="assets")
 
@@ -959,6 +959,19 @@ def dispatch_card_endpoint(name: str, mass_kg: float | None = None, wind_ms: flo
                "n_hours": n_hours, "spill": spill, "dike_h": dike_h}
     r = dispatch.dispatch_card(name, mass_kg=mass_kg, weather=weather, emergency=em)
     hygiene.audit("dispatch", name, {"mass_kg": mass_kg, "depth_km": r.get("zone", {}).get("depth_total_km")})
+    return r
+
+@app.get("/shift/{name}")
+def shift_alert_endpoint(name: str, value: float | None = None, unit: str | None = None):
+    """Реакция на превышение (мастер смены): измеренная концентрация vs ПДК/IDLH, СИЗ, АХОВ-флаг.
+    Единицы НЕ пересчитываем — кратность только при совпадении единиц, иначе honest-gap (см. shift_alert)."""
+    s, _ = _resolve_sub(name)
+    if not s:
+        return {"error": "вещество не найдено"}
+    em = emergency(name)
+    em = em if isinstance(em, dict) else None
+    r = shift_alert.assess_exceedance(s, value=value, unit=unit, emergency=em)
+    hygiene.audit("shift", name, {"value": value, "unit": unit, "severity": r.get("severity")})
     return r
 
 @app.get("/qr/{name}")

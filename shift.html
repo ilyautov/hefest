@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Реакция на превышение · мастер смены · HEFEST</title>
+<style>
+  /* Dark Mode ops-экран. Крупно и контрастно — читаемость в стрессе. В тон dispatch.html/ppe.html.
+     Системные шрифты (on-prem, без CDN); моно — для цифр (концентрация/пороги/кратность). */
+  :root{
+    --bg:#0f1419; --panel:#1a2230; --panel2:#222c3a; --line:#2b3647;
+    --txt:#f3f6fa; --muted:#aab6c5;
+    --blue:#5b9dff; --orange:#f9a23b; --red:#ff6b6b; --green:#3ecf8e; --amber:#ffce6b;
+    --r:14px; --r-sm:10px;
+    --mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono",Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:radial-gradient(1100px 480px at 80% -10%,#152338 0%,transparent 60%),var(--bg);
+    color:var(--txt);font:17px/1.55 var(--sans);-webkit-font-smoothing:antialiased;min-height:100dvh;
+    overflow-wrap:anywhere;word-break:break-word}
+  .wrap{max-width:860px;margin:0 auto;padding:24px 18px 80px}
+
+  /* header */
+  .top{display:flex;align-items:center;gap:12px;margin-bottom:4px}
+  .logo{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;
+    background:linear-gradient(145deg,#1b263b,#0f1722);border:1px solid var(--line);color:var(--orange);flex:none;font-size:22px}
+  h1{font-size:21px;margin:0;font-weight:700;letter-spacing:.2px}
+  .status{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);font-family:var(--mono)}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--muted);flex:none}
+  .dot.ok{background:var(--green);box-shadow:0 0 10px #3ecf8e88}
+  .dot.off{background:var(--red);box-shadow:0 0 10px #ff6b6b88}
+  .sub{color:var(--muted);font-size:14px;margin:4px 0 14px}
+  a.nav{color:var(--blue);text-decoration:none;font-size:14px}
+  a.nav:hover{text-decoration:underline}
+
+  /* tool-note banner — всегда на виду */
+  .toolnote{background:#23190b;border:1px solid #5a4012;color:var(--amber);border-radius:var(--r);
+    padding:12px 15px;font-size:13.5px;line-height:1.5;margin-bottom:16px;display:flex;gap:10px}
+  .toolnote b{color:#ffe0a0}
+
+  /* quick-pick chips */
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+  .chiplbl{width:100%;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin:0 0 1px 2px}
+  .chip{font-family:var(--sans);font-size:14.5px;font-weight:600;color:var(--txt);
+    background:var(--panel2);border:1px solid var(--line);border-radius:999px;
+    padding:8px 15px;cursor:pointer;line-height:1;white-space:nowrap;transition:filter .12s,border-color .12s}
+  .chip:hover{filter:brightness(1.18);border-color:var(--blue)}
+  .chip:active{transform:translateY(1px)}
+  .chip.on{background:#23314a;border-color:var(--blue);color:#cfe0ff}
+
+  /* form */
+  .form{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:14px}
+  .row{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr);gap:10px;margin-bottom:10px}
+  label.fld{display:block;font-size:12px;color:var(--muted);margin:0 0 4px 2px;text-transform:uppercase;letter-spacing:.4px}
+  input,select{width:100%;background:#11192a;border:1px solid var(--line);border-radius:var(--r-sm);
+    color:var(--txt);padding:13px 13px;font-size:16px;font-family:var(--sans);outline:none}
+  input:focus-visible,select:focus-visible{border-color:var(--blue);box-shadow:0 0 0 3px #5b9dff33}
+  button{width:100%;background:var(--orange);color:#241204;border:0;border-radius:var(--r-sm);min-height:54px;
+    padding:0 20px;font-weight:700;font-size:17px;cursor:pointer;margin-top:6px}
+  button:hover{filter:brightness(1.07)} button:active{transform:translateY(1px)}
+  button[disabled]{opacity:.55;cursor:progress}
+
+  /* states */
+  .msg{display:none;border-radius:var(--r);padding:13px 15px;margin-bottom:10px;font-size:14.5px}
+  .msg.on{display:block}
+  .msg.err{background:#2a1414;border:1px solid #4a2424;color:#ffb4b4}
+
+  /* output blocks */
+  #out{display:none}
+  #out.on{display:block}
+  .block{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
+    padding:16px 18px;margin-bottom:12px;border-left:5px solid var(--line)}
+  .block.thr{border-left-color:var(--blue)}
+  .block.ppe{border-left-color:var(--red)}
+  .block.act{border-left-color:var(--orange)}
+  .block.ahov{border-left-color:var(--amber)}
+  .bhead{font-size:13px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin:0 0 8px;font-weight:700}
+  .ident{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;margin-bottom:6px}
+  .name{font-size:26px;font-weight:800;letter-spacing:.2px}
+  .tag{font-family:var(--mono);font-size:13px;padding:3px 9px;border-radius:7px;background:var(--panel2);
+    border:1px solid var(--line);color:var(--txt)}
+  .tag.ahovt{background:#3a1414;border-color:#5a2222;color:#ffb4b4}
+
+  /* severity banner — цвет по tier */
+  .sev{border-radius:var(--r);padding:16px 18px;margin-bottom:12px;border:1px solid var(--line)}
+  .sev .lvl{font-family:var(--mono);font-size:12px;letter-spacing:.5px;text-transform:uppercase;opacity:.85}
+  .sev .lbl{font-size:24px;font-weight:800;line-height:1.2;margin:3px 0 6px}
+  .sev .basis{font-size:14px;line-height:1.5}
+  .sev.s2{background:#2a1010;border-color:#5a2020;color:#ffd2d2}      /* выше IDLH — красный */
+  .sev.s2 .lbl{color:#ff7b7b}
+  .sev.s1{background:#2a1f0a;border-color:#5a4012;color:#ffe6b8}      /* выше ПДК — янтарный */
+  .sev.s1 .lbl{color:var(--amber)}
+  .sev.s0{background:#0e2218;border-color:#1f4a36;color:#bfe8d3}      /* в пределах ПДК — зелёный */
+  .sev.s0 .lbl{color:var(--green)}
+  .sev.sx{background:#1a2230;border-color:var(--line);color:var(--muted)} /* не определено — нейтр. */
+  .sev.sx .lbl{color:#cdd6e2}
+
+  /* measured big readout */
+  .meas{font-family:var(--mono);font-size:40px;font-weight:800;line-height:1;color:var(--txt);margin:2px 0}
+  .meas small{font-size:18px;color:var(--muted);font-weight:600}
+
+  /* thresholds table */
+  table.thr{width:100%;border-collapse:collapse;font-size:15px;table-layout:fixed}
+  table.thr th,table.thr td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+  table.thr th{font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:700}
+  table.thr .val{font-family:var(--mono);font-weight:700}
+  .ratio{font-family:var(--mono);font-size:18px;font-weight:800}
+  .ratio.up{color:var(--amber)} .ratio.upx{color:#ff7b7b}
+
+  .bigtext{font-size:16.5px;line-height:1.55}
+  .src{font-size:12px;color:var(--muted);margin-top:8px;font-style:italic}
+  .nodata{color:var(--amber);font-style:italic}
+  .warnote{background:#23190b;border:1px solid #5a4012;color:var(--amber);border-radius:var(--r-sm);
+    padding:10px 12px;font-size:13.5px;line-height:1.5;margin-top:10px}
+
+  ul.acts{list-style:none;margin:0;padding:0}
+  ul.acts li{position:relative;padding:9px 8px 9px 30px;border-bottom:1px solid var(--line);font-size:15.5px;line-height:1.5}
+  ul.acts li:last-child{border-bottom:0}
+  ul.acts li::before{content:"";position:absolute;left:8px;top:15px;width:9px;height:9px;border-radius:50%;background:var(--orange)}
+
+  .ahovbtn{display:inline-block;margin-top:10px;background:#3a1414;border:1px solid #5a2222;color:#ffd2d2;
+    text-decoration:none;border-radius:var(--r-sm);padding:13px 18px;font-weight:700;font-size:16px}
+  .ahovbtn:hover{filter:brightness(1.12)}
+
+  .foot{color:var(--muted);font-size:12px;text-align:center;margin-top:20px;line-height:1.6}
+
+  @media(max-width:560px){
+    .row{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-auto-flow:row}
+    .row > .full{grid-column:1 / -1}
+    .meas{font-size:32px}
+    .name{font-size:22px}
+    .sev .lbl{font-size:20px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="logo">🚨</div>
+    <div>
+      <h1>Реакция на превышение</h1>
+    </div>
+    <div class="status"><span id="dot" class="dot"></span><span id="stat">проверка…</span></div>
+  </div>
+  <div class="sub">Газоанализатор показал превышение → вещество + измеренная концентрация → что делать сейчас.
+    <a class="nav" href="/home.html">← на главную</a> · <a class="nav" href="/ppe.html">подбор СИЗ</a></div>
+
+  <div class="toolnote">
+    <span>⚠️</span>
+    <span><b>Инструмент-подсказка для мастера смены.</b> Сравнивает замер с порогами как они хранятся,
+    <b>без пересчёта единиц</b> (ppm ↔ мг/м³ не конвертируем). Не заменяет ПЛАС и инструкцию рабочего места.
+    Решение и ответственность — за мастером смены / специалистом по ПБ.</span>
+  </div>
+
+  <div class="chips" id="chips"><span class="chiplbl">Быстрый выбор вещества</span></div>
+
+  <div class="form">
+    <div class="row">
+      <div>
+        <label class="fld" for="sub">Вещество</label>
+        <input id="sub" list="subs" placeholder="например: хлор, аммиак" autocomplete="off">
+        <datalist id="subs"></datalist>
+      </div>
+      <div>
+        <label class="fld" for="val">Замер</label>
+        <input id="val" type="number" min="0" step="any" placeholder="напр. 3">
+      </div>
+      <div>
+        <label class="fld" for="unit">Единица</label>
+        <select id="unit"><option value="мг/м³">мг/м³</option><option value="ppm">ppm</option></select>
+      </div>
+    </div>
+    <button id="go">Оценить</button>
+  </div>
+
+  <div id="err" class="msg err"></div>
+
+  <div id="out">
+    <!-- идентификация -->
+    <div class="block" id="b-ident"></div>
+    <!-- severity-плашка -->
+    <div id="b-sev"></div>
+    <!-- пороги + сравнение -->
+    <div class="block thr" id="b-thr"></div>
+    <!-- СИЗ -->
+    <div class="block ppe" id="b-ppe"></div>
+    <!-- действия -->
+    <div class="block act" id="b-act"></div>
+    <!-- АХОВ -->
+    <div class="block ahov" id="b-ahov" style="display:none"></div>
+  </div>
+
+  <div class="foot">HEFEST · on-prem · единицы не пересчитываем · все значения needs_review до подписи эксперта завода</div>
+</div>
+
+<input type="hidden" id="base" value="http://127.0.0.1:8012">
+<script>
+/* ─────────────────────────────────────────────────────────────────────────────
+   КОНТРАКТ БЭКЕНД-ЭНДПОИНТА (его подключает оркестратор в service.py):
+
+     GET /shift/{name}?value=<число>&unit=<мг/м³|ppm>
+       name  — имя вещества или синоним (path, encodeURIComponent);
+       value — измеренная концентрация (float, опц.); unit — единица (str, опц.).
+     Реализация (по аналогии с /ppe и /dispatch):
+       s,_ = _resolve_sub(name)
+       if not s: return {"error":"вещество не найдено"}
+       em = emergency(name)
+       return shift_alert.assess_exceedance(s, value=value, unit=unit, emergency=em)
+     В _UI_PAGES добавить "shift".
+
+   ОЖИДАЕМАЯ ФОРМА JSON (то, что возвращает assess_exceedance):
+   {
+     "substance": "хлор",
+     "tool_note": "…",
+     "identification": {
+        "name":"хлор",
+        "formula":{"value":"Cl2","source":…} | {"value":null,"note":"нет данных"},
+        "hazard_class":{"value":"2","source":…} | {"value":null,"note":…},
+        "ghs":{"value":[…],"source":…} | {"value":[],"note":…}
+     },
+     "measured": {"present":true,"value":3.0,"raw_value":"3","unit":"мг/м³","unit_normalized":"мг/м³","note":null},
+     "thresholds": {
+        "pdk":  {"present":true,"value":"1","numeric":1.0,"unit":"мг/м³","source":…,"note":null},
+        "idlh": {"present":true,"value":"10","numeric":10.0,"unit":"ppm","source":…,"source_url":…,"basis":…,"note":null}
+                 // present=false + note="нет данных", если IDLH нет — порог НЕ показываем
+     },
+     "comparison": {
+        "pdk_ratio":3.0 | null, "pdk_comparable":true, "pdk_exceeded":true,
+        "pdk_ratio_reason": null | "единицы разные: …" ,
+        "idlh_comparable":false, "idlh_exceeded":null, "idlh_reason":"единицы разные: …",
+        "units_match_pdk":true, "units_match_idlh":false
+     },
+     "severity": {"code":"above_idlh|above_pdk|below_pdk|undetermined","label":"…","level":2|1|0|-1,"basis":"…"},
+     "ppe": {"available":true,"value":"…","grade":"passport|baseline","source":"…","disclaimer":null|"…",
+             "categories":{…},"category_labels":{…}},
+     "ahov": {"is_ahov":true,"substance":"хлор","un_number":"1017"|null,"note":"…"|null,"dispatch_link":"/dispatch.html?name=хлор"|null},
+     "actions": {"tier":"above_pdk","items":["…","…"],"disclaimer":"…"},
+     "confidence":"needs_review"
+   }
+   Ошибка: {"error":"вещество не найдено"}.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+const $=id=>document.getElementById(id);
+// XSS-safe: экранируем & < > " ' — значения идут и в текст, и в атрибуты value=/href=.
+const esc=s=>(s==null?'':String(s)).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const base=()=>{const v=$('base').value.replace(/\/+$/,'');return location.protocol.indexOf('http')===0?location.origin:v;};
+
+async function health(){
+  try{const d=await(await fetch(base()+'/health',{signal:AbortSignal.timeout(4000)})).json();
+    $('dot').className='dot ok';$('stat').textContent=(d.substances||'?')+' веществ';}
+  catch(e){$('dot').className='dot off';$('stat').textContent='нет связи';}
+}
+async function loadNames(){
+  try{const d=await(await fetch(base()+'/substances/names?limit=600')).json();
+    $('subs').innerHTML=(d.names||[]).map(n=>'<option value="'+esc(n)+'">').join('');}catch(e){}
+}
+
+const QUICK=['хлор','аммиак','сероводород','метанол'];   // чипы быстрого выбора
+function buildChips(){
+  const box=$('chips');
+  QUICK.forEach(n=>{
+    const b=document.createElement('button');
+    b.type='button';b.className='chip';b.dataset.name=n;b.textContent=n;
+    b.addEventListener('click',()=>{$('sub').value=n;syncChips();run();});
+    box.appendChild(b);
+  });
+}
+function syncChips(){
+  const cur=$('sub').value.trim().toLowerCase();
+  document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c.dataset.name.toLowerCase()===cur));
+}
+
+function showErr(m){$('err').textContent=m;$('err').className='msg err on';$('out').className='';}
+function clearErr(){$('err').className='msg err';}
+
+function field(node){ // {value,source,note}
+  if(node&&node.value!=null&&!(Array.isArray(node.value)&&!node.value.length)) return null;
+  return (node&&node.note)||'нет данных';
+}
+
+function renderIdent(d){
+  const i=d.identification||{};
+  let tags='';
+  if(d.ahov&&d.ahov.is_ahov) tags+='<span class="tag ahovt">АХОВ</span>';
+  const f=i.formula&&i.formula.value; if(f) tags+='<span class="tag">'+esc(f)+'</span>';
+  const hc=i.hazard_class&&i.hazard_class.value; if(hc) tags+='<span class="tag">класс опасн. '+esc(hc)+'</span>';
+  if(d.ahov&&d.ahov.un_number) tags+='<span class="tag">ООН '+esc(d.ahov.un_number)+'</span>';
+  const ghs=(i.ghs&&i.ghs.value)||[];
+  let ghsHtml=ghs.length?('<div class="bigtext" style="margin-top:6px">GHS: '+esc(ghs.join('; '))+'</div>'):'';
+  $('b-ident').innerHTML='<div class="ident"><span class="name">'+esc(d.substance)+'</span></div>'+
+    '<div class="ident">'+(tags||'<span class="nodata">идентификация: нет данных</span>')+'</div>'+ghsHtml;
+}
+
+function renderSev(d){
+  const s=d.severity||{};
+  const cls={2:'s2',1:'s1',0:'s0'}[s.level]||'sx';
+  const m=d.measured||{};
+  let measHtml='';
+  if(m.present) measHtml='<div class="meas">'+esc(m.value)+' <small>'+esc(m.unit||'')+'</small></div>';
+  else measHtml='<div class="bigtext nodata">концентрация не введена</div>';
+  $('b-sev').innerHTML='<div class="sev '+cls+'">'+
+    '<div class="lvl">уровень по замеру</div>'+
+    '<div class="lbl">'+esc(s.label||'—')+'</div>'+
+    measHtml+
+    '<div class="basis">'+esc(s.basis||'')+'</div></div>';
+}
+
+function thrRow(label,t){
+  if(!t||!t.present) return '<tr><th>'+esc(label)+'</th><td colspan="2" class="nodata">нет данных</td></tr>';
+  return '<tr><th>'+esc(label)+'</th><td class="val">'+esc(t.value)+' '+esc(t.unit||'')+'</td>'+
+    '<td class="src" style="margin:0">'+esc(t.source||'')+'</td></tr>';
+}
+
+function renderThr(d){
+  const th=d.thresholds||{}, c=d.comparison||{}, m=d.measured||{};
+  let html='<p class="bhead">Пороги и сравнение</p>';
+  html+='<table class="thr"><tbody>';
+  html+=thrRow('ПДК рабочей зоны',th.pdk);
+  html+=thrRow('IDLH (острый порог)',th.idlh);
+  html+='</tbody></table>';
+
+  // кратность ПДК — только если посчитана (единицы совпали)
+  if(c.pdk_ratio!=null){
+    const cls=c.pdk_exceeded?(c.pdk_ratio>=5?'upx':'up'):'';
+    html+='<div style="margin-top:12px">Кратность ПДК: <span class="ratio '+cls+'">×'+esc(c.pdk_ratio)+'</span>'+
+      (c.pdk_exceeded?' (превышение)':' (в пределах ПДК)')+'</div>';
+  } else if(c.pdk_ratio_reason){
+    html+='<div class="warnote">Кратность ПДК не рассчитана: '+esc(c.pdk_ratio_reason)+'.</div>';
+  }
+  // явная пометка про несовпадение единиц с IDLH
+  if(th.idlh&&th.idlh.present&&!c.idlh_comparable&&c.idlh_reason){
+    html+='<div class="warnote">Сравнение с IDLH: '+esc(c.idlh_reason)+'.</div>';
+  } else if(c.idlh_comparable){
+    html+='<div style="margin-top:8px" class="bigtext">Относительно IDLH ('+esc(th.idlh.value)+' '+esc(th.idlh.unit)+'): '+
+      (c.idlh_exceeded?'<b style="color:#ff7b7b">достигнут/превышен</b>':'ниже порога')+
+      ' — единицы совпадают.</div>';
+  }
+  $('b-thr').innerHTML=html;
+}
+
+function renderPpe(d){
+  const p=d.ppe||{};
+  let html='<p class="bhead">СИЗ — что надеть</p>';
+  if(!p.available){ $('b-ppe').innerHTML=html+'<div class="bigtext nodata">'+esc(p.note||'нет данных')+'</div>'; return; }
+  html+='<div class="bigtext">'+esc(p.value||'нет данных')+'</div>';
+  html+='<div class="src">источник: '+esc(p.source||'')+(p.grade?(' · grade='+esc(p.grade)):'')+'</div>';
+  if(p.disclaimer) html+='<div class="warnote">'+esc(p.disclaimer)+'</div>';
+  $('b-ppe').innerHTML=html;
+}
+
+function renderAct(d){
+  const a=d.actions||{};
+  let html='<p class="bhead">Действия сейчас</p>';
+  html+='<ul class="acts">'+(a.items||[]).map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>';
+  if(a.disclaimer) html+='<div class="src">'+esc(a.disclaimer)+'</div>';
+  $('b-act').innerHTML=html;
+}
+
+function renderAhov(d){
+  const a=d.ahov||{};
+  const box=$('b-ahov');
+  if(!a.is_ahov){ box.style.display='none'; box.innerHTML=''; return; }
+  let html='<p class="bhead">АХОВ</p><div class="bigtext">'+esc(a.note||'Вещество отнесено к АХОВ.')+'</div>';
+  const link=a.dispatch_link||('/dispatch.html?name='+encodeURIComponent(d.substance||''));
+  html+='<a class="ahovbtn" href="'+esc(link)+'">Оперативная карточка диспетчера →</a>';
+  box.innerHTML=html; box.style.display='block';
+}
+
+async function run(noScroll){
+  const name=$('sub').value.trim();
+  if(!name){showErr('Укажите вещество.');return;}
+  clearErr();$('go').disabled=true;
+  const p=new URLSearchParams();
+  if($('val').value!=='') p.set('value',$('val').value);
+  if($('unit').value) p.set('unit',$('unit').value);
+  try{
+    const r=await fetch(base()+'/shift/'+encodeURIComponent(name)+'?'+p.toString(),{signal:AbortSignal.timeout(9000)});
+    const d=await r.json();
+    if(d.error){showErr(d.error);return;}
+    renderIdent(d);renderSev(d);renderThr(d);renderPpe(d);renderAct(d);renderAhov(d);
+    $('out').className='on';syncChips();
+    if(!noScroll)window.scrollTo({top:$('out').offsetTop-10,behavior:'smooth'});
+  }catch(e){showErr('Ошибка запроса: '+e.message);}
+  finally{$('go').disabled=false;}
+}
+
+$('go').addEventListener('click',()=>run());
+$('sub').addEventListener('keydown',e=>{if(e.key==='Enter')run();});
+$('val').addEventListener('keydown',e=>{if(e.key==='Enter')run();});
+$('sub').addEventListener('input',syncChips);
+
+// Автозагрузка из URL: ?name= &value= &unit= (encodeURIComponent). По умолчанию — хлор/3/мг/м³,
+// чтобы экран не открывался пустым (демо). value/unit — опциональны.
+function init(){
+  health();loadNames();buildChips();
+  const q=new URLSearchParams(location.search);
+  const name=(q.get('name')||'хлор').trim();
+  const val=q.get('value'); const unit=(q.get('unit')||'').trim();
+  $('sub').value=name;
+  if(val!=null&&val!=='') $('val').value=val; else $('val').value='3';
+  if(unit==='ppm'||unit==='мг/м³') $('unit').value=unit;
+  syncChips();
+  run(true); // без авто-скролла на старте — чипы и дисклеймер на виду
+}
+init();
+</script>
+</body>
+</html>
