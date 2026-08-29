@@ -114,6 +114,18 @@ else
   ok "названий организаций нет (денайлист не задан — проверка пропущена)"
 fi
 
+# 6г. Денайлист не должен отставать от реестра: добавили площадку — сторож обязан о ней
+#     знать, иначе проверка 6в молча пропустит новое название. Список производный, а не
+#     рукописный (scripts/sync_denylist.py). Без реестра шаг пропускается.
+if [ -f data/plants.json ] && [ -f scripts/sync_denylist.py ]; then
+  if "${PY:-python3}" scripts/sync_denylist.py --check >/dev/null 2>&1; then
+    ok "денайлист покрывает реестр площадок"
+  else
+    bad "денайлист покрывает реестр площадок"
+    "${PY:-python3}" scripts/sync_denylist.py --check 2>&1 | sed 's/^/        /'
+  fi
+fi
+
 # 7. Обязательные файлы публичного репозитория.
 missing=""
 for f in LICENSE DATA-LICENSE.md DISCLAIMER.md LIMITATIONS.md SECURITY.md CONTRIBUTING.md \
