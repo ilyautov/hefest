@@ -13,18 +13,30 @@ On-prem RAG-ассистент по российским паспортам бе
 
 ## Запуск сервиса (порт 8012, без `--reload` — после правок кода нужен рестарт)
 
-Лексический режим (быстро, без Ollama):
+Дефолты в коде указывают на канонические clean-файлы, поэтому переменные окружения не нужны.
+**Интерпретатор:** нужен Python 3.10–3.13 с зависимостями (`make install`). На машине владельца
+дефолтный `python3` — это 3.14 без установленного стека: используйте `python3.11` или
+`PY=python3.11 make …`.
+
 ```bash
-SUBS_FILE=substances_clean.json CORPUS_FILE=corpus_full_clean.json LLM_BACKEND=extractive \
-python3 -m uvicorn service:app --app-dir engine --port 8012
+make run              # лексический режим: без Ollama, из коробки
+make run-semantic     # семантический: нужны Ollama (bge-m3, qwen2.5:7b) и эмбеддинги
+make demo             # обезличенный реестр площадок + сервис на нём
 ```
-Семантический режим (нужны эмбеддинги + Ollama bge-m3 и qwen2.5:7b):
-```bash
-SUBS_FILE=substances_clean.json CORPUS_FILE=corpus_full_clean.json \
-RETRIEVER=semantic EMB_FILE=embeddings_clean.npy IDS_FILE=embed_ids_clean.json \
-LLM_BACKEND=ollama OLLAMA_LLM=qwen2.5:7b python3 -m uvicorn service:app --app-dir engine --port 8012
-```
+
 Здоровье: `GET /health`. Остановить: `pkill -f "uvicorn service:app"`.
+
+## Проверки перед коммитом
+
+```bash
+make test    # офлайн-сьют (77 тестов): без Ollama, без сети, без индекса
+make guard   # предпубликационный сторож: секреты, .env, рантайм-состояние, обезличивание
+make check   # guard + компиляция + test
+```
+
+Тесты в `tests/` фиксируют контур честности: запрет пересчёта единиц, honest-gap в расчётах,
+градацию источника, отказ от ответа вне базы, целостность CAS, отсутствие названий площадок
+в рантайм-коде. Ломать их «ради удобства» нельзя — это и есть предмет проекта.
 
 ## Стек
 
@@ -57,8 +69,19 @@ baseline 2545, needs_review 2546 — это фича (не маскируем т
   headless Chrome (`/Applications/Google Chrome.app/...`), причём на macOS окно Chrome не уже ~450px
   (для мобайла мерить через Playwright `getBoundingClientRect`, а не пиксельный скрин узкого окна).
 
+## Публичный репозиторий
+
+Репозиторий подготовлен к открытой публикации: `LICENSE` (MIT, код) + `DATA-LICENSE.md`
+(происхождение и права по каждому набору данных), `DISCLAIMER.md` (границы применения),
+`LIMITATIONS.md` (12 честных ограничений), `SECURITY.md` / `CONTRIBUTING.md` /
+`CODE_OF_CONDUCT.md` / `GOVERNANCE.md` / `SUPPORT.md`, шаблоны issue и PR в `.github/`,
+CI на 3.10–3.13. Реальные названия площадок вынесены из кода в `data/plant_aliases.json`;
+`engine/anonymize_plants.py` собирает обезличенный реестр для публичного показа.
+Внутренняя коммерческая рамка — `docs/ПИТЧ-контекст.md` (не в README).
+
 ## Ключевые доки
 
 `README.md` · `docs/О-СИСТЕМЕ.md` (заказчику) · `docs/АРХИТЕКТУРА.md` (схемы) ·
 `docs/ВЛАДЕЛЬЦУ-полная-дока.md` (внутр.) · `BRAND.md` · `MARKET.md` · `docs/ДОМЕН-для-предпринимателя.md` ·
-`docs/КЕЙС-HEFEST.md` / `docs/КАРТОЧКА-ХЛОР.md` (лендинг) · `КЛОН.md` (клон/запуск).
+`docs/КЕЙС-HEFEST.md` / `docs/КАРТОЧКА-ХЛОР.md` (лендинг) · `КЛОН.md` (клон/запуск) ·
+`README.en.md` (англоязычная витрина).

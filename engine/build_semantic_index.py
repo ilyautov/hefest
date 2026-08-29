@@ -28,12 +28,12 @@ def embed_batch(texts):
 
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--limit", type=int, default=0); a = ap.parse_args()
-    corpus_file = os.getenv("CORPUS_FILE", "corpus_full.json")   # параметризовано: clean-реиндекс в отд. файлы
+    corpus_file = os.getenv("CORPUS_FILE", "corpus_full_clean.json")   # параметризовано: clean-реиндекс в отд. файлы
     chunks = json.load(open(os.path.join(DATA, corpus_file), encoding="utf-8"))["chunks"]
     if a.limit: chunks = chunks[:a.limit]
     n = len(chunks)
-    emb_path = os.path.join(DATA, os.getenv("EMB_FILE", "embeddings.npy"))
-    ids_path = os.path.join(DATA, os.getenv("IDS_FILE", "embed_ids.json"))
+    emb_path = os.path.join(DATA, os.getenv("EMB_FILE", "embeddings_clean.npy"))
+    ids_path = os.path.join(DATA, os.getenv("IDS_FILE", "embed_ids_clean.json"))
 
     # резюмирование с чекпойнта (только если он уже нормированный — батч-формат)
     start = 0; vecs = None

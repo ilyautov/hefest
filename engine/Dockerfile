@@ -10,8 +10,10 @@ FROM python:3.11-slim
 WORKDIR /app
 
 # Зависимости ставим первыми — кэш слоёв не инвалидируется при правках кода.
-COPY engine/requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Копируем всю папку requirements/: engine/requirements.txt ссылается на requirements/full.txt.
+COPY requirements/ /app/requirements/
+COPY engine/requirements.txt /app/engine/requirements.txt
+RUN pip install --no-cache-dir -r /app/engine/requirements.txt
 
 # Код сервиса -> /app/engine, данные -> /app/data (сервис ждёт корпус/эмбеддинги в ../data).
 COPY engine/ /app/engine/
