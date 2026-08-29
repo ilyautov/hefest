@@ -63,7 +63,7 @@ absent the service degrades to lexical retrieval instead of failing.
 
 ## Stack
 
-FastAPI (~37 endpoints) and 12 static HTML screens with no build step. Retrieval is pluggable:
+FastAPI (43 endpoints) and 12 static HTML screens with no build step. Retrieval is pluggable:
 lexical hybrid (char + word TF-IDF and BM25), semantic (numpy over bge-m3 embeddings), or
 Qdrant. Generation is extractive by default — zero hallucination risk — and optionally
 grounded generation through a local `qwen2.5:7b` at temperature 0. An optional cross-encoder
