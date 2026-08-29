@@ -44,5 +44,24 @@ docs/brochure/*_embed.html
 engine/*.pdf
 engine/*.htm.html
 
-# --- Локальное состояние Claude Code ---
+# --- Локальное состояние агентов/редакторов ---
 .claude/
+.codex/
+
+# --- Промежуточные артефакты конвейера данных (пересоздаются) ---
+# corpus_full.json  -> предочистной корпус, пересобирается: python3 engine/corpus.py
+# embed_ids.json    -> идентификаторы доочистного индекса, пересобираются вместе с ним
+# Канонические (нужны для запуска) — corpus_full_clean.json и embed_ids_clean.json — трекаются.
+data/corpus_full.json
+data/embed_ids.json
+
+# --- Обезличенный реестр площадок (генерируется engine/anonymize_plants.py) ---
+data/plants_demo.json
+data/plants_linked_demo.json
+
+# --- Сгенерированный showcase-UI (engine/generate_ui.py) ---
+index_pro.html
+
+# --- Исходники нормативных документов (объёмны, общедоступны у первоисточника) ---
+# См. DATA-LICENSE.md, раздел 1: в репозиторий не включаются, скрипты ингеста берут их путём.
+data/sources/

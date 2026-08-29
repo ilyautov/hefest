@@ -10,6 +10,7 @@ SDS-гигиена: аудит-лог запросов + состояние па
 import os, json
 from datetime import datetime, timezone
 import baseline
+import cas as cas_check
 
 _DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data")
 _LOG = os.path.join(_DATA, "audit_log.jsonl")
@@ -83,8 +84,14 @@ def passport_state(sub: dict) -> dict:
         state, hint = "incomplete", "Не хватает критичных полей: " + ", ".join(missing) + "."
     else:
         state, hint = "ok", "Критичные поля заполнены."
+    # Контрольная цифра CAS проверяется на лету: неверный номер — повод для сверки, а не
+    # для автоисправления (подбор «похожего верного» номера = выдуманный идентификатор).
+    cas_status = cas_check.check(sub.get("cas"))
+    if not cas_status["ok"] and cas_status["status"] != cas_check.СТАТУС_ПУСТО:
+        hint = (hint + " " + cas_status["note"]).strip()
     return {"name": sub.get("name"), "state": state, "missing": missing,
             "source_tier": tier, "confidence": conf, "hint": hint,
+            "cas_check": cas_status,
             "data_grade": baseline.data_grade(sub)}
 
 
@@ -106,6 +113,7 @@ def quality_dashboard(subs: list) -> dict:
             field_gaps[g] += 1
         if not gaps and c != "needs_review":
             complete += 1
+    cas_audit = cas_check.audit(subs)
     return {
         "substances": n,
         "complete": complete, "complete_pct": round(100 * complete / n, 1) if n else 0,
@@ -114,6 +122,14 @@ def quality_dashboard(subs: list) -> dict:
         "by_confidence": dict(sorted(by_conf.items(), key=lambda x: -x[1])),
         "by_source_tier": dict(sorted(by_tier.items())),
         "field_gaps": field_gaps,
+        "cas_integrity": {
+            "checked": cas_audit["checked"],
+            "by_status": cas_audit["by_status"],
+            "suspect_in_verified_core": [z for z in cas_audit["suspect"]
+                                         if z.get("confidence") != "needs_review"],
+            "suspect_total": len(cas_audit["suspect"]),
+            "note": cas_audit["note"],
+        },
         "note": "Гигиена данных: полнота критичных полей + статус верификации. data_grade: "
                 "passport (паспортные СИЗ+ПП+хранение) / partial / baseline (типовое по группе). "
                 "Даты пересмотра не синтезируются; типовое руководство НЕ маскируется под паспортное.",

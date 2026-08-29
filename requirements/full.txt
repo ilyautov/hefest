@@ -1,0 +1,22 @@
+# Полный on-prem стек: семантика, реранк, ингест грязных PDF.
+# Ставится на сервере предприятия; для разработки и CI не нужен.
+-r core.txt
+
+# --- ингест источников ---
+pdfplumber
+beautifulsoup4
+lxml
+
+# --- семантический стек ---
+qdrant-client>=1.10        # векторная БД (локальный режим или Docker-сервер)
+scipy>=1.11
+
+# --- реранкер (кросс-энкодер bge-reranker-v2-m3) ---
+# ВНИМАНИЕ: sentence-transformers НЕ использовать — тянет torchcodec -> ffmpeg (libavutil);
+# реранкер загружается напрямую через transformers (см. engine/reranker_model.py).
+torch>=2.2                 # MPS на Apple Silicon / CUDA
+transformers>=4.40
+
+# --- OCR грязных PDF (аудит-спринт) ---
+pymupdf>=1.24              # растеризация PDF без системного poppler
+easyocr>=1.7               # OCR ru+en на torch/MPS, on-prem
