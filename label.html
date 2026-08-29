@@ -8,14 +8,15 @@
   :root{
     --bg:#0f1419; --panel:#1a2230; --panel2:#222c3a; --line:#2b3647;
     --txt:#eef2f7; --muted:#a8b3c2;
-    --blue:#5b9dff; --blue-d:#2563eb; --orange:#f9a23b; --red:#ff6b6b; --green:#3ecf8e; --amber:#ffce6b;
-    --r:14px; --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    --blue:#5b9dff; --blue-d:#2563eb; --orange:#f9a23b; --orange-d:#b9472f;
+    --red:#ff6b6b; --red-d:#b91c1c; --green:#3ecf8e; --green-d:#0e9f6e; --amber:#ffce6b; --amber-d:#b45309;
+    --r:14px; --mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono",Menlo,Consolas,monospace;
     --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   }
   *{box-sizing:border-box}
   body{margin:0;background:radial-gradient(1200px 520px at 75% -12%,#13233c,transparent 62%),var(--bg);
     color:var(--txt);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;min-height:100dvh}
-  .wrap{max-width:780px;margin:0 auto;padding:32px 18px 80px}
+  .wrap{max-width:860px;margin:0 auto;padding:32px 18px 80px}
   .top{display:flex;align-items:center;gap:14px;margin-bottom:6px}
   a.back{color:var(--muted);text-decoration:none;font-size:13px;font-family:var(--sans)}
   a.back:hover{color:var(--blue)}
@@ -27,12 +28,12 @@
   .btn{cursor:pointer;background:var(--panel);border:1px solid var(--line);border-radius:9px;color:var(--txt);
     padding:11px 15px;font:14px var(--sans);font-weight:600;display:inline-flex;align-items:center;gap:7px}
   .btn:hover{border-color:var(--blue);background:var(--panel2)}
-  .btn.pr{background:var(--blue);border-color:var(--blue);color:#fff}.btn.pr:hover{background:var(--blue-d)}
+  .btn.pr{background:var(--orange);border-color:var(--orange);color:#241204}.btn.pr:hover{filter:brightness(1.07)}
   datalist{display:none}
   .err{color:#ff8d8d;font-size:14px;margin:10px 0}
   .exrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:-10px 0 20px}
-  .exrow .lbl{font-size:12.5px;color:var(--muted)}
-  .exchip{cursor:pointer;font-size:13.5px;background:var(--panel);border:1px solid var(--line);color:var(--txt);
+  .exrow .lbl{font-size:13px;color:var(--muted)}
+  .exchip{cursor:pointer;font-size:14px;background:var(--panel);border:1px solid var(--line);color:var(--txt);
     height:38px;padding:0 14px;border-radius:9px;display:inline-flex;align-items:center;font-family:var(--sans)}
   .exchip:hover{border-color:var(--blue);background:var(--panel2)}
   .exchip:focus-visible{outline:3px solid #5b9dffaa;outline-offset:2px}
@@ -43,12 +44,12 @@
   .introbox li b{color:var(--txt)}
 
   /* ЭТИКЕТКА — печатается на белом */
-  .label{background:#fff;color:#111;border-radius:12px;padding:0;overflow:hidden;border:1px solid var(--line);
+  .label{background:#fff;color:#111;border-radius:14px;padding:0;overflow:hidden;border:1px solid var(--line);
     max-width:560px;box-shadow:0 8px 40px #0008}
   .lh{display:flex;justify-content:space-between;align-items:flex-start;padding:18px 20px 14px;border-bottom:2px solid #111}
   .lh .nm{font-size:24px;font-weight:800;line-height:1.15;color:#111}
   .lh .frm{font-family:var(--mono);font-size:13px;color:#555;margin-top:3px}
-  .sig{display:inline-block;font-weight:800;font-size:15px;padding:6px 14px;border-radius:7px;margin-top:9px;
+  .sig{display:inline-block;font-weight:800;font-size:15px;padding:6px 14px;border-radius:9px;margin-top:9px;
     text-transform:uppercase;letter-spacing:.5px}
   .sig.danger{background:#c01818;color:#fff}.sig.warn{background:#f5a623;color:#111}
   .qr{flex:none;width:96px;height:96px;margin-left:14px}.qr svg,.qr img{width:100%;height:100%;display:block}
@@ -58,7 +59,7 @@
   .ghsimg{width:66px;height:66px;display:block}
   .diamond{width:66px;height:66px;margin:0 auto 5px;position:relative;display:grid;place-items:center}
   .diamond:before{content:"";position:absolute;inset:0;background:#fff;border:4px solid #c01818;
-    transform:rotate(45deg);border-radius:7px}
+    transform:rotate(45deg);border-radius:9px}
   .diamond svg{position:relative;color:#111;width:32px;height:32px}
   .picto .pl{font-size:11px;color:#333;line-height:1.2;font-weight:600}
   .lfields{padding:14px 20px}
@@ -67,16 +68,16 @@
   .lf .k{flex:none;width:140px;color:#666;font-weight:600}
   .lf .v{color:#111}
   .ahovb{background:#c01818;color:#fff;font-weight:700;padding:8px 20px;font-size:14px}
-  .lidlh{margin:0 20px 4px;background:#fff4f4;border:1px solid #e0b4b4;color:#8a1a1a;border-radius:8px;padding:8px 12px;font-size:13px}
+  .lidlh{margin:0 20px 4px;background:#fff4f4;border:1px solid #e0b4b4;color:#8a1a1a;border-radius:9px;padding:8px 12px;font-size:13px}
   .lidlh b{font-family:var(--mono)}
   .lflags{display:flex;flex-wrap:wrap;gap:7px;padding:6px 20px 4px}
-  .lflag{background:#fff8e8;border:1px solid #e3c889;color:#7a5a10;border-radius:7px;padding:4px 10px;font-size:12px}
+  .lflag{background:#fff8e8;border:1px solid #e3c889;color:#7a5a10;border-radius:9px;padding:4px 10px;font-size:12px}
   .lflag b{font-family:var(--mono);color:#111}
   .lfoot{padding:11px 20px 16px;font-size:11px;color:#777;border-top:1px solid #eee}
-  .bt{font-family:var(--mono);font-size:10px;color:#9a6b00;border:1px solid #e3c060;background:#fff8e0;padding:1px 6px;border-radius:5px;margin-left:5px}
+  .bt{font-family:var(--mono);font-size:10px;color:#845c00;border:1px solid #e3c060;background:#fff8e0;padding:1px 6px;border-radius:4px;margin-left:5px}
 
   .cfg{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:24px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-  .cfg input{background:var(--panel);border:1px solid var(--line);border-radius:7px;color:var(--txt);padding:6px 9px;font:12px var(--mono);min-width:200px}
+  .cfg input{background:var(--panel);border:1px solid var(--line);border-radius:9px;color:var(--txt);padding:6px 9px;font:12px var(--mono);min-width:200px}
 
   @media print{
     body{background:#fff}
@@ -84,6 +85,13 @@
     .top,.lead,.pick,.cfg,.err,a.back,#actions{display:none!important}
     .label{box-shadow:none;border:none;max-width:none}
   }
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  /* Правило большого пальца (DESIGN.md, Layout): текстовая ссылка ростом 16px
+     непопадаема в перчатке. Зона нажатия растягивается по вертикали до 44px
+     псевдоэлементом — размер и положение самой ссылки не меняются. */
+  a.back,a.nav{position:relative}
+  a.back::after,a.nav::after{content:"";position:absolute;left:0;right:0;top:50%;
+    transform:translateY(-50%);height:44px}
 </style>
 </head>
 <body>

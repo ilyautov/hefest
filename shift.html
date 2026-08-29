@@ -9,11 +9,12 @@
      Системные шрифты (on-prem, без CDN); моно — для цифр (концентрация/пороги/кратность). */
   :root{
     --bg:#0f1419; --panel:#1a2230; --panel2:#222c3a; --line:#2b3647;
-    --txt:#f3f6fa; --muted:#aab6c5;
-    --blue:#5b9dff; --orange:#f9a23b; --red:#ff6b6b; --green:#3ecf8e; --amber:#ffce6b;
-    --r:14px; --r-sm:10px;
+    --txt:#eef2f7; --muted:#a8b3c2;
+    --blue:#5b9dff; --blue-d:#2563eb; --orange:#f9a23b; --orange-d:#b9472f;
+    --red:#ff6b6b; --red-d:#b91c1c; --green:#3ecf8e; --green-d:#0e9f6e; --amber:#ffce6b; --amber-d:#b45309;
+    --r:14px; --r-sm:9px;
     --mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono",Menlo,Consolas,monospace;
-    --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   }
   *{box-sizing:border-box}
   html{-webkit-text-size-adjust:100%}
@@ -24,31 +25,33 @@
 
   /* header */
   .top{display:flex;align-items:center;gap:12px;margin-bottom:4px}
-  .logo{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;
+  .logo{width:40px;height:40px;border-radius:14px;display:grid;place-items:center;
     background:linear-gradient(145deg,#1b263b,#0f1722);border:1px solid var(--line);color:var(--orange);flex:none;font-size:22px}
   h1{font-size:21px;margin:0;font-weight:700;letter-spacing:.2px}
   .status{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);font-family:var(--mono)}
   .dot{width:9px;height:9px;border-radius:50%;background:var(--muted);flex:none}
   .dot.ok{background:var(--green);box-shadow:0 0 10px #3ecf8e88}
   .dot.off{background:var(--red);box-shadow:0 0 10px #ff6b6b88}
-  .sub{color:var(--muted);font-size:14px;margin:4px 0 14px}
+  .sub{color:var(--muted);font-size:14px;margin:4px 0 6px}
+  /* навигация отдельной строкой: зона нажатия 44px не наезжает на абзац */
+  .navrow{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:14px;margin:0 0 14px}
   a.nav{color:var(--blue);text-decoration:none;font-size:14px}
   a.nav:hover{text-decoration:underline}
 
   /* tool-note banner — всегда на виду */
-  .toolnote{background:#23190b;border:1px solid #5a4012;color:var(--amber);border-radius:var(--r);
-    padding:12px 15px;font-size:13.5px;line-height:1.5;margin-bottom:16px;display:flex;gap:10px}
+  .toolnote{background:#3a2e12;border:1px solid #5a4920;color:var(--amber);border-radius:var(--r);
+    padding:12px 15px;font-size:14px;line-height:1.5;margin-bottom:16px;display:flex;gap:10px}
   .toolnote b{color:#ffe0a0}
 
   /* quick-pick chips */
   .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
   .chiplbl{width:100%;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin:0 0 1px 2px}
-  .chip{font-family:var(--sans);font-size:14.5px;font-weight:600;color:var(--txt);
+  .chip{width:auto;margin:0;font-family:var(--sans);font-size:15px;font-weight:600;color:var(--txt);
     background:var(--panel2);border:1px solid var(--line);border-radius:999px;
-    padding:8px 15px;cursor:pointer;line-height:1;white-space:nowrap;transition:filter .12s,border-color .12s}
+    padding:0 16px;min-height:46px;display:inline-flex;align-items:center;cursor:pointer;line-height:1;white-space:nowrap;transition:filter .12s,border-color .12s}
   .chip:hover{filter:brightness(1.18);border-color:var(--blue)}
   .chip:active{transform:translateY(1px)}
-  .chip.on{background:#23314a;border-color:var(--blue);color:#cfe0ff}
+  .chip.on{background:#222c3a;border-color:var(--blue);color:#cfe0ff}
 
   /* form */
   .form{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:14px}
@@ -63,9 +66,9 @@
   button[disabled]{opacity:.55;cursor:progress}
 
   /* states */
-  .msg{display:none;border-radius:var(--r);padding:13px 15px;margin-bottom:10px;font-size:14.5px}
+  .msg{display:none;border-radius:var(--r);padding:13px 15px;margin-bottom:10px;font-size:15px}
   .msg.on{display:block}
-  .msg.err{background:#2a1414;border:1px solid #4a2424;color:#ffb4b4}
+  .msg.err{background:#3a1518;border:1px solid #5a2025;color:#ffb4b4}
 
   /* output blocks */
   #out{display:none}
@@ -79,23 +82,23 @@
   .bhead{font-size:13px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin:0 0 8px;font-weight:700}
   .ident{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;margin-bottom:6px}
   .name{font-size:26px;font-weight:800;letter-spacing:.2px}
-  .tag{font-family:var(--mono);font-size:13px;padding:3px 9px;border-radius:7px;background:var(--panel2);
+  .tag{font-family:var(--mono);font-size:13px;padding:3px 9px;border-radius:9px;background:var(--panel2);
     border:1px solid var(--line);color:var(--txt)}
-  .tag.ahovt{background:#3a1414;border-color:#5a2222;color:#ffb4b4}
+  .tag.ahovt{background:#3a1414;border-color:#5a2025;color:#ffb4b4}
 
   /* severity banner — цвет по tier */
   .sev{border-radius:var(--r);padding:16px 18px;margin-bottom:12px;border:1px solid var(--line)}
   .sev .lvl{font-family:var(--mono);font-size:12px;letter-spacing:.5px;text-transform:uppercase;opacity:.85}
   .sev .lbl{font-size:24px;font-weight:800;line-height:1.2;margin:3px 0 6px}
   .sev .basis{font-size:14px;line-height:1.5}
-  .sev.s2{background:#2a1010;border-color:#5a2020;color:#ffd2d2}      /* выше IDLH — красный */
-  .sev.s2 .lbl{color:#ff7b7b}
-  .sev.s1{background:#2a1f0a;border-color:#5a4012;color:#ffe6b8}      /* выше ПДК — янтарный */
+  .sev.s2{background:#3a1518;border-color:#5a2025;color:#ffd2d2}      /* выше IDLH — красный */
+  .sev.s2 .lbl{color:#ff8d8d}
+  .sev.s1{background:#2a1f0a;border-color:#5a4920;color:#ffe6b8}      /* выше ПДК — янтарный */
   .sev.s1 .lbl{color:var(--amber)}
-  .sev.s0{background:#0e2218;border-color:#1f4a36;color:#bfe8d3}      /* в пределах ПДК — зелёный */
+  .sev.s0{background:#13301f;border-color:#1f5236;color:#bfe8d3}      /* в пределах ПДК — зелёный */
   .sev.s0 .lbl{color:var(--green)}
   .sev.sx{background:#1a2230;border-color:var(--line);color:var(--muted)} /* не определено — нейтр. */
-  .sev.sx .lbl{color:#cdd6e2}
+  .sev.sx .lbl{color:#c4cfdc}
 
   /* measured big readout */
   .meas{font-family:var(--mono);font-size:40px;font-weight:800;line-height:1;color:var(--txt);margin:2px 0}
@@ -107,20 +110,20 @@
   table.thr th{font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:700}
   table.thr .val{font-family:var(--mono);font-weight:700}
   .ratio{font-family:var(--mono);font-size:18px;font-weight:800}
-  .ratio.up{color:var(--amber)} .ratio.upx{color:#ff7b7b}
+  .ratio.up{color:var(--amber)} .ratio.upx{color:#ff8d8d}
 
-  .bigtext{font-size:16.5px;line-height:1.55}
+  .bigtext{font-size:17px;line-height:1.55}
   .src{font-size:12px;color:var(--muted);margin-top:8px;font-style:italic}
   .nodata{color:var(--amber);font-style:italic}
-  .warnote{background:#23190b;border:1px solid #5a4012;color:var(--amber);border-radius:var(--r-sm);
-    padding:10px 12px;font-size:13.5px;line-height:1.5;margin-top:10px}
+  .warnote{background:#3a2e12;border:1px solid #5a4920;color:var(--amber);border-radius:var(--r-sm);
+    padding:10px 12px;font-size:14px;line-height:1.5;margin-top:10px}
 
   ul.acts{list-style:none;margin:0;padding:0}
-  ul.acts li{position:relative;padding:9px 8px 9px 30px;border-bottom:1px solid var(--line);font-size:15.5px;line-height:1.5}
+  ul.acts li{position:relative;padding:9px 8px 9px 30px;border-bottom:1px solid var(--line);font-size:16px;line-height:1.5}
   ul.acts li:last-child{border-bottom:0}
   ul.acts li::before{content:"";position:absolute;left:8px;top:15px;width:9px;height:9px;border-radius:50%;background:var(--orange)}
 
-  .ahovbtn{display:inline-block;margin-top:10px;background:#3a1414;border:1px solid #5a2222;color:#ffd2d2;
+  .ahovbtn{display:inline-block;margin-top:10px;background:#3a1414;border:1px solid #5a2025;color:#ffd2d2;
     text-decoration:none;border-radius:var(--r-sm);padding:13px 18px;font-weight:700;font-size:16px}
   .ahovbtn:hover{filter:brightness(1.12)}
 
@@ -133,6 +136,13 @@
     .name{font-size:22px}
     .sev .lbl{font-size:20px}
   }
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  /* Правило большого пальца (DESIGN.md, Layout): текстовая ссылка ростом 16px
+     непопадаема в перчатке. Зона нажатия растягивается по вертикали до 44px
+     псевдоэлементом — размер и положение самой ссылки не меняются. */
+  a.back,a.nav{position:relative}
+  a.back::after,a.nav::after{content:"";position:absolute;left:0;right:0;top:50%;
+    transform:translateY(-50%);height:44px}
 </style>
 </head>
 <body>
@@ -144,8 +154,8 @@
     </div>
     <div class="status"><span id="dot" class="dot"></span><span id="stat">проверка…</span></div>
   </div>
-  <div class="sub">Газоанализатор показал превышение → вещество + измеренная концентрация → что делать сейчас.
-    <a class="nav" href="/home.html">← на главную</a> · <a class="nav" href="/ppe.html">подбор СИЗ</a></div>
+  <div class="sub">Газоанализатор показал превышение → вещество + измеренная концентрация → что делать сейчас.</div>
+  <div class="navrow"><a class="nav" href="/home.html">← на главную</a> · <a class="nav" href="/ppe.html">подбор СИЗ</a></div>
 
   <div class="toolnote">
     <span>⚠️</span>
@@ -334,7 +344,7 @@ function renderThr(d){
     html+='<div class="warnote">Сравнение с IDLH: '+esc(c.idlh_reason)+'.</div>';
   } else if(c.idlh_comparable){
     html+='<div style="margin-top:8px" class="bigtext">Относительно IDLH ('+esc(th.idlh.value)+' '+esc(th.idlh.unit)+'): '+
-      (c.idlh_exceeded?'<b style="color:#ff7b7b">достигнут/превышен</b>':'ниже порога')+
+      (c.idlh_exceeded?'<b style="color:#ff8d8d">достигнут/превышен</b>':'ниже порога')+
       ' — единицы совпадают.</div>';
   }
   $('b-thr').innerHTML=html;

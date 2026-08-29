@@ -18,8 +18,8 @@ COLL = os.getenv("QDRANT_COLLECTION", "sds")
 OLLAMA = os.getenv("OLLAMA_HOST", "http://127.0.0.1:11434"); EMODEL = os.getenv("EMBED_MODEL", "bge-m3")
 
 def build():
-    emb = np.load(os.path.join(DATA, os.getenv("EMB_FILE", "embeddings.npy"))).astype(np.float32)
-    chunks = json.load(open(os.path.join(DATA, os.getenv("CORPUS_FILE", "corpus_full.json")), encoding="utf-8"))["chunks"]
+    emb = np.load(os.path.join(DATA, os.getenv("EMB_FILE", "embeddings_clean.npy"))).astype(np.float32)
+    chunks = json.load(open(os.path.join(DATA, os.getenv("CORPUS_FILE", "corpus_full_clean.json")), encoding="utf-8"))["chunks"]
     chunks = chunks[:len(emb)]
     cli = QdrantClient(path=QPATH)
     cli.recreate_collection(COLL, vectors_config=models.VectorParams(

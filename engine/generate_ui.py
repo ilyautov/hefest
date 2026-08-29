@@ -4,7 +4,12 @@ import json, os
 HERE = os.path.dirname(os.path.abspath(__file__)); DATA = os.path.join(HERE,"..","data")
 corpus = json.load(open(os.path.join(DATA,"corpus_full.json"),encoding="utf-8"))
 subs = json.load(open(os.path.join(DATA,"substances_all.json"),encoding="utf-8"))
-linked = json.load(open(os.path.join(DATA,"plants_linked.json"),encoding="utf-8"))
+# Реестр предприятий необязателен: в публичной поставке его нет.
+try:
+    linked = json.load(open(os.path.join(DATA, os.getenv("PLANTS_FILE", "plants_linked.json")),
+                            encoding="utf-8"))
+except (FileNotFoundError, json.JSONDecodeError, ValueError):
+    linked = {"plants": [], "substance_to_plants": {}}
 
 # Showcase-UI держим на verified-ядре (быстро, качество 88%). Полная база (2601) живёт
 # в данных и сервисе; в браузер 26к чанков не грузим (тяжело + лексика на масштабе просаживается).
@@ -15,6 +20,35 @@ _full_count = len(subs)
 subs = [s for s in subs if s["name"].strip().lower() in _names]
 chunks = [c for c in corpus["chunks"] if c["substance"].strip().lower() in _names]
 
+# Триггеры распознавания площадки строим ИЗ ДАННЫХ (реестр + необязательные псевдонимы),
+# а не хардкодим в исходнике: иначе подмена реестра на обезличенный не обезличивает UI.
+# Та же логика, что в engine/retriever.py::_build_plant_triggers.
+_СТОП = {"завод","гк","ооо","оао","пао","ао","зао","опытный","химическое","предприятие","комбинат"}
+
+
+def _plant_triggers(plants):
+    import re as _re
+    triggers = {}
+    keys = {p["plant"].strip().lower() for p in plants}
+    for key in keys:
+        triggers.setdefault(key, key)
+        for token in _re.split(r"[^\w-]+", key):
+            token = token.strip("-")
+            if len(token) >= 4 and token not in _СТОП:
+                triggers.setdefault(token, key)
+    try:
+        aliases = json.load(open(os.path.join(DATA, "plant_aliases.json"),
+                                 encoding="utf-8")).get("aliases", {})
+    except (FileNotFoundError, json.JSONDecodeError, ValueError):
+        aliases = {}
+    for alias, key in aliases.items():
+        if key in keys:
+            triggers[alias.lower()] = key
+    # Длинные (специфичные) триггеры проверяются раньше коротких — см. retriever.py.
+    return dict(sorted(triggers.items(), key=lambda пара: (-len(пара[0]), пара[0])))
+
+
+PTRIG_JSON = json.dumps(_plant_triggers(linked["plants"]), ensure_ascii=False)
 PAYLOAD = json.dumps({"chunks":chunks,"subs":subs,"plants":linked["plants"],"full_count":_full_count}, ensure_ascii=False)
 
 HTML = r"""<!DOCTYPE html><html lang="ru"><head><meta charset="utf-8">
@@ -115,7 +149,7 @@ const STOP=new Set("и в во не что он на я с со как а то �
 const GENERIC=new Set("кислота кислоты натрия калия газ железа водорода углерода аммония бора натрий триоксид ангидрид синильная".split(" "));
 const SYN={"гидроксид натрия":["едкий натр","едкого натра","каустик","щелоч","щёлоч"],"окись этилена":["этиленоксид","оксид этилена","этиленокс"],"аммиак":["нашатыр"],"циановодород (синильная кислота)":["синильн"],"оксид углерода":["угарн"],"гипохлорит натрия":["белизна","активный хлор"],"серная кислота":["купорос"]};
 const INTENT={"Раздел 4. Меры первой помощи":["помощь","ожог","попал","глаз","проглот","вдыхан","антидот","отравлен","промыть"],"Раздел 5. Меры пожаротушения":["пожар","вспыш","тушить","горит","воспламен","взрыв"],"Раздел 6. Меры при аварийном выбросе":["разлив","утечк","выброс","собрать"],"Раздел 7. Обращение и хранение":["хранить","хранен","совместим","несовместим","рядом","склад","тара"],"Раздел 8. Средства защиты (СИЗ) и контроль":["сиз","перчатк","респиратор","очки","защит","противогаз","костюм"],"Раздел 11. Токсикологическая информация":["пдк","токсич","концентрац","канцероген"],"Раздел 2. Идентификация опасности":["опасн","чем опасен","риск"]};
-const PTRIG={"ПЛОЩАДКА":"ПЛОЩАДКА","корунд":"ПЛОЩАДКА","ПЛОЩАДКА":"ПЛОЩАДКА","тосол":"ПЛОЩАДКА","ПЛОЩАДКА":"ПЛОЩАДКА","ПЛОЩАДКА":"ПЛОЩАДКА (ПЛОЩАДКА)","синтанол":"ПЛОЩАДКА (ПЛОЩАДКА)","пкж":"ПЛОЩАДКА","карбонильн":"ПЛОЩАДКА","ПЛОЩАДКА":"ПЛОЩАДКА","ПЛОЩАДКА":"ПЛОЩАДКА","ПЛОЩАДКА":"ПЛОЩАДКАа","ПЛОЩАДКА":"ПЛОЩАДКА (ПЛОЩАДКА)","перекисн":"ПЛОЩАДКА","ПЛОЩАДКА":"ПЛОЩАДКА (ПЛОЩАДКА)","акрилов":"ПЛОЩАДКА (ПЛОЩАДКА)"};
+const PTRIG=%%PTRIG%%;
 const EXAMPLES=["антидот при отравлении цианидом","как хранить серную кислоту","ПДК формальдегида","чем опасен фосген","первая помощь при ожоге щёлочью","какие СИЗ для фенола"];
 
 function words(t){return (t.toLowerCase().match(/[а-яёa-z0-9]+/g)||[]).filter(w=>w.length>2&&!STOP.has(w));}
@@ -161,5 +195,6 @@ document.getElementById("hazdist").innerHTML=hd;
 const t1=DB.subs.filter(s=>s.source_tier&&s.source_tier.includes("T1")).length;
 document.getElementById("srcnote").textContent=`Источники: ${t1} веществ из T1 (ГН 2.2.5 / СанПиН 1.2.3685-21). Демо на публичных регуляторных данных, не замена официального паспорта.`;
 </script></body></html>"""
-open(os.path.join(HERE,"..","index_pro.html"),"w",encoding="utf-8").write(HTML.replace("%%PAYLOAD%%",PAYLOAD))
+open(os.path.join(HERE,"..","index_pro.html"),"w",encoding="utf-8").write(
+    HTML.replace("%%PAYLOAD%%", PAYLOAD).replace("%%PTRIG%%", PTRIG_JSON))
 print("index_pro.html:", len(HTML)+len(PAYLOAD), "байт payload", len(PAYLOAD))

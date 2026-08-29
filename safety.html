@@ -10,17 +10,18 @@
   :root{
     --bg:#0f1419; --panel:#1a2230; --panel2:#222c3a; --line:#2b3647;
     --txt:#eef2f7; --muted:#a8b3c2;
-    --blue:#5b9dff; --blue-d:#2563eb; --orange:#f9a23b; --red:#ff6b6b; --green:#3ecf8e; --amber:#ffce6b;
-    --r:12px; --r-sm:9px;
+    --blue:#5b9dff; --blue-d:#2563eb; --orange:#f9a23b; --orange-d:#b9472f;
+    --red:#ff6b6b; --red-d:#b91c1c; --green:#3ecf8e; --green-d:#0e9f6e; --amber:#ffce6b; --amber-d:#b45309;
+    --r:14px; --r-sm:9px;
     --mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono",Menlo,Consolas,monospace;
     --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   }
   *{box-sizing:border-box}
   body{margin:0;background:radial-gradient(1100px 480px at 80% -10%,#122036,transparent 60%),var(--bg);
     color:var(--txt);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;min-height:100dvh}
-  .wrap{max-width:880px;margin:0 auto;padding:24px 18px 80px}
+  .wrap{max-width:900px;margin:0 auto;padding:24px 18px 80px}
   .top{display:flex;align-items:center;gap:12px;margin-bottom:4px}
-  .logo{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;
+  .logo{width:38px;height:38px;border-radius:14px;display:grid;place-items:center;
     background:linear-gradient(145deg,#1b263b,#0f1722);border:1px solid var(--line);color:var(--orange);flex:none}
   h1{font-size:19px;margin:0;font-weight:600;letter-spacing:.2px}
   .status{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);font-family:var(--sans)}
@@ -30,9 +31,9 @@
   .sub{color:var(--muted);font-size:13px;margin:2px 0 20px}
   .sub a{color:var(--blue);text-decoration:none}.sub a:hover{text-decoration:underline}
 
-  .tabs{display:flex;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:4px;margin-bottom:18px;gap:4px}
+  .tabs{display:flex;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:4px;margin-bottom:18px;gap:4px}
   .tab{appearance:none;background:none;border:0;color:var(--muted);font:inherit;font-size:14px;
-    padding:9px 15px;border-radius:8px;cursor:pointer;transition:background .15s,color .15s;min-height:42px;display:flex;align-items:center;gap:7px}
+    padding:9px 15px;border-radius:9px;cursor:pointer;transition:background .15s,color .15s;min-height:42px;display:flex;align-items:center;gap:7px}
   .tab[aria-selected="true"]{background:var(--panel2);color:var(--txt);box-shadow:inset 0 0 0 1px var(--line)}
   .tab:focus-visible{outline:3px solid #5b9dffaa;outline-offset:2px}
 
@@ -40,7 +41,7 @@
   label.fld{display:block;font-size:12px;color:var(--muted);margin:0 0 6px}
   input,select{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-sm);color:var(--txt);
     padding:12px 13px;font:14px var(--sans);outline:none;transition:border-color .15s,box-shadow .15s;width:100%}
-  input::placeholder{color:#5f6c7e}
+  input::placeholder{color:#7d8aa0}
   input:focus-visible,select:focus-visible{border-color:var(--blue);box-shadow:0 0 0 3px #5b9dff33}
   .row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
   .row>div{flex:1;min-width:130px}
@@ -50,11 +51,11 @@
   button.go:focus-visible{outline:3px solid #5b9dffaa;outline-offset:2px}
   button.go[disabled]{opacity:.55;cursor:progress}
   .cfg{font-size:12px;color:var(--muted);font-family:var(--mono);margin:14px 0 0;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-  .cfg input{padding:6px 9px;font-size:12px;width:auto;min-width:190px;border-radius:7px}
+  .cfg input{padding:6px 9px;font-size:12px;width:auto;min-width:190px;border-radius:9px}
   .hint{font-size:12px;color:var(--muted);margin:-4px 0 14px}
 
   .msg{display:none;border-radius:var(--r);padding:13px 15px;margin:12px 0;font-size:14px;align-items:center;gap:10px}
-  .msg.on{display:flex}.msg.err{background:#2a1414;border:1px solid #4a2424;color:#ffb4b4}
+  .msg.on{display:flex}.msg.err{background:#3a1518;border:1px solid #5a2025;color:#ffb4b4}
 
   /* verdict card (совместимость) */
   .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-top:16px;
@@ -64,33 +65,33 @@
   .vstrip.forbidden{background:var(--red)}.vstrip.caution{background:var(--amber)}.vstrip.ok{background:var(--green)}
   .card .in{padding:18px}
   .verdict{display:flex;align-items:center;gap:12px;margin-bottom:12px}
-  .vbadge{font-weight:700;font-size:13px;letter-spacing:.6px;padding:6px 13px;border-radius:8px;text-transform:uppercase}
+  .vbadge{font-weight:700;font-size:13px;letter-spacing:.6px;padding:6px 13px;border-radius:9px;text-transform:uppercase}
   .vbadge.forbidden{background:#3a1518;color:#ff8d8d;border:1px solid #5a2025}
   .vbadge.caution{background:#3a2e12;color:#fbd56b;border:1px solid #5a4920}
   .vbadge.ok{background:#13301f;color:#6ee7a8;border:1px solid #1f5236}
   .vpair{font-weight:600;font-size:16px}
   .groups{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
-  .gchip{font-family:var(--mono);font-size:11.5px;color:#b9c6d6;background:var(--panel2);border:1px solid var(--line);padding:3px 9px;border-radius:7px}
+  .gchip{font-family:var(--mono);font-size:12px;color:#b9c6d6;background:var(--panel2);border:1px solid var(--line);padding:3px 9px;border-radius:9px}
   .reasons{list-style:none;padding:0;margin:0 0 14px}
-  .reasons li{display:flex;gap:9px;padding:8px 0;border-top:1px solid var(--line);font-size:13.5px;color:#d2dbe6}
+  .reasons li{display:flex;gap:9px;padding:8px 0;border-top:1px solid var(--line);font-size:14px;color:#c4cfdc}
   .reasons li:first-child{border-top:0}
   .rico{flex:none;margin-top:2px}
   .quote{font-family:var(--mono);font-size:12px;color:var(--muted);background:#0e1622;border-left:2px solid var(--line);
-    padding:8px 11px;border-radius:0 7px 7px 0;margin-top:8px;line-height:1.5}
-  .disc{font-size:11.5px;color:var(--muted);margin-top:14px;line-height:1.5}
+    padding:8px 11px;border-radius:0 var(--r-sm) var(--r-sm) 0;margin-top:8px;line-height:1.5}
+  .disc{font-size:12px;color:var(--muted);margin-top:14px;line-height:1.5}
 
   /* GHS */
   .ghsgrid{display:flex;flex-wrap:wrap;gap:14px;margin:6px 0 4px}
   .picto{width:78px;text-align:center}
   .diamond{width:62px;height:62px;margin:0 auto 6px;position:relative;display:grid;place-items:center}
   .diamond:before{content:"";position:absolute;inset:0;background:#fff;border:3px solid var(--red);
-    transform:rotate(45deg);border-radius:8px}
+    transform:rotate(45deg);border-radius:9px}
   .diamond svg{position:relative;color:#0f1419;width:30px;height:30px}
-  .picto .pl{font-size:10.5px;color:var(--muted);line-height:1.25}
-  .signal{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:15px;padding:7px 14px;border-radius:8px;margin:4px 0 12px}
+  .picto .pl{font-size:11px;color:var(--muted);line-height:1.25}
+  .signal{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:15px;padding:7px 14px;border-radius:9px;margin:4px 0 12px}
   .signal.danger{background:#3a1518;color:#ff8d8d;border:1px solid #5a2025}
   .signal.warn{background:#3a2e12;color:#fbd56b;border:1px solid #5a4920}
-  .basis{font-size:12.5px;color:#aab6c6;line-height:1.55}.basis b{color:var(--txt);font-weight:600}
+  .basis{font-size:13px;color:#aab6c6;line-height:1.55}.basis b{color:var(--txt);font-weight:600}
 
   /* zone result */
   .bignum{font-family:var(--mono);font-size:40px;font-weight:700;color:var(--orange);line-height:1;letter-spacing:-1px}
@@ -110,8 +111,8 @@
   .gaps h3,.audit h3{margin:0 0 12px;font-size:13px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
   .gaprow{display:flex;align-items:center;gap:10px;margin-bottom:9px;font-size:13px}
   .gaprow .gl{width:120px;flex:none;color:#c4cfdc}
-  .gbar{flex:1;height:8px;background:#0e1622;border-radius:5px;overflow:hidden}
-  .gbar i{display:block;height:100%;background:linear-gradient(90deg,#b9472f,var(--orange))}
+  .gbar{flex:1;height:8px;background:#0e1622;border-radius:4px;overflow:hidden}
+  .gbar i{display:block;height:100%;background:linear-gradient(90deg,var(--orange-d),var(--orange))}
   .gaprow .gv{font-family:var(--mono);font-size:12px;color:var(--muted);width:54px;text-align:right}
   .audit{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px}
   .alog{font-family:var(--mono);font-size:12px;color:#aab6c6;max-height:240px;overflow:auto}
@@ -130,10 +131,19 @@
   .xlink svg{flex:none}
 
   .skeleton{display:none}.skeleton.on{display:block;margin-top:16px}
-  .sk{height:14px;border-radius:6px;background:linear-gradient(90deg,#1a2436,#222e40,#1a2436);
+  .sk{height:14px;border-radius:9px;background:linear-gradient(90deg,var(--panel),var(--panel2),var(--panel));
     background-size:200% 100%;animation:sh 1.2s linear infinite;margin-bottom:12px}
   @keyframes sh{to{background-position:-200% 0}}
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  a.back{color:var(--muted);text-decoration:none;font-size:13px;font-family:var(--sans);transition:color .15s}
+  a.back:hover{color:var(--blue)}
+  a.back:focus-visible{outline:3px solid #5b9dffaa;outline-offset:2px;border-radius:4px}
+  /* Правило большого пальца (DESIGN.md, Layout): текстовая ссылка ростом 16px
+     непопадаема в перчатке. Зона нажатия растягивается по вертикали до 44px
+     псевдоэлементом — размер и положение самой ссылки не меняются. */
+  a.back,a.nav{position:relative}
+  a.back::after,a.nav::after{content:"";position:absolute;left:0;right:0;top:50%;
+    transform:translateY(-50%);height:44px}
 </style>
 </head>
 <body>
@@ -143,7 +153,7 @@
     <h1>Операции и хранение</h1>
     <div class="status" aria-live="polite"><span class="dot" id="dot"></span><span id="st">проверка…</span></div>
   </div>
-  <div style="margin:6px 0 2px"><a href="home.html" style="color:var(--accent);text-decoration:none;font-size:14px;font-weight:500">← На главную</a></div>
+  <div style="margin:6px 0 2px"><a class="back" href="home.html">← На главную</a></div>
   <div class="sub">Совместимость хранения · знаки опасности (СГС) · зона заражения · состояние данных ·
     <a href="console.html">поиск/ответ →</a> · <a href="emergency.html">аварийные карточки →</a></div>
 
