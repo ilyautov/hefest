@@ -10,17 +10,18 @@
   :root{
     --bg:#0f1419; --panel:#1a2230; --panel2:#222c3a; --line:#2b3647;
     --txt:#eef2f7; --muted:#a8b3c2;
-    --blue:#5b9dff; --blue-d:#2563eb; --orange:#f9a23b; --red:#ff6b6b; --green:#3ecf8e; --amber:#ffce6b;
-    --r:12px; --r-sm:9px;
+    --blue:#5b9dff; --blue-d:#2563eb; --orange:#f9a23b; --orange-d:#b9472f;
+    --red:#ff6b6b; --red-d:#b91c1c; --green:#3ecf8e; --green-d:#0e9f6e; --amber:#ffce6b; --amber-d:#b45309;
+    --r:14px; --r-sm:9px;
     --mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono",Menlo,Consolas,monospace;
     --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   }
   *{box-sizing:border-box}
   body{margin:0;background:radial-gradient(1100px 480px at 80% -10%,#122036,transparent 60%),var(--bg);
     color:var(--txt);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;min-height:100dvh}
-  .wrap{max-width:880px;margin:0 auto;padding:24px 18px 80px}
+  .wrap{max-width:900px;margin:0 auto;padding:24px 18px 80px}
   .top{display:flex;align-items:center;gap:12px;margin-bottom:4px}
-  .logo{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;
+  .logo{width:38px;height:38px;border-radius:14px;display:grid;place-items:center;
     background:linear-gradient(145deg,#1b263b,#0f1722);border:1px solid var(--line);color:var(--orange);flex:none}
   h1{font-size:19px;margin:0;font-weight:600;letter-spacing:.2px}
   .status{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);font-family:var(--sans)}
@@ -34,7 +35,7 @@
   label.fld{display:block;font-size:12px;color:var(--muted);margin:0 0 6px}
   input,select{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-sm);color:var(--txt);
     padding:12px 13px;font:14px var(--sans);outline:none;transition:border-color .15s,box-shadow .15s;width:100%}
-  input::placeholder{color:#5f6c7e}
+  input::placeholder{color:#7d8aa0}
   input:focus-visible,select:focus-visible{border-color:var(--blue);box-shadow:0 0 0 3px #5b9dff33}
   .row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;align-items:flex-end}
   .row>div{flex:1;min-width:160px}
@@ -47,15 +48,16 @@
   /* чипы быстрого выбора */
   .chips{display:flex;flex-wrap:wrap;gap:7px;margin:-2px 0 16px}
   .chips .lbl{font-size:12px;color:var(--muted);align-self:center;margin-right:2px}
-  .chip{font:13px var(--sans);color:#dbe3ee;background:var(--panel);border:1px solid var(--line);
-    padding:6px 13px;border-radius:999px;cursor:pointer;transition:border-color .15s,background .15s,color .15s}
+  .chip{font:13px var(--sans);color:#eef2f7;background:var(--panel);border:1px solid var(--line);
+    padding:0 15px;min-height:46px;display:inline-flex;align-items:center;border-radius:999px;
+    cursor:pointer;transition:border-color .15s,background .15s,color .15s}
   .chip:hover{border-color:var(--orange);color:var(--orange)}
   .chip:active{transform:translateY(1px)}
   .chip:focus-visible{outline:2px solid #5b9dffaa;outline-offset:2px}
-  .chip.on{background:#2a230f;border-color:var(--orange);color:var(--orange);font-weight:600}
+  .chip.on{background:#3a2e12;border-color:var(--orange);color:var(--orange);font-weight:600}
 
   .msg{display:none;border-radius:var(--r);padding:13px 15px;margin:12px 0;font-size:14px;align-items:center;gap:10px}
-  .msg.on{display:flex}.msg.err{background:#2a1414;border:1px solid #4a2424;color:#ffb4b4}
+  .msg.on{display:flex}.msg.err{background:#3a1518;border:1px solid #5a2025;color:#ffb4b4}
 
   /* result card */
   .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-top:16px;
@@ -66,13 +68,13 @@
   .card .in{padding:18px}
   .head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px}
   .vpair{font-weight:600;font-size:18px}
-  .gradebadge{font-weight:700;font-size:12px;letter-spacing:.5px;padding:6px 12px;border-radius:8px;text-transform:uppercase}
+  .gradebadge{font-weight:700;font-size:12px;letter-spacing:.5px;padding:6px 12px;border-radius:9px;text-transform:uppercase}
   .gradebadge.passport{background:#13301f;color:#6ee7a8;border:1px solid #1f5236}
   .gradebadge.baseline{background:#222c3a;color:#c4cfdc;border:1px solid var(--line)}
   .groups{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 4px}
-  .gchip{font-family:var(--mono);font-size:11.5px;color:#b9c6d6;background:var(--panel2);border:1px solid var(--line);padding:3px 9px;border-radius:7px}
+  .gchip{font-family:var(--mono);font-size:12px;color:#b9c6d6;background:var(--panel2);border:1px solid var(--line);padding:3px 9px;border-radius:9px}
 
-  .discbox{background:#2a230f;border:1px solid #5a4920;color:#fbd56b;border-radius:var(--r-sm);
+  .discbox{background:#3a2e12;border:1px solid #5a4920;color:#fbd56b;border-radius:var(--r-sm);
     padding:11px 13px;margin:14px 0;font-size:13px;line-height:1.5;display:flex;gap:9px;align-items:flex-start}
   .discbox svg{flex:none;margin-top:2px}
 
@@ -83,7 +85,7 @@
     display:flex;align-items:center;gap:7px}
   .ppecat h4 svg{color:var(--orange);flex:none}
   .ppecat ul{list-style:none;padding:0;margin:0}
-  .ppecat li{font-size:13.5px;color:#dbe3ee;padding:4px 0 4px 16px;position:relative;line-height:1.45}
+  .ppecat li{font-size:14px;color:#eef2f7;padding:4px 0 4px 16px;position:relative;line-height:1.45}
   .ppecat li:before{content:"";position:absolute;left:2px;top:11px;width:6px;height:6px;border-radius:50%;background:var(--orange)}
   .ppecat.empty li{color:var(--muted)}.ppecat.empty li:before{background:#46505f}
 
@@ -95,19 +97,28 @@
   .ctx .v small{font-size:12px;color:var(--muted);font-weight:500;margin-left:4px}
   .ctx .src{font-size:11px;color:#7d8a9c;margin-top:3px;line-height:1.4}
   .ghschips{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
-  .ghschip{font-size:11.5px;color:#fbd56b;background:#2a230f;border:1px solid #5a4920;padding:3px 9px;border-radius:7px}
+  .ghschip{font-size:12px;color:#fbd56b;background:#3a2e12;border:1px solid #5a4920;padding:3px 9px;border-radius:9px}
   .nodata{color:var(--muted);font-style:italic;font-size:13px}
 
   .cite{font-family:var(--mono);font-size:12px;color:var(--muted);background:#0e1622;border-left:2px solid var(--line);
-    padding:8px 11px;border-radius:0 7px 7px 0;margin-top:14px;line-height:1.5}
-  .opnote{font-size:12.5px;color:var(--amber);margin-top:12px;line-height:1.5}
-  .disc{font-size:11.5px;color:var(--muted);margin-top:14px;line-height:1.5}
+    padding:8px 11px;border-radius:0 var(--r-sm) var(--r-sm) 0;margin-top:14px;line-height:1.5}
+  .opnote{font-size:13px;color:var(--amber);margin-top:12px;line-height:1.5}
+  .disc{font-size:12px;color:var(--muted);margin-top:14px;line-height:1.5}
 
   .skeleton{display:none}.skeleton.on{display:block;margin-top:16px}
-  .sk{height:14px;border-radius:6px;background:linear-gradient(90deg,#1a2436,#222e40,#1a2436);
+  .sk{height:14px;border-radius:9px;background:linear-gradient(90deg,var(--panel),var(--panel2),var(--panel));
     background-size:200% 100%;animation:sh 1.2s linear infinite;margin-bottom:12px}
   @keyframes sh{to{background-position:-200% 0}}
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  a.back{color:var(--muted);text-decoration:none;font-size:13px;font-family:var(--sans);transition:color .15s}
+  a.back:hover{color:var(--blue)}
+  a.back:focus-visible{outline:3px solid #5b9dffaa;outline-offset:2px;border-radius:4px}
+  /* Правило большого пальца (DESIGN.md, Layout): текстовая ссылка ростом 16px
+     непопадаема в перчатке. Зона нажатия растягивается по вертикали до 44px
+     псевдоэлементом — размер и положение самой ссылки не меняются. */
+  a.back,a.nav{position:relative}
+  a.back::after,a.nav::after{content:"";position:absolute;left:0;right:0;top:50%;
+    transform:translateY(-50%);height:44px}
 </style>
 </head>
 <body>
@@ -117,7 +128,7 @@
     <h1>Подбор СИЗ по веществу</h1>
     <div class="status" aria-live="polite"><span class="dot" id="dot"></span><span id="st">проверка…</span></div>
   </div>
-  <div style="margin:6px 0 2px"><a href="home.html" style="color:var(--blue);text-decoration:none;font-size:14px;font-weight:500">← На главную</a></div>
+  <div style="margin:6px 0 2px"><a class="back" href="home.html">← На главную</a></div>
   <div class="sub">Средства индивидуальной защиты по веществу · по категориям · с провенансом ·
     <a href="safety.html">операции и хранение →</a> · <a href="emergency.html">аварийные карточки →</a></div>
 

@@ -10,21 +10,22 @@
   :root{
     --bg:#0f1419; --panel:#1a2230; --panel2:#222c3a; --line:#2b3647;
     --txt:#eef2f7; --muted:#a8b3c2;
-    --blue:#5b9dff; --blue-d:#2563eb; --orange:#f9a23b; --red:#ff6b6b; --green:#3ecf8e; --amber:#ffce6b;
-    --r:12px; --r-sm:9px;
+    --blue:#5b9dff; --blue-d:#2563eb; --orange:#f9a23b; --orange-d:#b9472f;
+    --red:#ff6b6b; --red-d:#b91c1c; --green:#3ecf8e; --green-d:#0e9f6e; --amber:#ffce6b; --amber-d:#b45309;
+    --r:14px; --r-sm:9px;
     --mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono",Menlo,Consolas,monospace;
-    --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   }
   *{box-sizing:border-box}
   html{ -webkit-text-size-adjust:100% }
   body{margin:0;background:
       radial-gradient(1100px 480px at 78% -8%, #122036 0%, transparent 60%), var(--bg);
     color:var(--txt);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;min-height:100dvh}
-  .wrap{max-width:780px;margin:0 auto;padding:26px 18px 72px}
+  .wrap{max-width:860px;margin:0 auto;padding:26px 18px 72px}
 
   /* header */
   .top{display:flex;align-items:center;gap:12px;margin-bottom:6px}
-  .logo{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;
+  .logo{width:38px;height:38px;border-radius:14px;display:grid;place-items:center;
     background:linear-gradient(145deg,#1b263b,#0f1722);border:1px solid var(--line);color:var(--orange);flex:none}
   h1{font-size:19px;margin:0;letter-spacing:.2px;font-weight:600}
   .status{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);
@@ -41,7 +42,7 @@
   input{width:100%;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
     color:var(--txt);padding:13px 14px 13px 40px;font-size:15px;font-family:var(--sans);outline:none;
     transition:border-color .15s,box-shadow .15s}
-  input::placeholder{color:#5f6c7e}
+  input::placeholder{color:#7d8aa0}
   input:focus-visible{border-color:var(--blue);box-shadow:0 0 0 3px #5b9dff33}
   button{background:var(--orange);color:#241204;border:0;border-radius:var(--r);min-height:48px;
     padding:0 20px;font-weight:600;font-size:15px;font-family:var(--sans);cursor:pointer;
@@ -52,17 +53,17 @@
   button[disabled]{opacity:.55;cursor:progress}
   .cfg{font-size:12px;color:var(--muted);margin-bottom:20px;font-family:var(--sans)}
   .cfg input{width:auto;min-width:200px;padding:6px 9px 6px 9px;font-size:12px;display:inline-block;
-    border-radius:7px;vertical-align:middle}
+    border-radius:9px;vertical-align:middle}
 
   /* states */
   .msg{display:none;border-radius:var(--r);padding:13px 15px;margin-bottom:6px;font-size:14px;
     align-items:center;gap:10px}
   .msg.on{display:flex}
-  .msg.err{background:#2a1414;border:1px solid #4a2424;color:#ffb4b4}
+  .msg.err{background:#3a1518;border:1px solid #5a2025;color:#ffb4b4}
   .skeleton{display:none;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
     padding:20px;margin-top:4px}
   .skeleton.on{display:block}
-  .sk{height:14px;border-radius:6px;background:linear-gradient(90deg,#1a2436,#222e40,#1a2436);
+  .sk{height:14px;border-radius:9px;background:linear-gradient(90deg,var(--panel),var(--panel2),var(--panel));
     background-size:200% 100%;animation:sh 1.2s linear infinite;margin-bottom:12px}
   @keyframes sh{to{background-position:-200% 0}}
 
@@ -72,15 +73,15 @@
   .card.on{display:block;animation:rise .22s ease}
   @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
   .severity{height:4px;background:var(--muted)}
-  .severity.ahov{background:linear-gradient(90deg,var(--red),#b91c1c)}
-  .severity.safe{background:linear-gradient(90deg,var(--green),#0e9f6e)}
+  .severity.ahov{background:linear-gradient(90deg,var(--red-d),var(--red))}
+  .severity.safe{background:linear-gradient(90deg,var(--green-d),var(--green))}
   .card-in{padding:20px}
   .name{font-size:21px;font-weight:700;line-height:1.2;margin-bottom:14px}
 
   .alert{display:flex;align-items:center;gap:10px;border-radius:var(--r-sm);padding:10px 13px;
     margin-bottom:16px;font-weight:600;font-size:14px}
-  .alert.ahov{background:#2a1414;border:1px solid #5a2626;color:#ff9b9b}
-  .alert.safe{background:#0f2a20;border:1px solid #1f5340;color:#6ee7b7}
+  .alert.ahov{background:#3a1518;border:1px solid #5a2025;color:#ff8d8d}
+  .alert.safe{background:#0f2a20;border:1px solid #1f5236;color:#6ee7a8}
 
   /* metric tiles */
   .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:16px}
@@ -96,21 +97,21 @@
   .field:last-child{padding-bottom:0}
   .field .ic{color:var(--blue);flex:none;margin-top:1px}
   .field .body .k{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:3px}
-  .field .body .v{font-size:14.5px;line-height:1.5}
-  .qrbox{flex:none;width:84px;height:84px;background:#fff;border-radius:8px;padding:4px;display:grid;place-items:center}
+  .field .body .v{font-size:15px;line-height:1.5}
+  .qrbox{flex:none;width:84px;height:84px;background:#fff;border-radius:9px;padding:4px;display:grid;place-items:center}
   .qrbox img{width:100%;height:100%;display:block}
   /* IDLH — острый порог (NIOSH) */
-  .idlh{margin-top:12px;background:#2a1414;border:1px solid #5a2626;border-radius:var(--r-sm);padding:11px 14px;display:flex;gap:11px;align-items:baseline;flex-wrap:wrap}
-  .idlh .big{font-family:var(--mono);font-size:20px;font-weight:700;color:#ff9b9b;font-variant-numeric:tabular-nums}
+  .idlh{margin-top:12px;background:#3a1518;border:1px solid #5a2025;border-radius:var(--r-sm);padding:11px 14px;display:flex;gap:11px;align-items:baseline;flex-wrap:wrap}
+  .idlh .big{font-family:var(--mono);font-size:20px;font-weight:700;color:#ff8d8d;font-variant-numeric:tabular-nums}
   .idlh .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--orange);font-weight:700}
-  .idlh .ex{font-size:12.5px;color:#fcd9a0;flex:1;min-width:200px}
+  .idlh .ex{font-size:13px;color:#fbd56b;flex:1;min-width:200px}
   /* особые отметки СанПиН */
   .flags{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-  .flag{display:flex;align-items:center;gap:7px;border-radius:9px;padding:7px 11px;font-size:12.5px;border:1px solid}
-  .flag.high{background:#2a1414;border-color:#5a2626;color:#ff9b9b}
-  .flag.medium{background:#241a08;border-color:#5a4216;color:#fcd9a0}
+  .flag{display:flex;align-items:center;gap:7px;border-radius:9px;padding:7px 11px;font-size:13px;border:1px solid}
+  .flag.high{background:#3a1518;border-color:#5a2025;color:#ff8d8d}
+  .flag.medium{background:#241a08;border-color:#5a4920;color:#fbd56b}
   .flag b{font-family:var(--mono);font-size:13px}
-  .flag .fm{color:var(--muted);font-size:11.5px}
+  .flag .fm{color:var(--muted);font-size:12px}
   /* ERG — расстояния изоляции/эвакуации */
   .erg{margin-top:12px;background:#0f1d2e;border:1px solid #244468;border-radius:var(--r-sm);padding:13px 15px}
   .erg .eh{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#7fb0ff;font-weight:700;margin-bottom:9px;display:flex;align-items:center;gap:7px}
@@ -123,21 +124,21 @@
 
   /* кросс-ссылка на оперативную карточку диспетчера */
   .dispatch-link{display:flex;align-items:center;gap:11px;margin-top:14px;text-decoration:none;
-    background:#1a1206;border:1px solid #5a4216;border-radius:var(--r-sm);padding:12px 15px;
+    background:#1a1206;border:1px solid #5a4920;border-radius:var(--r-sm);padding:12px 15px;
     color:var(--amber);font-weight:600;font-size:14px;transition:border-color .15s,background .15s}
   .dispatch-link:hover{border-color:var(--orange);background:#241a08}
   .dispatch-link:focus-visible{outline:3px solid #5b9dffaa;outline-offset:2px}
   .dispatch-link .ic{color:var(--orange);flex:none}
-  .dispatch-link .dl-sub{display:block;font-weight:400;font-size:11.5px;color:var(--muted);margin-top:2px}
+  .dispatch-link .dl-sub{display:block;font-weight:400;font-size:12px;color:var(--muted);margin-top:2px}
   .dispatch-link .arr{margin-left:auto;flex:none;color:var(--orange)}
 
-  .disc{margin-top:16px;background:#241a08;border:1px solid #5a4216;border-radius:var(--r-sm);
-    padding:11px 13px;font-size:12.5px;color:#fcd9a0;display:flex;gap:9px}
+  .disc{margin-top:16px;background:#241a08;border:1px solid #5a4920;border-radius:var(--r-sm);
+    padding:11px 13px;font-size:13px;color:#fbd56b;display:flex;gap:9px}
   .disc .ic{color:var(--amber);flex:none;margin-top:1px}
   .disc b{color:var(--amber)}
   .exrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 16px}
-  .exrow .lbl{font-size:12.5px;color:var(--muted)}
-  .exchip{cursor:pointer;font-size:13.5px;background:var(--panel);border:1px solid var(--line);color:var(--txt);
+  .exrow .lbl{font-size:13px;color:var(--muted)}
+  .exchip{cursor:pointer;font-size:14px;background:var(--panel);border:1px solid var(--line);color:var(--txt);
     height:38px;padding:0 14px;border-radius:9px;display:inline-flex;align-items:center;font-family:var(--sans)}
   .exchip:hover{border-color:var(--orange);background:var(--panel2)}
   .exchip:focus-visible{outline:3px solid #5b9dffaa;outline-offset:2px}
@@ -148,6 +149,15 @@
   .introbox li b{color:var(--txt)}
 
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  a.back{color:var(--muted);text-decoration:none;font-size:13px;font-family:var(--sans);transition:color .15s}
+  a.back:hover{color:var(--blue)}
+  a.back:focus-visible{outline:3px solid #5b9dffaa;outline-offset:2px;border-radius:4px}
+  /* Правило большого пальца (DESIGN.md, Layout): текстовая ссылка ростом 16px
+     непопадаема в перчатке. Зона нажатия растягивается по вертикали до 44px
+     псевдоэлементом — размер и положение самой ссылки не меняются. */
+  a.back,a.nav{position:relative}
+  a.back::after,a.nav::after{content:"";position:absolute;left:0;right:0;top:50%;
+    transform:translateY(-50%);height:44px}
 </style>
 </head>
 <body>
@@ -161,7 +171,7 @@
     </div>
     <div class="status" aria-live="polite"><span class="dot" id="dot"></span><span id="status-txt">проверка…</span></div>
   </div>
-  <div style="margin:6px 0 2px"><a href="home.html" style="color:var(--accent);text-decoration:none;font-size:14px;font-weight:500">← На главную</a></div>
+  <div style="margin:6px 0 2px"><a class="back" href="home.html">← На главную</a></div>
   <div class="sub">Номер ООН · класс ДОПОГ · первая помощь · средства защиты — для быстрого реагирования на аварию</div>
 
   <form class="search" id="form" autocomplete="off">
@@ -215,7 +225,8 @@
       <div class="field"><span class="ic" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 2v2"/><path d="M5 10v4a7 7 0 0 0 14 0v-4"/><path d="M8 4h8"/><path d="M9 14h6"/></svg></span><div class="body"><div class="k">Первая помощь</div><div class="v" id="c-aid">—</div></div></div>
       <div class="field"><span class="ic" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span><div class="body"><div class="k">СИЗ</div><div class="v" id="c-ppe">—</div></div></div>
       <div class="field"><span class="ic" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></span><div class="body"><div class="k">Аварийная заметка</div><div class="v" id="c-note">—</div></div></div>
-      <div class="field" id="c-qrwrap" style="display:none"><span class="qrbox"><img id="c-qr" alt="QR на мобильную карточку" width="84" height="84"></span><div class="body"><div class="k">Карточка на телефон</div><div class="v">Наведите камеру — откроется эта же карточка на смартфоне у места аварии.</div></div></div>
+      <div class="field" id="c-qrwrap" style="display:none"><span class="qrbox"><img id="c-qr" alt="QR на мобильную карточку" width="84" height="84"
+           onerror="this.closest('.field').style.display='none'"></span><div class="body"><div class="k">Карточка на телефон</div><div class="v">Наведите камеру — откроется эта же карточка на смартфоне у места аварии.</div></div></div>
       <div class="disc"><span class="ic" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span><span id="c-disc"></span></div>
       <a class="dispatch-link" id="c-dispatch" href="#">
         <span class="ic" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg></span>
@@ -275,7 +286,7 @@ async function lookup(){
   $('c-pdk').textContent=(d.pdk_mgm3??'—');
   // Источник СИЗ/первой помощи: паспорт или типовое по группе (явно помечаем — не выдаём за паспорт).
   const baseTag=(d.guidance_source==='типовое по группе')
-    ? ' <span style="font-family:var(--mono,monospace);font-size:10px;color:#ffce6b;border:1px solid #5a4920;background:#3a2e12;padding:1px 6px;border-radius:5px;white-space:nowrap">типовое по группе</span>' : '';
+    ? ' <span style="font-family:var(--mono,monospace);font-size:10px;color:#ffce6b;border:1px solid #5a4920;background:#3a2e12;padding:1px 6px;border-radius:4px;white-space:nowrap">типовое по группе</span>' : '';
   $('c-aid').innerHTML=esc(d.first_aid||'—')+baseTag;
   $('c-ppe').innerHTML=esc(d.ppe||'—')+baseTag;
   $('c-note').textContent=d.emergency_note||'—';
