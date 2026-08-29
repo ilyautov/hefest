@@ -1,6 +1,15 @@
 # HEFEST — рабочие ритуалы.
-# Требуется Python 3.10–3.13 с установленным requirements/dev.txt.
-PY ?= python3
+#
+# Интерпретатор определяется автоматически: берётся первый python3.x, в котором уже стоит
+# fastapi. Это спасает от типичной ловушки — системный python3 обновился до версии, под
+# которую зависимости не ставились, и всё «внезапно сломалось».
+# Переопределить вручную: PY=python3.12 make run
+PY ?= $(shell for c in python3.13 python3.12 python3.11 python3.10 python3; do \
+        if command -v $$c >/dev/null 2>&1 && $$c -c "import fastapi" >/dev/null 2>&1; \
+        then echo $$c; break; fi; done)
+ifeq ($(strip $(PY)),)
+PY := python3
+endif
 
 .PHONY: help install test guard run run-semantic demo lint clean check
 
