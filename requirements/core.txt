@@ -2,7 +2,7 @@
 # Этого достаточно, чтобы поднять HEFEST и пройти офлайн-сьют.
 fastapi>=0.110
 uvicorn[standard]>=0.29
-pydantic>=2.6
+pydantic>=2.13.4
 numpy>=1.26
 scikit-learn>=1.4
 rank-bm25>=0.2.2
