@@ -8,8 +8,9 @@
   :root{
     --bg:#0f1419; --panel:#1a2230; --panel2:#222c3a; --line:#2b3647;
     --txt:#eef2f7; --muted:#a8b3c2;
-    --blue:#5b9dff; --blue-d:#2563eb; --orange:#f9a23b; --red:#ff6b6b; --green:#3ecf8e; --amber:#ffce6b;
-    --r:14px; --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    --blue:#5b9dff; --blue-d:#2563eb; --orange:#f9a23b; --orange-d:#b9472f;
+    --red:#ff6b6b; --red-d:#b91c1c; --green:#3ecf8e; --green-d:#0e9f6e; --amber:#ffce6b; --amber-d:#b45309;
+    --r:14px; --mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono",Menlo,Consolas,monospace;
     --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   }
   *{box-sizing:border-box}
@@ -23,14 +24,17 @@
   .status{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);font-family:var(--sans)}
   .dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
   .dot.ok{background:var(--green)}.dot.off{background:var(--red)}
-  .lead{color:var(--muted);font-size:14.5px;margin:8px 0 24px;max-width:730px;line-height:1.55}
+  .lead{color:var(--muted);font-size:15px;margin:8px 0 24px;max-width:730px;line-height:1.55}
   .lead b{color:var(--txt)}
 
   .big{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:24px;margin-bottom:18px}
   .pct{font-family:var(--mono);font-size:46px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
   .pct+small{display:block;font-size:14px;color:var(--muted);font-weight:600;margin-top:6px}
-  .pbar{height:12px;border-radius:7px;background:#1b2433;overflow:hidden;margin:16px 0 8px}
-  .pbar i{display:block;height:100%;background:linear-gradient(90deg,var(--green),#0e9f6e);transition:width .6s ease}
+  a.ln{color:var(--blue);text-decoration:none}
+  a.ln:hover{text-decoration:underline}
+  .pbar{height:12px;border-radius:9px;background:#1b2433;overflow:hidden;margin:16px 0 8px}
+  .pbar i{display:block;height:100%;width:100%;transform:scaleX(0);transform-origin:left;
+    background:linear-gradient(90deg,var(--green-d),var(--green));transition:transform .6s ease}
   .pcap{font-size:13px;color:var(--muted)}
 
   .metrics{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:18px}
@@ -42,20 +46,30 @@
   .sec{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin-bottom:16px}
   .sec h2{font-size:15px;margin:0 0 12px;font-weight:600;display:flex;align-items:center;gap:8px}
   .sec ol{margin:0;padding-left:20px}.sec li{margin-bottom:8px;color:var(--muted);line-height:1.5}.sec li b{color:var(--txt)}
-  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  table{width:100%;border-collapse:collapse;font-size:14px}
   th,td{text-align:left;padding:9px 10px;border-bottom:1px solid #1b2433;vertical-align:top}
   th{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:600}
   td .who{font-weight:600}.td-mut{color:var(--muted);font-family:var(--mono);font-size:12px}
-  .vd{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-family:var(--mono);padding:3px 9px;border-radius:7px;border:1px solid}
+  .vd{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-family:var(--mono);padding:3px 9px;border-radius:9px;border:1px solid}
   .vd.correct{color:var(--green);border-color:rgba(52,211,153,.4);background:rgba(52,211,153,.08)}
   .vd.partial{color:var(--amber);border-color:rgba(251,191,36,.35);background:rgba(251,191,36,.07)}
   .vd.incorrect{color:var(--red);border-color:rgba(239,68,68,.4);background:rgba(239,68,68,.08)}
-  .tag{font-size:11px;font-family:var(--mono);padding:2px 7px;border-radius:6px;border:1px solid var(--line);color:var(--muted);margin-right:4px}
-  .empty{color:var(--muted);font-size:13.5px;padding:6px 0;line-height:1.55}
+  .tag{font-size:11px;font-family:var(--mono);padding:2px 7px;border-radius:9px;border:1px solid var(--line);color:var(--muted);margin-right:4px}
+  .empty{color:var(--muted);font-size:14px;padding:6px 0;line-height:1.55}
   .qcell{max-width:300px}
   .cfg{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:20px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-  .cfg input{background:var(--panel);border:1px solid var(--line);border-radius:7px;color:var(--txt);padding:6px 9px;font:12px var(--mono);min-width:200px}
+  .cfg input{background:var(--panel);border:1px solid var(--line);border-radius:9px;color:var(--txt);padding:6px 9px;font:12px var(--mono);min-width:200px}
   @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+  /* Системное кольцо фокуса: одинаковое на всех экранах (DESIGN.md, Components). */
+  a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,
+  textarea:focus-visible,summary:focus-visible,[tabindex]:focus-visible{
+    outline:3px solid #5b9dffaa;outline-offset:2px;border-radius:4px}
+  /* Правило большого пальца (DESIGN.md, Layout): текстовая ссылка ростом 16px
+     непопадаема в перчатке. Зона нажатия растягивается по вертикали до 44px
+     псевдоэлементом — размер и положение самой ссылки не меняются. */
+  a.back,a.nav{position:relative}
+  a.back::after,a.nav::after{content:"";position:absolute;left:0;right:0;top:50%;
+    transform:translateY(-50%);height:44px}
 </style>
 </head>
 <body>
@@ -72,7 +86,7 @@
 
   <div class="big">
     <div><span class="pct" id="pct">—</span><small>выдач оценены как «верно»</small></div>
-    <div class="pbar"><i id="pbar" style="width:0%"></i></div>
+    <div class="pbar"><i id="pbar"></i></div>
     <div class="pcap" id="pcap">загрузка…</div>
   </div>
 
@@ -91,7 +105,7 @@
   <div class="sec">
     <h2>Как оценить выдачу</h2>
     <ol>
-      <li>В <b><a href="console.html" style="color:var(--blue);text-decoration:none">консоли</a></b> задайте вопрос и получите ответ.</li>
+      <li>В <b><a class="ln" href="console.html">консоли</a></b> задайте вопрос и получите ответ.</li>
       <li>Разверните <b>текст из паспорта</b> под каждым источником — это точная цитата раздела. Сверьте сами.</li>
       <li>Отметьте каждый источник <b>«релевантен / не в тему»</b>, оцените выдачу <b>верно / частично / неверно</b>,
           поставьте подпись. Анонимные оценки не принимаются.</li>
@@ -120,7 +134,7 @@
     const pct=d.correct_pct!=null?d.correct_pct:0;
     $('pct').textContent=(d.total?pct:0)+'%';
     $('pct').style.color = !d.total?'var(--muted)':pct>=80?'var(--green)':pct>=50?'var(--amber)':'var(--red)';
-    $('pbar').style.width=Math.max(d.total?pct:0,1)+'%';
+    $('pbar').style.transform='scaleX('+Math.max(d.total?pct:0,1)/100+')';
     $('pcap').textContent=d.total?`${d.correct||0} из ${d.total} оценённых выдач признаны верными`:'оценок пока нет';
     $('m-total').textContent=d.total||0;
     $('m-ok').textContent=d.correct||0;
@@ -134,7 +148,7 @@
     $('rcount').textContent=recs.length?`(${recs.length})`:'';
     if(!recs.length){
       $('recs').innerHTML='<div class="empty">Оценок выдачи пока нет. Это нормально до начала эксплуатации — '+
-        'специалисты ставят их по ходу работы в <a href="console.html" style="color:var(--blue);text-decoration:none">консоли</a>. '+
+        'специалисты ставят их по ходу работы в <a class="ln" href="console.html">консоли</a>. '+
         'Каждая оценка подписывается (кто/когда) и попадает сюда.</div>';
       return;
     }

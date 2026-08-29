@@ -8,16 +8,17 @@
   :root{
     --bg:#0f1419; --panel:#1a2230; --panel2:#222c3a; --line:#2b3647;
     --txt:#eef2f7; --muted:#a8b3c2;
-    --blue:#5b9dff; --blue-d:#2563eb; --orange:#f9a23b; --red:#ff6b6b; --green:#3ecf8e; --amber:#ffce6b;
-    --r:14px; --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    --blue:#5b9dff; --blue-d:#2563eb; --orange:#f9a23b; --orange-d:#b9472f;
+    --red:#ff6b6b; --red-d:#b91c1c; --green:#3ecf8e; --green-d:#0e9f6e; --amber:#ffce6b; --amber-d:#b45309;
+    --r:14px; --mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono",Menlo,Consolas,monospace;
     --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   }
   *{box-sizing:border-box}
   body{margin:0;background:radial-gradient(1100px 480px at 80% -10%,#122036,transparent 60%),var(--bg);
     color:var(--txt);font:15px/1.6 var(--sans);-webkit-font-smoothing:antialiased;min-height:100dvh}
-  .wrap{max-width:840px;margin:0 auto;padding:30px 18px 90px}
+  .wrap{max-width:860px;margin:0 auto;padding:30px 18px 90px}
   .top{display:flex;align-items:center;gap:13px;margin-bottom:6px}
-  .logo{width:42px;height:42px;border-radius:11px;display:grid;place-items:center;
+  .logo{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;
     background:linear-gradient(145deg,#1b263b,#0f1722);border:1px solid var(--line);color:var(--orange);flex:none}
   h1{font-size:22px;margin:0;font-weight:700}
   .lead{color:var(--muted);font-size:14px;margin:4px 0 24px}
@@ -32,10 +33,10 @@
   section{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
     padding:22px 22px 18px;margin-bottom:16px;scroll-margin-top:16px}
   section h2{font-size:17px;margin:0 0 4px;display:flex;align-items:center;gap:10px}
-  section h2 .n{width:26px;height:26px;border-radius:8px;background:#14233c;border:1px solid #1e3354;
+  section h2 .n{width:26px;height:26px;border-radius:9px;background:#14233c;border:1px solid #1e3354;
     color:var(--blue);display:grid;place-items:center;font-size:13px;font-family:var(--mono);flex:none}
-  section.warn h2 .n{background:#2a1c0d;border-color:#4a3315;color:var(--orange)}
-  .what{color:var(--muted);font-size:13.5px;margin:0 0 14px}
+  section.warn h2 .n{background:#3a2e12;border-color:#3a2e12;color:var(--orange)}
+  .what{color:var(--muted);font-size:14px;margin:0 0 14px}
 
   .steps{margin:0 0 14px;padding-left:0;list-style:none;counter-reset:s}
   .steps li{position:relative;padding:5px 0 5px 26px;font-size:14px}
@@ -43,28 +44,33 @@
     width:18px;height:18px;border-radius:50%;background:var(--panel2);border:1px solid var(--line);
     font-size:11px;font-family:var(--mono);display:grid;place-items:center;color:var(--muted)}
 
-  .ex{background:#0e1622;border:1px solid var(--line);border-radius:10px;padding:13px 15px;margin:10px 0}
+  .ex{background:#0e1622;border:1px solid var(--line);border-radius:14px;padding:13px 15px;margin:10px 0}
   .ex .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:6px}
-  .ex .io{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;margin:4px 0}
-  .ex .io .tag{flex:none;font-family:var(--mono);font-size:11px;padding:2px 8px;border-radius:6px;margin-top:1px}
+  .ex .io{display:flex;gap:10px;align-items:flex-start;font-size:14px;margin:4px 0}
+  .ex .io .tag{flex:none;font-family:var(--mono);font-size:11px;padding:2px 8px;border-radius:9px;margin-top:1px}
   .ex .io .tag.q{background:#14233c;border:1px solid #1e3354;color:#8fb8ff}
   .ex .io .tag.a{background:#13301f;border:1px solid #1f5236;color:#6ee7a8}
-  .ex .io code{font-family:var(--mono);font-size:13px;color:#eef2f7;background:var(--panel2);padding:1px 6px;border-radius:5px}
+  .ex .io code{font-family:var(--mono);font-size:13px;color:#eef2f7;background:var(--panel2);padding:1px 6px;border-radius:4px}
   .ex .io{flex-wrap:wrap}
   .ex .io .res{color:#c8d2de;min-width:0;overflow-wrap:anywhere}
   .ex .io code{overflow-wrap:anywhere}
 
-  .tip{font-size:12.5px;line-height:1.5;color:#cdd6e2;background:var(--panel2);
-    border-left:3px solid var(--blue);border-radius:0 8px 8px 0;padding:9px 12px;margin-top:10px;overflow:hidden}
+  .tip{font-size:13px;line-height:1.5;color:#c4cfdc;background:var(--panel2);
+    border-left:3px solid var(--blue);border-radius:0 var(--r-sm) var(--r-sm) 0;padding:9px 12px;margin-top:10px;overflow:hidden}
   .tip.warn{border-left-color:var(--amber);color:#f3dca8}
   .tip svg{float:left;margin:2px 9px 0 0}
-  .badge{display:inline-block;font-family:var(--mono);font-size:11px;padding:1px 7px;border-radius:5px;
+  .badge{display:inline-block;font-family:var(--mono);font-size:11px;padding:1px 7px;border-radius:4px;
     background:#3a2e12;border:1px solid #5a4920;color:#fbd56b}
-  b.red{color:#ff9b9b}b.green{color:#6ee7a8}b.amber{color:#fbd56b}
+  b.red{color:#ff8d8d}b.green{color:#6ee7a8}b.amber{color:#fbd56b}
 
-  .foot{margin-top:24px;font-size:12.5px;color:var(--muted);line-height:1.6;text-align:center}
+  .foot{margin-top:24px;font-size:13px;color:var(--muted);line-height:1.6;text-align:center}
   .foot a{color:var(--blue);text-decoration:none}
   @media print{body{background:#fff;color:#000}section{break-inside:avoid;border-color:#ccc}}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  /* Системное кольцо фокуса: одинаковое на всех экранах (DESIGN.md, Components). */
+  a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,
+  textarea:focus-visible,summary:focus-visible,[tabindex]:focus-visible{
+    outline:3px solid #5b9dffaa;outline-offset:2px;border-radius:4px}
 </style>
 </head>
 <body>

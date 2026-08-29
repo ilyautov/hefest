@@ -8,8 +8,9 @@
   :root{
     --bg:#0f1419; --panel:#1a2230; --panel2:#222c3a; --line:#2b3647;
     --txt:#eef2f7; --muted:#a8b3c2;
-    --blue:#5b9dff; --blue-d:#2563eb; --orange:#f9a23b; --red:#ff6b6b; --green:#3ecf8e; --amber:#ffce6b;
-    --r:14px; --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    --blue:#5b9dff; --blue-d:#2563eb; --orange:#f9a23b; --orange-d:#b9472f;
+    --red:#ff6b6b; --red-d:#b91c1c; --green:#3ecf8e; --green-d:#0e9f6e; --amber:#ffce6b; --amber-d:#b45309;
+    --r:14px; --mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono",Menlo,Consolas,monospace;
     --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   }
   *{box-sizing:border-box}
@@ -23,13 +24,14 @@
   .status{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);font-family:var(--sans)}
   .dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
   .dot.ok{background:var(--green)}.dot.off{background:var(--red)}
-  .lead{color:var(--muted);font-size:14.5px;margin:8px 0 24px;max-width:720px;line-height:1.55}
+  .lead{color:var(--muted);font-size:15px;margin:8px 0 24px;max-width:720px;line-height:1.55}
 
   .big{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:24px;margin-bottom:18px}
   .pct{font-family:var(--mono);font-size:46px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
   .pct+small{display:block;font-size:14px;color:var(--muted);font-weight:600;margin-top:6px}
-  .pbar{height:12px;border-radius:7px;background:#1b2433;overflow:hidden;margin:16px 0 8px}
-  .pbar i{display:block;height:100%;background:linear-gradient(90deg,var(--green),#0e9f6e);transition:width .6s ease}
+  .pbar{height:12px;border-radius:9px;background:#1b2433;overflow:hidden;margin:16px 0 8px}
+  .pbar i{display:block;height:100%;width:100%;transform:scaleX(0);transform-origin:left;
+    background:linear-gradient(90deg,var(--green-d),var(--green));transition:transform .6s ease}
   .pcap{font-size:13px;color:var(--muted)}
 
   .metrics{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:18px}
@@ -43,16 +45,26 @@
   .sec ol{margin:0;padding-left:20px}.sec li{margin-bottom:8px;color:var(--muted);line-height:1.5}.sec li b{color:var(--txt)}
   .sign{margin-top:12px;font-family:var(--mono);font-size:12px;color:#b9c6d6;background:#0d1420;border:1px solid var(--line);
     border-radius:9px;padding:11px 13px;overflow-x:auto;white-space:pre}
-  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  table{width:100%;border-collapse:collapse;font-size:14px}
   th,td{text-align:left;padding:9px 10px;border-bottom:1px solid #1b2433}
   th{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:600}
   td .who{font-weight:600}.td-mut{color:var(--muted);font-family:var(--mono);font-size:12px}
-  .empty{color:var(--muted);font-size:13.5px;padding:6px 0}
-  .vbadge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-family:var(--mono);padding:4px 10px;border-radius:7px;
+  .empty{color:var(--muted);font-size:14px;padding:6px 0}
+  .vbadge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-family:var(--mono);padding:4px 10px;border-radius:9px;
     border:1px solid rgba(251,191,36,.35);background:rgba(251,191,36,.06);color:var(--amber)}
   .cfg{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:20px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-  .cfg input{background:var(--panel);border:1px solid var(--line);border-radius:7px;color:var(--txt);padding:6px 9px;font:12px var(--mono);min-width:200px}
+  .cfg input{background:var(--panel);border:1px solid var(--line);border-radius:9px;color:var(--txt);padding:6px 9px;font:12px var(--mono);min-width:200px}
   @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+  /* Системное кольцо фокуса: одинаковое на всех экранах (DESIGN.md, Components). */
+  a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,
+  textarea:focus-visible,summary:focus-visible,[tabindex]:focus-visible{
+    outline:3px solid #5b9dffaa;outline-offset:2px;border-radius:4px}
+  /* Правило большого пальца (DESIGN.md, Layout): текстовая ссылка ростом 16px
+     непопадаема в перчатке. Зона нажатия растягивается по вертикали до 44px
+     псевдоэлементом — размер и положение самой ссылки не меняются. */
+  a.back,a.nav{position:relative}
+  a.back::after,a.nav::after{content:"";position:absolute;left:0;right:0;top:50%;
+    transform:translateY(-50%);height:44px}
 </style>
 </head>
 <body>
@@ -68,7 +80,7 @@
 
   <div class="big">
     <div><span class="pct" id="pct">—</span><small>готовности</small></div>
-    <div class="pbar"><i id="pbar" style="width:0%"></i></div>
+    <div class="pbar"><i id="pbar"></i></div>
     <div class="pcap" id="pcap">загрузка…</div>
   </div>
 
@@ -111,7 +123,7 @@
     const pct=d.verified_pct!=null?d.verified_pct:0;
     $('pct').textContent=pct+'%';
     $('pct').style.color = pct>=80?'var(--green)':pct>0?'var(--amber)':'var(--muted)';
-    $('pbar').style.width=Math.max(pct,1)+'%';
+    $('pbar').style.transform='scaleX('+Math.max(pct,1)/100+')';
     $('pcap').textContent=`${(d.verified||0).toLocaleString('ru')} из ${(d.total||0).toLocaleString('ru')} веществ подтверждены экспертом`;
     $('m-total').textContent=(d.total||0).toLocaleString('ru');
     $('m-ver').textContent=(d.verified||0).toLocaleString('ru');

@@ -1,0 +1,818 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-29T10:44:43Z",
+  "title": "Design System: HEFEST",
+  "extensions": {
+    "colorMeta": {
+      "bg": {
+        "role": "neutral",
+        "displayName": "Корпус",
+        "canonical": "oklch(18.84% 0.013 248.5)",
+        "tonalRamp": [
+          "oklch(15.00% 0.013 248.5)",
+          "oklch(26.43% 0.013 248.5)",
+          "oklch(37.86% 0.013 248.5)",
+          "oklch(49.29% 0.013 248.5)",
+          "oklch(60.71% 0.013 248.5)",
+          "oklch(72.14% 0.013 248.5)",
+          "oklch(83.57% 0.013 248.5)",
+          "oklch(95.00% 0.013 248.5)"
+        ]
+      },
+      "panel": {
+        "role": "neutral",
+        "displayName": "Панель",
+        "canonical": "oklch(25.10% 0.029 261.4)",
+        "tonalRamp": [
+          "oklch(15.00% 0.029 261.4)",
+          "oklch(26.43% 0.029 261.4)",
+          "oklch(37.86% 0.029 261.4)",
+          "oklch(49.29% 0.029 261.4)",
+          "oklch(60.71% 0.029 261.4)",
+          "oklch(72.14% 0.029 261.4)",
+          "oklch(83.57% 0.029 261.4)",
+          "oklch(95.00% 0.029 261.4)"
+        ]
+      },
+      "panel2": {
+        "role": "neutral",
+        "displayName": "Панель приподнятая",
+        "canonical": "oklch(29.02% 0.029 256.8)",
+        "tonalRamp": [
+          "oklch(15.00% 0.029 256.8)",
+          "oklch(26.43% 0.029 256.8)",
+          "oklch(37.86% 0.029 256.8)",
+          "oklch(49.29% 0.029 256.8)",
+          "oklch(60.71% 0.029 256.8)",
+          "oklch(72.14% 0.029 256.8)",
+          "oklch(83.57% 0.029 256.8)",
+          "oklch(95.00% 0.029 256.8)"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Линия",
+        "canonical": "oklch(33.04% 0.034 259.0)",
+        "tonalRamp": [
+          "oklch(15.00% 0.034 259.0)",
+          "oklch(26.43% 0.034 259.0)",
+          "oklch(37.86% 0.034 259.0)",
+          "oklch(49.29% 0.034 259.0)",
+          "oklch(60.71% 0.034 259.0)",
+          "oklch(72.14% 0.034 259.0)",
+          "oklch(83.57% 0.034 259.0)",
+          "oklch(95.00% 0.034 259.0)"
+        ]
+      },
+      "text": {
+        "role": "neutral",
+        "displayName": "Текст",
+        "canonical": "oklch(95.95% 0.008 253.9)",
+        "tonalRamp": [
+          "oklch(15.00% 0.008 253.9)",
+          "oklch(26.43% 0.008 253.9)",
+          "oklch(37.86% 0.008 253.9)",
+          "oklch(49.29% 0.008 253.9)",
+          "oklch(60.71% 0.008 253.9)",
+          "oklch(72.14% 0.008 253.9)",
+          "oklch(83.57% 0.008 253.9)",
+          "oklch(95.00% 0.008 253.9)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Приглушённый",
+        "canonical": "oklch(76.29% 0.025 256.1)",
+        "tonalRamp": [
+          "oklch(15.00% 0.025 256.1)",
+          "oklch(26.43% 0.025 256.1)",
+          "oklch(37.86% 0.025 256.1)",
+          "oklch(49.29% 0.025 256.1)",
+          "oklch(60.71% 0.025 256.1)",
+          "oklch(72.14% 0.025 256.1)",
+          "oklch(83.57% 0.025 256.1)",
+          "oklch(95.00% 0.025 256.1)"
+        ]
+      },
+      "ember": {
+        "role": "primary",
+        "displayName": "Уголёк-оранжевый",
+        "canonical": "oklch(78.25% 0.152 66.0)",
+        "tonalRamp": [
+          "oklch(15.00% 0.152 66.0)",
+          "oklch(26.43% 0.152 66.0)",
+          "oklch(37.86% 0.152 66.0)",
+          "oklch(49.29% 0.152 66.0)",
+          "oklch(60.71% 0.152 66.0)",
+          "oklch(72.14% 0.152 66.0)",
+          "oklch(83.57% 0.152 66.0)",
+          "oklch(95.00% 0.152 66.0)"
+        ]
+      },
+      "ember-deep": {
+        "role": "secondary",
+        "displayName": "Глубокий уголёк",
+        "canonical": "oklch(54.87% 0.153 33.6)",
+        "tonalRamp": [
+          "oklch(15.00% 0.153 33.6)",
+          "oklch(26.43% 0.153 33.6)",
+          "oklch(37.86% 0.153 33.6)",
+          "oklch(49.29% 0.153 33.6)",
+          "oklch(60.71% 0.153 33.6)",
+          "oklch(72.14% 0.153 33.6)",
+          "oklch(83.57% 0.153 33.6)",
+          "oklch(95.00% 0.153 33.6)"
+        ]
+      },
+      "ember-ink": {
+        "role": "primary",
+        "displayName": "Оксид угля",
+        "canonical": "oklch(20.42% 0.039 58.6)",
+        "tonalRamp": [
+          "oklch(15.00% 0.039 58.6)",
+          "oklch(26.43% 0.039 58.6)",
+          "oklch(37.86% 0.039 58.6)",
+          "oklch(49.29% 0.039 58.6)",
+          "oklch(60.71% 0.039 58.6)",
+          "oklch(72.14% 0.039 58.6)",
+          "oklch(83.57% 0.039 58.6)",
+          "oklch(95.00% 0.039 58.6)"
+        ]
+      },
+      "signal-blue": {
+        "role": "secondary",
+        "displayName": "Сигнальный синий",
+        "canonical": "oklch(69.73% 0.160 258.2)",
+        "tonalRamp": [
+          "oklch(15.00% 0.160 258.2)",
+          "oklch(26.43% 0.160 258.2)",
+          "oklch(37.86% 0.160 258.2)",
+          "oklch(49.29% 0.160 258.2)",
+          "oklch(60.71% 0.160 258.2)",
+          "oklch(72.14% 0.160 258.2)",
+          "oklch(83.57% 0.160 258.2)",
+          "oklch(95.00% 0.160 258.2)"
+        ]
+      },
+      "signal-blue-deep": {
+        "role": "secondary",
+        "displayName": "Синий глубокий",
+        "canonical": "oklch(54.61% 0.215 262.9)",
+        "tonalRamp": [
+          "oklch(15.00% 0.215 262.9)",
+          "oklch(26.43% 0.215 262.9)",
+          "oklch(37.86% 0.215 262.9)",
+          "oklch(49.29% 0.215 262.9)",
+          "oklch(60.71% 0.215 262.9)",
+          "oklch(72.14% 0.215 262.9)",
+          "oklch(83.57% 0.215 262.9)",
+          "oklch(95.00% 0.215 262.9)"
+        ]
+      },
+      "status-green": {
+        "role": "tertiary",
+        "displayName": "Статусный зелёный",
+        "canonical": "oklch(76.24% 0.154 159.4)",
+        "tonalRamp": [
+          "oklch(15.00% 0.154 159.4)",
+          "oklch(26.43% 0.154 159.4)",
+          "oklch(37.86% 0.154 159.4)",
+          "oklch(49.29% 0.154 159.4)",
+          "oklch(60.71% 0.154 159.4)",
+          "oklch(72.14% 0.154 159.4)",
+          "oklch(83.57% 0.154 159.4)",
+          "oklch(95.00% 0.154 159.4)"
+        ]
+      },
+      "status-green-deep": {
+        "role": "tertiary",
+        "displayName": "Глубокий зелёный",
+        "canonical": "oklch(62.22% 0.133 162.3)",
+        "tonalRamp": [
+          "oklch(15.00% 0.133 162.3)",
+          "oklch(26.43% 0.133 162.3)",
+          "oklch(37.86% 0.133 162.3)",
+          "oklch(49.29% 0.133 162.3)",
+          "oklch(60.71% 0.133 162.3)",
+          "oklch(72.14% 0.133 162.3)",
+          "oklch(83.57% 0.133 162.3)",
+          "oklch(95.00% 0.133 162.3)"
+        ]
+      },
+      "status-red": {
+        "role": "tertiary",
+        "displayName": "Статусный красный",
+        "canonical": "oklch(71.16% 0.181 22.8)",
+        "tonalRamp": [
+          "oklch(15.00% 0.181 22.8)",
+          "oklch(26.43% 0.181 22.8)",
+          "oklch(37.86% 0.181 22.8)",
+          "oklch(49.29% 0.181 22.8)",
+          "oklch(60.71% 0.181 22.8)",
+          "oklch(72.14% 0.181 22.8)",
+          "oklch(83.57% 0.181 22.8)",
+          "oklch(95.00% 0.181 22.8)"
+        ]
+      },
+      "status-red-deep": {
+        "role": "tertiary",
+        "displayName": "Глубокий красный",
+        "canonical": "oklch(50.54% 0.190 27.5)",
+        "tonalRamp": [
+          "oklch(15.00% 0.190 27.5)",
+          "oklch(26.43% 0.190 27.5)",
+          "oklch(37.86% 0.190 27.5)",
+          "oklch(49.29% 0.190 27.5)",
+          "oklch(60.71% 0.190 27.5)",
+          "oklch(72.14% 0.190 27.5)",
+          "oklch(83.57% 0.190 27.5)",
+          "oklch(95.00% 0.190 27.5)"
+        ]
+      },
+      "status-amber": {
+        "role": "tertiary",
+        "displayName": "Статусный янтарный",
+        "canonical": "oklch(87.51% 0.129 83.2)",
+        "tonalRamp": [
+          "oklch(15.00% 0.129 83.2)",
+          "oklch(26.43% 0.129 83.2)",
+          "oklch(37.86% 0.129 83.2)",
+          "oklch(49.29% 0.129 83.2)",
+          "oklch(60.71% 0.129 83.2)",
+          "oklch(72.14% 0.129 83.2)",
+          "oklch(83.57% 0.129 83.2)",
+          "oklch(95.00% 0.129 83.2)"
+        ]
+      },
+      "status-amber-deep": {
+        "role": "tertiary",
+        "displayName": "Глубокий янтарный",
+        "canonical": "oklch(55.53% 0.146 49.0)",
+        "tonalRamp": [
+          "oklch(15.00% 0.146 49.0)",
+          "oklch(26.43% 0.146 49.0)",
+          "oklch(37.86% 0.146 49.0)",
+          "oklch(49.29% 0.146 49.0)",
+          "oklch(60.71% 0.146 49.0)",
+          "oklch(72.14% 0.146 49.0)",
+          "oklch(83.57% 0.146 49.0)",
+          "oklch(95.00% 0.146 49.0)"
+        ]
+      },
+      "dialog-violet": {
+        "role": "tertiary",
+        "displayName": "Фиолетовый диалога (только console)",
+        "canonical": "oklch(70.90% 0.159 293.5)",
+        "tonalRamp": [
+          "oklch(15.00% 0.159 293.5)",
+          "oklch(26.43% 0.159 293.5)",
+          "oklch(37.86% 0.159 293.5)",
+          "oklch(49.29% 0.159 293.5)",
+          "oklch(60.71% 0.159 293.5)",
+          "oklch(72.14% 0.159 293.5)",
+          "oklch(83.57% 0.159 293.5)",
+          "oklch(95.00% 0.159 293.5)"
+        ]
+      },
+      "dialog-violet-deep": {
+        "role": "tertiary",
+        "displayName": "Глубокий фиолетовый диалога",
+        "canonical": "oklch(54.13% 0.247 293.0)",
+        "tonalRamp": [
+          "oklch(15.00% 0.247 293.0)",
+          "oklch(26.43% 0.247 293.0)",
+          "oklch(37.86% 0.247 293.0)",
+          "oklch(49.29% 0.247 293.0)",
+          "oklch(60.71% 0.247 293.0)",
+          "oklch(72.14% 0.247 293.0)",
+          "oklch(83.57% 0.247 293.0)",
+          "oklch(95.00% 0.247 293.0)"
+        ]
+      },
+      "verified-bg": {
+        "role": "tertiary",
+        "displayName": "Тинт «подтверждено»",
+        "canonical": "oklch(28.09% 0.047 155.9)",
+        "tonalRamp": [
+          "oklch(15.00% 0.047 155.9)",
+          "oklch(26.43% 0.047 155.9)",
+          "oklch(37.86% 0.047 155.9)",
+          "oklch(49.29% 0.047 155.9)",
+          "oklch(60.71% 0.047 155.9)",
+          "oklch(72.14% 0.047 155.9)",
+          "oklch(83.57% 0.047 155.9)",
+          "oklch(95.00% 0.047 155.9)"
+        ]
+      },
+      "verified-text": {
+        "role": "tertiary",
+        "displayName": "Текст «подтверждено»",
+        "canonical": "oklch(84.16% 0.142 158.4)",
+        "tonalRamp": [
+          "oklch(15.00% 0.142 158.4)",
+          "oklch(26.43% 0.142 158.4)",
+          "oklch(37.86% 0.142 158.4)",
+          "oklch(49.29% 0.142 158.4)",
+          "oklch(60.71% 0.142 158.4)",
+          "oklch(72.14% 0.142 158.4)",
+          "oklch(83.57% 0.142 158.4)",
+          "oklch(95.00% 0.142 158.4)"
+        ]
+      },
+      "review-bg": {
+        "role": "tertiary",
+        "displayName": "Тинт «требует проверки»",
+        "canonical": "oklch(30.77% 0.046 86.3)",
+        "tonalRamp": [
+          "oklch(15.00% 0.046 86.3)",
+          "oklch(26.43% 0.046 86.3)",
+          "oklch(37.86% 0.046 86.3)",
+          "oklch(49.29% 0.046 86.3)",
+          "oklch(60.71% 0.046 86.3)",
+          "oklch(72.14% 0.046 86.3)",
+          "oklch(83.57% 0.046 86.3)",
+          "oklch(95.00% 0.046 86.3)"
+        ]
+      },
+      "review-text": {
+        "role": "tertiary",
+        "displayName": "Текст «требует проверки»",
+        "canonical": "oklch(88.48% 0.132 89.8)",
+        "tonalRamp": [
+          "oklch(15.00% 0.132 89.8)",
+          "oklch(26.43% 0.132 89.8)",
+          "oklch(37.86% 0.132 89.8)",
+          "oklch(49.29% 0.132 89.8)",
+          "oklch(60.71% 0.132 89.8)",
+          "oklch(72.14% 0.132 89.8)",
+          "oklch(83.57% 0.132 89.8)",
+          "oklch(95.00% 0.132 89.8)"
+        ]
+      },
+      "forbidden-bg": {
+        "role": "tertiary",
+        "displayName": "Тинт «запрещено»",
+        "canonical": "oklch(25.39% 0.059 17.3)",
+        "tonalRamp": [
+          "oklch(15.00% 0.059 17.3)",
+          "oklch(26.43% 0.059 17.3)",
+          "oklch(37.86% 0.059 17.3)",
+          "oklch(49.29% 0.059 17.3)",
+          "oklch(60.71% 0.059 17.3)",
+          "oklch(72.14% 0.059 17.3)",
+          "oklch(83.57% 0.059 17.3)",
+          "oklch(95.00% 0.059 17.3)"
+        ]
+      },
+      "forbidden-text": {
+        "role": "tertiary",
+        "displayName": "Текст «запрещено»",
+        "canonical": "oklch(76.67% 0.138 20.8)",
+        "tonalRamp": [
+          "oklch(15.00% 0.138 20.8)",
+          "oklch(26.43% 0.138 20.8)",
+          "oklch(37.86% 0.138 20.8)",
+          "oklch(49.29% 0.138 20.8)",
+          "oklch(60.71% 0.138 20.8)",
+          "oklch(72.14% 0.138 20.8)",
+          "oklch(83.57% 0.138 20.8)",
+          "oklch(95.00% 0.138 20.8)"
+        ]
+      },
+      "baseline-text": {
+        "role": "neutral",
+        "displayName": "Текст «типовое»",
+        "canonical": "oklch(85.00% 0.022 252.5)",
+        "tonalRamp": [
+          "oklch(15.00% 0.022 252.5)",
+          "oklch(26.43% 0.022 252.5)",
+          "oklch(37.86% 0.022 252.5)",
+          "oklch(49.29% 0.022 252.5)",
+          "oklch(60.71% 0.022 252.5)",
+          "oklch(72.14% 0.022 252.5)",
+          "oklch(83.57% 0.022 252.5)",
+          "oklch(95.00% 0.022 252.5)"
+        ]
+      },
+      "placeholder": {
+        "role": "neutral",
+        "displayName": "Плейсхолдер",
+        "canonical": "oklch(52.70% 0.033 256.5)",
+        "tonalRamp": [
+          "oklch(15.00% 0.033 256.5)",
+          "oklch(26.43% 0.033 256.5)",
+          "oklch(37.86% 0.033 256.5)",
+          "oklch(49.29% 0.033 256.5)",
+          "oklch(60.71% 0.033 256.5)",
+          "oklch(72.14% 0.033 256.5)",
+          "oklch(83.57% 0.033 256.5)",
+          "oklch(95.00% 0.033 256.5)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Заголовок экрана. Один на страницу."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Заголовок крупного блока на насыщенных экранах."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Заголовок раздела карточки. Не крупнее 14px."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Основной текст, 13px при межстрочном 1.6."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Подписи метрик и бейджи, ЗАГЛАВНЫМИ с разрядкой .5px."
+      },
+      "data": {
+        "displayName": "Data",
+        "purpose": "Сравнимые числа: ПДК, CAS, номер ООН, расстояние. Моно + tabular-nums."
+      }
+    },
+    "shadows": [
+      {
+        "name": "led-alive",
+        "value": "0 0 10px #3ecf8e88",
+        "purpose": "Светодиод состояния: сервис жив, объект подтверждён. Только элемент до 10px."
+      },
+      {
+        "name": "led-down",
+        "value": "0 0 10px #ff6b6b88",
+        "purpose": "Светодиод состояния: недоступно, запрещено, несовместимо."
+      },
+      {
+        "name": "focus-ring",
+        "value": "0 0 0 3px #5b9dff33",
+        "purpose": "Кольцо фокуса полей ввода, вместе со сменой цвета рамки на синий."
+      },
+      {
+        "name": "selected-inset",
+        "value": "inset 0 0 0 1px var(--line)",
+        "purpose": "Внутренняя обводка активной вкладки."
+      },
+      {
+        "name": "overlay-lift",
+        "value": "0 12px 30px rgba(0,0,0,.45)",
+        "purpose": "Единственная настоящая тень: слой поверх страницы."
+      }
+    ],
+    "motion": [
+      {
+        "name": "state",
+        "value": "border-color .15s, background .15s",
+        "purpose": "Смена состояния полей, вкладок и ссылок."
+      },
+      {
+        "name": "focus",
+        "value": "border-color .15s, box-shadow .15s",
+        "purpose": "Появление кольца фокуса."
+      },
+      {
+        "name": "press",
+        "value": "filter .15s, transform .06s",
+        "purpose": "Отклик кнопки: яркость и просадка на 1px."
+      },
+      {
+        "name": "rise",
+        "value": "rise .22s ease",
+        "purpose": "Появление карточки результата."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "transition: none !important",
+        "purpose": "Под @media (prefers-reduced-motion: reduce). Присутствует в 9 экранах из 18 — довести до всех."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "shopfloor",
+        "value": "560px"
+      }
+    ],
+    "categoricalRamp": {
+      "name": "Складские группы сегрегации",
+      "usedIn": [
+        "warehouse.html"
+      ],
+      "construction": "10 тонов OKLCH L=0.80 C=0.13, шаг 16.5° от 195° до 343.5°",
+      "why": "Классификация — не оценка. Шкала намеренно лежит вне статусной триады красный/янтарь/зелёный: зелёный квадратик «хлор-выделяющие» рядом с красным вердиктом «нельзя рядом» — ложное сообщение о безопасности.",
+      "minContrastOnPanel2": 7.13,
+      "swatches": [
+        {
+          "key": "acid",
+          "hex": "#2ad7d7",
+          "label": "кислоты",
+          "canonical": "oklch(79.92% 0.130 194.9)"
+        },
+        {
+          "key": "base",
+          "hex": "#31d3ee",
+          "label": "щёлочи",
+          "canonical": "oklch(79.91% 0.130 212.1)"
+        },
+        {
+          "key": "oxidizer",
+          "hex": "#4fceff",
+          "label": "окислители",
+          "canonical": "oklch(80.10% 0.130 227.6)"
+        },
+        {
+          "key": "flammable",
+          "hex": "#6fc6ff",
+          "label": "горючие/ЛВЖ",
+          "canonical": "oklch(79.42% 0.117 239.3)"
+        },
+        {
+          "key": "react_metal",
+          "hex": "#8ebeff",
+          "label": "реакционноспособные металлы",
+          "canonical": "oklch(79.24% 0.106 256.2)"
+        },
+        {
+          "key": "tox_gas",
+          "hex": "#a9b5ff",
+          "label": "токсичные газы",
+          "canonical": "oklch(79.14% 0.106 276.6)"
+        },
+        {
+          "key": "cyanide",
+          "hex": "#c2adff",
+          "label": "цианиды",
+          "canonical": "oklch(79.55% 0.116 295.4)"
+        },
+        {
+          "key": "cl_release",
+          "hex": "#d8a5fc",
+          "label": "хлор-выделяющие",
+          "canonical": "oklch(79.96% 0.131 310.5)"
+        },
+        {
+          "key": "organic",
+          "hex": "#ea9fe9",
+          "label": "органика",
+          "canonical": "oklch(79.96% 0.130 327.2)"
+        },
+        {
+          "key": "peroxide",
+          "hex": "#f89bd3",
+          "label": "пероксиды",
+          "canonical": "oklch(80.02% 0.130 343.5)"
+        }
+      ]
+    }
+  },
+  "components": [
+    {
+      "name": "Главная кнопка",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Основное действие экрана. Единственное оранжевое пятно на странице.",
+      "html": "<button class=\"ds-btn-primary\"><svg width=\"17\" height=\"17\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m13 6 6 6-6 6\"/></svg>Спросить</button>",
+      "css": ".ds-btn-primary{display:inline-flex;align-items:center;gap:8px;background:#f9a23b;color:#241204;border:0;border-radius:14px;min-height:48px;padding:0 20px;font:600 14px/1.4 system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;cursor:pointer;transition:filter .15s,transform .06s}.ds-btn-primary:hover{filter:brightness(1.07)}.ds-btn-primary:active{transform:translateY(1px)}.ds-btn-primary:focus-visible{outline:3px solid #5b9dffaa;outline-offset:2px}.ds-btn-primary[disabled]{opacity:.55;cursor:progress}"
+    },
+    {
+      "name": "Главная кнопка — цеховая",
+      "kind": "button",
+      "refersTo": "button-primary-shopfloor",
+      "description": "Тот же акцент под перчатку: 54px, во всю ширину. Аварийные экраны.",
+      "html": "<button class=\"ds-btn-shopfloor\">Показать аварийную карточку</button>",
+      "css": ".ds-btn-shopfloor{width:100%;background:#f9a23b;color:#241204;border:0;border-radius:9px;min-height:54px;padding:0 22px;font:700 15px/1.4 system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;cursor:pointer;transition:filter .15s,transform .06s}.ds-btn-shopfloor:hover{filter:brightness(1.07)}.ds-btn-shopfloor:active{transform:translateY(1px)}.ds-btn-shopfloor:focus-visible{outline:3px solid #5b9dffaa;outline-offset:2px}"
+    },
+    {
+      "name": "Переключатель режима",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Призрачная кнопка в контейнере вкладок. Выбранная поднимается на тон.",
+      "html": "<div class=\"ds-modes\" role=\"tablist\" aria-label=\"Режим\"><button class=\"ds-mode\" role=\"tab\" aria-selected=\"true\">Спросить</button><button class=\"ds-mode\" role=\"tab\" aria-selected=\"false\">Поиск</button></div>",
+      "css": ".ds-modes{display:inline-flex;background:#1a2230;border:1px solid #2b3647;border-radius:11px;padding:4px;gap:4px}.ds-mode{appearance:none;background:none;border:0;color:#a8b3c2;font:14px system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;padding:8px 16px;border-radius:8px;min-height:40px;cursor:pointer;transition:background .15s,color .15s}.ds-mode[aria-selected=\"true\"]{background:#222c3a;color:#eef2f7;box-shadow:inset 0 0 0 1px #2b3647}.ds-mode:focus-visible{outline:3px solid #5b9dffaa;outline-offset:2px}"
+    },
+    {
+      "name": "Поле ввода",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Фон панели, одна рамка, синее кольцо на фокусе.",
+      "html": "<input class=\"ds-input\" placeholder=\"напр. «как хранить серную кислоту»\">",
+      "css": ".ds-input{width:100%;background:#1a2230;border:1px solid #2b3647;border-radius:14px;color:#eef2f7;padding:13px 14px;font:15px system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;outline:none;transition:border-color .15s,box-shadow .15s}.ds-input::placeholder{color:#7d8aa0}.ds-input:focus-visible{border-color:#5b9dff;box-shadow:0 0 0 3px #5b9dff33}"
+    },
+    {
+      "name": "Карточка раздела",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Контейнер раздела паспорта. Плоский: тон и рамка, без тени.",
+      "html": "<section class=\"ds-card\"><h2 class=\"ds-card-h\"><span class=\"ds-card-i\" aria-hidden=\"true\">▦</span>Физико-химические свойства</h2><p class=\"ds-card-b\">Плотность 1.84 г/см³ при 20 °C. Единицы не пересчитываются.</p></section>",
+      "css": ".ds-card{background:#1a2230;border:1px solid #2b3647;border-radius:14px;padding:16px 20px;color:#eef2f7;font:13px/1.6 system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}.ds-card-h{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;margin:0 0 13px}.ds-card-i{color:#f9a23b}.ds-card-b{margin:0;color:#eef2f7}"
+    },
+    {
+      "name": "Плитка метрики",
+      "kind": "custom",
+      "refersTo": "metric-tile",
+      "description": "Показание щита: ключ заглавными, значение моноширинным с tabular-nums.",
+      "html": "<div class=\"ds-tile\"><div class=\"ds-tile-k\">Веществ в базе</div><div class=\"ds-tile-v\">2597</div></div>",
+      "css": ".ds-tile{min-width:120px;background:#1a2230;border:1px solid #2b3647;border-radius:14px;padding:12px 14px}.ds-tile-k{font:600 10px/1.2 system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;text-transform:uppercase;letter-spacing:.5px;color:#a8b3c2;margin-bottom:5px}.ds-tile-v{font:700 19px/1.2 ui-monospace,'SF Mono','JetBrains Mono',Menlo,Consolas,monospace;color:#eef2f7;font-variant-numeric:tabular-nums}"
+    },
+    {
+      "name": "Бейдж достоверности",
+      "kind": "chip",
+      "refersTo": "badge-verified",
+      "description": "Сигнатурный компонент: делает видимой позицию продукта о полноте данных. Три состояния, всегда со словом.",
+      "html": "<span class=\"ds-badge ds-badge-passport\">паспорт</span> <span class=\"ds-badge ds-badge-baseline\">типовое</span> <span class=\"ds-badge ds-badge-review\"><span class=\"ds-badge-d\" aria-hidden=\"true\"></span>требует проверки</span>",
+      "css": ".ds-badge{display:inline-flex;align-items:center;gap:6px;font:700 12px/1.2 system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;letter-spacing:.5px;text-transform:uppercase;padding:6px 12px;border-radius:9px}.ds-badge-passport{background:#13301f;color:#6ee7a8;border:1px solid #1f5236}.ds-badge-baseline{background:#222c3a;color:#c4cfdc;border:1px solid #2b3647}.ds-badge-review{background:#3a2e12;color:#fbd56b;border:1px solid #5a4920}.ds-badge-d{width:7px;height:7px;border-radius:50%;background:#ffce6b;flex:none}"
+    },
+    {
+      "name": "Точка состояния",
+      "kind": "custom",
+      "refersTo": "status-dot",
+      "description": "Светодиод щита. Единственное место в системе, где разрешено свечение.",
+      "html": "<span class=\"ds-dot ds-dot-ok\" role=\"img\" aria-label=\"сервис доступен\"></span> <span class=\"ds-dot ds-dot-off\" role=\"img\" aria-label=\"сервис недоступен\"></span> <span class=\"ds-dot\" role=\"img\" aria-label=\"состояние неизвестно\"></span>",
+      "css": ".ds-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#a8b3c2}.ds-dot-ok{background:#3ecf8e;box-shadow:0 0 10px #3ecf8e88}.ds-dot-off{background:#ff6b6b;box-shadow:0 0 10px #ff6b6b88}"
+    },
+    {
+      "name": "Ссылка возврата",
+      "kind": "nav",
+      "description": "Единственный навигационный элемент внутренних экранов.",
+      "html": "<a class=\"ds-back\" href=\"#\">← На главную</a>",
+      "css": ".ds-back{color:#a8b3c2;text-decoration:none;font:13px system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;transition:color .15s}.ds-back:hover{color:#5b9dff}.ds-back:focus-visible{outline:3px solid #5b9dffaa;outline-offset:2px;border-radius:4px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Щит КИП",
+    "overview": "Система выглядит как приборная панель оператора, а не как приложение. Тёмный сине-серый корпус, плотно уложенные показания, монощиринные числа, светодиодные точки состояния — и ровно одно тёплое пятно, уголёк-оранжевый, которое всегда означает «здесь нажимают». Всё остальное — холодный металл: четыре уровня фона, тонкая линия рамки, никаких теней.\n\nПлотность здесь — не экономия места, а позиция. Основной текст 12–13 px, заголовок раздела 14 px: на одном экране умещается вся правда о веществе. Эта плотность работает только потому, что контраст высокий и что цвет строго нормирован.\n\nМера всему — цена ошибки. Продукт отказывается отвечать, когда нет основания, и оформление обязано быть таким же сдержанным: ничто не может выглядеть увереннее, чем стоящие за ним данные.",
+    "keyCharacteristics": [
+      "Тёмный четырёхуровневый корпус: #0f1419 → #1a2230 → #222c3a → рамка #2b3647.",
+      "Один тёплый акцент (#f9a23b) с единственным значением — главное действие.",
+      "Плоско: ни одной декоративной тени на 18 экранов.",
+      "Плотная мелкая типографика при контрасте 7:1 и выше.",
+      "Монощиринные числа с tabular-nums везде, где число можно сравнить с другим числом.",
+      "Статус всегда несёт три носителя сразу: цвет, форму и слово."
+    ],
+    "rules": [
+      {
+        "name": "Правило одного оранжевого",
+        "section": "colors",
+        "body": "Уголёк-оранжевый означает ровно одно: «здесь нажимают». Он не маркирует опасность, не украшает заголовки и не подсвечивает иконки. Опасность несут янтарный и красный. Тест: если на экране два оранжевых пятна, одно из них — ошибка."
+      },
+      {
+        "name": "Правило тинта",
+        "section": "colors",
+        "body": "Статус показывается тёмным тинтом с рамкой, а не заливкой сигнальным цветом. Сплошная заливка сигнальным цветом разрешена в одном месте — на печатной этикетке СГС, где носитель бумажный и правила диктует стандарт."
+      },
+      {
+        "name": "Правило трёх носителей",
+        "section": "colors",
+        "body": "Ни одно состояние не передаётся только цветом. Всегда цвет + форма (точка, рамка, иконка) + слово. Это требование дальтонизма и требование цеха, где экран смотрят под углом и при плохом свете."
+      },
+      {
+        "name": "Правило моноширинного числа",
+        "section": "typography",
+        "body": "Любое число, которое человек может сравнить с другим числом или продиктовать по телефону, набирается моноширинным с tabular-nums: ПДК, CAS, номер ООН, расстояние зоны, релевантность."
+      },
+      {
+        "name": "Правило 14 пикселей",
+        "section": "typography",
+        "body": "Заголовок раздела не крупнее 14px. Экран вещества — это документ из 16 разделов; если каждый заголовок кричит, иерархия исчезает."
+      },
+      {
+        "name": "Правило одной контрольной точки",
+        "section": "layout",
+        "body": "Новый экран адаптируется на max-width: 560px. Своя контрольная точка вводится только тогда, когда содержимое физически ломается раньше, и это отмечается комментарием в коде."
+      },
+      {
+        "name": "Правило большого пальца",
+        "section": "layout",
+        "body": "Цель нажатия в цеховой сцене — не меньше 46px по высоте, на самых аварийных экранах 54px и во всю ширину. Мышь прощает 32px, перчатка — нет."
+      },
+      {
+        "name": "Правило плоскости",
+        "section": "elevation",
+        "body": "Поверхности плоские. Тень допускается только там, где она что-то сообщает: состояние, фокус, выбор или то, что слой лежит поверх страницы. Тень «чтобы карточка отделялась» — запрещена."
+      },
+      {
+        "name": "Правило светодиода",
+        "section": "elevation",
+        "body": "Свечение — это индикатор, а не оформление. Оно допускается только на элементе диаметром до 10px, который сообщает состояние. Свечение на карточке, кнопке или заголовке — дефект."
+      },
+      {
+        "name": "Правило одной линии",
+        "section": "shapes",
+        "body": "Одна рамка 1px solid var(--line). Если элемент нуждается во второй границе, ему нужен другой тон фона, а не вторая линия."
+      },
+      {
+        "name": "Правило радиуса",
+        "section": "shapes",
+        "body": "Четыре ступени: 4 / 9 / 14 / 18px, плюс 50% и 999px на круглых и пилюлях. Сведено всё; вложенность сохранена — контейнер на ступень выше внутренних чипов."
+      },
+      {
+        "name": "Правило одного тинта на состояние",
+        "section": "colors",
+        "body": "У каждого состояния ровно одна триада, а не семейство близнецов. Сливать только по смыслу селектора: близость по цвету не основание — #1e1414 почти неотличим от корпуса, но по смыслу это фон плитки «опасность»."
+      },
+      {
+        "name": "Правило целого пикселя",
+        "section": "typography",
+        "body": "Кегль — целое число пикселей. 12.5px не выражает ничего, чего не выражает 13px, зато плодит значения, которые потом никто не сведёт."
+      },
+      {
+        "name": "Правило цветного корешка",
+        "section": "colors",
+        "body": "Цветная полоса слева от блока (border-left 3–5px) — классификатор, а не украшение: она обязана менять цвет по смыслу блока, а нейтральный var(--line) означает «не классифицировано». Полоса, которая всегда одного цвета, — декорация."
+      },
+      {
+        "name": "Правило категориальной шкалы",
+        "section": "colors",
+        "body": "Цвет со смыслом «к какому виду относится» берётся из категориальной шкалы, а не из статусной триады. Красный, янтарный и зелёный заняты смыслом «опасно / внимание / норма» и не сдаются в аренду под классификацию."
+      },
+      {
+        "name": "Правило трёх ролей градиента",
+        "section": "shapes",
+        "body": "Градиент допустим ровно в трёх работах: корпус шапки и главной плитки (145deg,#1b263b,#0f1722); заливка шкалы состояния — всегда 90deg от глубокого тона к яркому, чтобы заполнение читалось как нарастание; мерцание скелета загрузки на панельных токенах. Четвёртой роли нет."
+      },
+      {
+        "name": "Правило неподвижной раскладки",
+        "section": "shapes",
+        "body": "Анимируются transform и opacity. Ширина, высота, top/left и отступы не анимируются никогда: на заводской машине это перерасчёт раскладки шестьдесят раз в секунду. Полоса прогресса растёт через transform: scaleX() при transform-origin: left."
+      }
+    ],
+    "dos": [
+      "Do использовать уголёк-оранжевый #f9a23b только для главного действия экрана, а опасность показывать янтарным #ffce6b и красным #ff6b6b.",
+      "Do показывать статус тёмным тинтом с рамкой, а не заливкой сигнальным цветом.",
+      "Do давать каждому состоянию три носителя: цвет, форму и слово.",
+      "Do набирать сравнимые числа моноширинным с tabular-nums — ПДК, CAS, номер ООН, расстояние зоны.",
+      "Do держать цели нажатия от 46px в цеховой сцене и до 54px во всю ширину на аварийных экранах.",
+      "Do адаптировать на единственной контрольной точке max-width: 560px.",
+      "Do ставить видимый фокус outline: 3px solid #5b9dffaa; outline-offset: 2px и уважать prefers-reduced-motion: reduce.",
+      "Do сопровождать каждое значение бейджем достоверности, если его происхождение не очевидно из контекста."
+    ],
+    "donts": [
+      "Don't добавлять тень, чтобы «отделить» карточку. Отделяет тон и рамка.",
+      "Don't применять свечение к чему-либо крупнее точки состояния 10px.",
+      "Don't заливать главную кнопку синим: синий — это фокус, ссылка и активная вкладка, а не действие.",
+      "Don't делать интерфейс похожим на чат с пузырями сообщений. Продукт намеренно не чат-бот; вид чата обещает всезнание, которого нет.",
+      "Don't скатываться в серую ГОСТ-форму или экран 1С: мелкий текст без иерархии и таблицы без акцента — это ровно то, что продукт заменяет.",
+      "Don't нагнетать «аварийный» вид — мигание, полосатые ленты, черепа. Постоянная тревога перестаёт читаться как тревога тогда, когда тревога настоящая.",
+      "Don't показывать данные увереннее, чем они есть: одинаковое оформление для паспортного значения и типового — это визуальная ложь.",
+      "Don't подключать веб-шрифты, тяжёлую графику и дорогие эффекты: контур офлайновый, а машины на площадке могут быть старыми.",
+      "Don't вводить новый радиус вне ступеней 9 / 14 / 18px.",
+      "Don't вводить четвёртую роль градиента: корпус, шкала, скелет — и всё.",
+      "Don't анимировать width, height и отступы — только transform и opacity.",
+      "Don't красить категорию статусным цветом: зелёный квадратик у хлор-выделяющих читается как «безопасно», а это не так.",
+      "Don't оставлять <img> без onerror на аварийном экране: иконка битой картинки вместо QR — это сообщение «система сломана» в момент, когда человеку нужен ответ."
+    ],
+    "acceptedDeviations": [
+      {
+        "finding": "flat-type-hierarchy",
+        "where": [
+          "console.html",
+          "ppe.html",
+          "waste.html"
+        ],
+        "why": "Прямое следствие «правила 14 пикселей»: заголовок раздела намеренно не крупнее текста, потому что главное на экране вещества — значение, а не название раздела."
+      },
+      {
+        "finding": "em-dash-overuse",
+        "where": [
+          "копирайт всех экранов"
+        ],
+        "why": "Детектор настроен на английскую пунктуацию. В русском тире — обычный знак между подлежащим и сказуемым, а не стилистический приём."
+      },
+      {
+        "finding": "side-tab",
+        "where": [
+          "console.html",
+          "dispatch.html",
+          "guide.html",
+          "shift.html",
+          "substance.html"
+        ],
+        "why": "Все шесть полос — классификаторы: цвет меняется по смыслу блока (зона/СИЗ/помощь/укрытие/оповещение), нейтральный var(--line) означает «не классифицировано». См. «Правило цветного корешка»."
+      },
+      {
+        "finding": "radial-halo",
+        "where": [
+          "все 18 экранов"
+        ],
+        "why": "Один и тот же фоновый отсвет страницы, объявленный в DESIGN.md как первая из трёх ролей градиента. 17 находок — это одно решение, повторённое 17 раз, а не 17 решений."
+      },
+      {
+        "finding": "dark-glow",
+        "where": [
+          "9 экранов"
+        ],
+        "why": "Точка состояния «система на связи» — светодиод, а не оформление. См. «Правило светодиода»: свечение допускается только на индикаторе до 10px."
+      },
+      {
+        "finding": "design-system-color / design-system-font-size",
+        "where": [
+          "все 18 экранов"
+        ],
+        "why": "Детектор в этом окружении работает в регексном режиме (htmlparser2, css-select, css-tree, domutils недоступны) и не резолвит var(--…): каждое объявление токена в :root он считает литералом. Числа 258/231 не измеряют дрейф. Собственный обход даёт: 171 пара «текст на залитом фоне», ниже 4.5:1 — ноль."
+      }
+    ]
+  }
+}

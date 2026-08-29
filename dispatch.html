@@ -9,11 +9,12 @@
      Системные шрифты (on-prem, без CDN). Моно — для цифр (зона/ООН/IDLH). */
   :root{
     --bg:#0f1419; --panel:#1a2230; --panel2:#222c3a; --line:#2b3647;
-    --txt:#f3f6fa; --muted:#aab6c5;
-    --blue:#5b9dff; --orange:#f9a23b; --red:#ff6b6b; --green:#3ecf8e; --amber:#ffce6b;
-    --r:14px; --r-sm:10px;
+    --txt:#eef2f7; --muted:#a8b3c2;
+    --blue:#5b9dff; --blue-d:#2563eb; --orange:#f9a23b; --orange-d:#b9472f;
+    --red:#ff6b6b; --red-d:#b91c1c; --green:#3ecf8e; --green-d:#0e9f6e; --amber:#ffce6b; --amber-d:#b45309;
+    --r:14px; --r-sm:9px;
     --mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono",Menlo,Consolas,monospace;
-    --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   }
   *{box-sizing:border-box}
   html{-webkit-text-size-adjust:100%}
@@ -23,51 +24,53 @@
 
   /* header */
   .top{display:flex;align-items:center;gap:12px;margin-bottom:4px}
-  .logo{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;
+  .logo{width:40px;height:40px;border-radius:14px;display:grid;place-items:center;
     background:linear-gradient(145deg,#1b263b,#0f1722);border:1px solid var(--line);color:var(--orange);flex:none;font-size:22px}
   h1{font-size:21px;margin:0;font-weight:700;letter-spacing:.2px}
   .status{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);font-family:var(--mono)}
   .dot{width:9px;height:9px;border-radius:50%;background:var(--muted)}
   .dot.ok{background:var(--green);box-shadow:0 0 10px #3ecf8e88}
   .dot.off{background:var(--red);box-shadow:0 0 10px #ff6b6b88}
-  .sub{color:var(--muted);font-size:14px;margin:4px 0 14px}
+  .sub{color:var(--muted);font-size:14px;margin:4px 0 6px}
+  /* навигация отдельной строкой: зона нажатия 44px не наезжает на абзац */
+  .navrow{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:14px;margin:0 0 14px}
   a.nav{color:var(--blue);text-decoration:none;font-size:14px}
   a.nav:hover{text-decoration:underline}
 
   /* tool-note banner — всегда на виду */
-  .toolnote{background:#23190b;border:1px solid #5a4012;color:var(--amber);border-radius:var(--r);
-    padding:12px 15px;font-size:13.5px;line-height:1.5;margin-bottom:16px;display:flex;gap:10px}
+  .toolnote{background:#3a2e12;border:1px solid #5a4920;color:var(--amber);border-radius:var(--r);
+    padding:12px 15px;font-size:14px;line-height:1.5;margin-bottom:16px;display:flex;gap:10px}
   .toolnote b{color:#ffe0a0}
 
   /* quick-pick chips */
   .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
   .chiplbl{width:100%;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin:0 0 1px 2px}
-  .chip{width:auto;min-height:0;margin:0;font-family:var(--sans);font-size:14.5px;font-weight:600;color:var(--txt);
+  .chip{width:auto;margin:0;font-family:var(--sans);font-size:15px;font-weight:600;color:var(--txt);
     background:var(--panel2);border:1px solid var(--line);border-radius:999px;
-    padding:8px 15px;cursor:pointer;line-height:1;white-space:nowrap;transition:filter .12s,border-color .12s}
+    padding:0 16px;min-height:46px;display:inline-flex;align-items:center;cursor:pointer;line-height:1;white-space:nowrap;transition:filter .12s,border-color .12s}
   .chip:hover{filter:brightness(1.18);border-color:var(--blue)}
   .chip:active{transform:translateY(1px)}
-  .chip.on{background:#23314a;border-color:var(--blue);color:#cfe0ff}
+  .chip.on{background:#222c3a;border-color:var(--blue);color:#cfe0ff}
 
   /* form */
   .form{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:14px}
   .row{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:10px;margin-bottom:10px}
   label.fld{display:block;font-size:12px;color:var(--muted);margin:0 0 4px 2px;text-transform:uppercase;letter-spacing:.4px}
   input,select{width:100%;background:#11192a;border:1px solid var(--line);border-radius:var(--r-sm);
-    color:var(--txt);padding:13px 13px;font-size:16px;font-family:var(--sans);outline:none}
+    color:var(--txt);padding:0 13px;min-height:46px;font-size:16px;font-family:var(--sans);outline:none}
   input:focus-visible,select:focus-visible{border-color:var(--blue);box-shadow:0 0 0 3px #5b9dff33}
   .grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
   details.adv{margin-top:6px}
-  details.adv summary{cursor:pointer;color:var(--blue);font-size:13.5px;padding:4px 0}
+  details.adv summary{cursor:pointer;color:var(--blue);font-size:14px;padding:11px 0}
   button{width:100%;background:var(--orange);color:#241204;border:0;border-radius:var(--r-sm);min-height:54px;
     padding:0 20px;font-weight:700;font-size:17px;cursor:pointer;margin-top:6px}
   button:hover{filter:brightness(1.07)} button:active{transform:translateY(1px)}
   button[disabled]{opacity:.55;cursor:progress}
 
   /* states */
-  .msg{display:none;border-radius:var(--r);padding:13px 15px;margin-bottom:10px;font-size:14.5px}
+  .msg{display:none;border-radius:var(--r);padding:13px 15px;margin-bottom:10px;font-size:15px}
   .msg.on{display:block}
-  .msg.err{background:#2a1414;border:1px solid #4a2424;color:#ffb4b4}
+  .msg.err{background:#3a1518;border:1px solid #5a2025;color:#ffb4b4}
 
   /* output blocks */
   #out{display:none}
@@ -82,23 +85,23 @@
   .bhead{font-size:13px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin:0 0 8px;font-weight:700}
   .ident{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;margin-bottom:6px}
   .name{font-size:26px;font-weight:800;letter-spacing:.2px}
-  .tag{font-family:var(--mono);font-size:13px;padding:3px 9px;border-radius:7px;background:var(--panel2);
+  .tag{font-family:var(--mono);font-size:13px;padding:3px 9px;border-radius:9px;background:var(--panel2);
     border:1px solid var(--line);color:var(--txt)}
-  .tag.ahov{background:#3a1414;border-color:#5a2222;color:#ffb4b4}
-  .tag.idlh{background:#23190b;border-color:#5a4012;color:var(--amber)}
+  .tag.ahov{background:#3a1414;border-color:#5a2025;color:#ffb4b4}
+  .tag.idlh{background:#3a2e12;border-color:#5a4920;color:var(--amber)}
 
   .zonebig{font-family:var(--mono);font-size:52px;font-weight:800;line-height:1;color:var(--blue);margin:4px 0 2px}
   .zonebig small{font-size:22px;color:var(--muted);font-weight:600}
-  .zonemeta{font-size:13.5px;color:var(--muted);margin-top:6px;line-height:1.5}
-  .pill{display:inline-block;font-family:var(--mono);font-size:12.5px;background:var(--panel2);
-    border:1px solid var(--line);border-radius:6px;padding:2px 8px;margin:3px 6px 0 0}
+  .zonemeta{font-size:14px;color:var(--muted);margin-top:6px;line-height:1.5}
+  .pill{display:inline-block;font-family:var(--mono);font-size:13px;background:var(--panel2);
+    border:1px solid var(--line);border-radius:9px;padding:2px 8px;margin:3px 6px 0 0}
 
   .bigtext{font-size:18px;line-height:1.55}
   .src{font-size:12px;color:var(--muted);margin-top:8px;font-style:italic}
   .nodata{color:var(--amber);font-style:italic}
 
   /* notify checklist */
-  table.notify{width:100%;border-collapse:collapse;font-size:14.5px}
+  table.notify{width:100%;border-collapse:collapse;font-size:15px}
   table.notify td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
   table.notify .ord{font-family:var(--mono);color:var(--orange);font-weight:700;width:28px}
   table.notify .role{font-weight:600}
@@ -114,6 +117,13 @@
     .zonebig{font-size:42px}
     .name{font-size:22px}
   }
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  /* Правило большого пальца (DESIGN.md, Layout): текстовая ссылка ростом 16px
+     непопадаема в перчатке. Зона нажатия растягивается по вертикали до 44px
+     псевдоэлементом — размер и положение самой ссылки не меняются. */
+  a.back,a.nav{position:relative}
+  a.back::after,a.nav::after{content:"";position:absolute;left:0;right:0;top:50%;
+    transform:translateY(-50%);height:44px}
 </style>
 </head>
 <body>
@@ -125,8 +135,8 @@
     </div>
     <div class="status"><span id="dot" class="dot"></span><span id="stat">проверка…</span></div>
   </div>
-  <div class="sub">Авария с АХОВ: зона заражения → первоочередные действия → кого оповестить.
-    <a class="nav" href="/home.html">← на главную</a> · <a class="nav" href="/emergency.html">аварийная карточка</a></div>
+  <div class="sub">Авария с АХОВ: зона заражения → первоочередные действия → кого оповестить.</div>
+  <div class="navrow"><a class="nav" href="/home.html">← на главную</a> · <a class="nav" href="/emergency.html">аварийная карточка</a></div>
 
   <div class="toolnote">
     <span>⚠️</span>

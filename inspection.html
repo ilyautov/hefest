@@ -8,8 +8,9 @@
   :root{
     --bg:#0f1419; --panel:#1a2230; --panel2:#222c3a; --line:#2b3647;
     --txt:#eef2f7; --muted:#a8b3c2;
-    --blue:#5b9dff; --blue-d:#2563eb; --orange:#f9a23b; --red:#ff6b6b; --green:#3ecf8e; --amber:#ffce6b;
-    --r:14px; --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    --blue:#5b9dff; --blue-d:#2563eb; --orange:#f9a23b; --orange-d:#b9472f;
+    --red:#ff6b6b; --red-d:#b91c1c; --green:#3ecf8e; --green-d:#0e9f6e; --amber:#ffce6b; --amber-d:#b45309;
+    --r:14px; --mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono",Menlo,Consolas,monospace;
     --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   }
   *{box-sizing:border-box}
@@ -23,10 +24,10 @@
   .status{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted)}
   .dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
   .dot.ok{background:var(--green)}.dot.off{background:var(--red)}
-  .lead{color:var(--muted);font-size:14.5px;margin:8px 0 18px;max-width:730px;line-height:1.55}
+  .lead{color:var(--muted);font-size:15px;margin:8px 0 18px;max-width:730px;line-height:1.55}
 
   .disc{display:flex;gap:11px;background:rgba(249,162,59,.07);border:1px solid rgba(249,162,59,.34);
-    border-radius:var(--r);padding:13px 15px;margin-bottom:20px;font-size:13.5px;color:#ffdfb0;line-height:1.5}
+    border-radius:var(--r);padding:13px 15px;margin-bottom:20px;font-size:14px;color:#ffdfb0;line-height:1.5}
   .disc b{color:var(--amber)}
   .disc .ic{font-size:16px;line-height:1.3}
 
@@ -38,7 +39,8 @@
   .chips{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:20px}
   .chips .clbl{font-size:12px;color:#7d8aa0;margin-right:2px}
   .chip{font:13px var(--sans);color:var(--muted);background:var(--panel2);border:1px solid var(--line);
-    border-radius:999px;padding:5px 12px;cursor:pointer;transition:all .15s ease;white-space:nowrap}
+    border-radius:999px;padding:0 14px;min-height:34px;display:inline-flex;align-items:center;
+    cursor:pointer;transition:all .15s ease;white-space:nowrap}
   .chip:hover{color:var(--txt);border-color:var(--blue)}
   .chip.active{color:#fff;background:rgba(91,157,255,.16);border-color:var(--blue)}
 
@@ -46,8 +48,9 @@
   .big .ttl{font-size:13px;color:var(--muted);margin-bottom:10px}
   .pct{font-family:var(--mono);font-size:46px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
   .pct+small{display:block;font-size:14px;color:var(--muted);font-weight:600;margin-top:6px}
-  .pbar{height:12px;border-radius:7px;background:#1b2433;overflow:hidden;margin:16px 0 8px}
-  .pbar i{display:block;height:100%;background:linear-gradient(90deg,var(--green),#0e9f6e);transition:width .6s ease}
+  .pbar{height:12px;border-radius:9px;background:#1b2433;overflow:hidden;margin:16px 0 8px}
+  .pbar i{display:block;height:100%;width:100%;transform:scaleX(0);transform-origin:left;
+    background:linear-gradient(90deg,var(--green-d),var(--green));transition:transform .6s ease}
   .pcap{font-size:13px;color:var(--muted)}
 
   .sec{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:6px 4px 10px;margin-bottom:16px}
@@ -56,17 +59,17 @@
   th{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:600}
   tr:last-child td{border-bottom:none}
   td.m-lbl b{color:var(--txt);font-weight:600}
-  td.m-lbl .note{display:block;color:var(--muted);font-size:12.5px;margin-top:3px;line-height:1.45}
-  td.m-cov{font-family:var(--mono);font-variant-numeric:tabular-nums;color:#cdd7e3;white-space:nowrap}
+  td.m-lbl .note{display:block;color:var(--muted);font-size:13px;margin-top:3px;line-height:1.45}
+  td.m-cov{font-family:var(--mono);font-variant-numeric:tabular-nums;color:#c4cfdc;white-space:nowrap}
   .badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-family:var(--mono);
-    padding:4px 9px;border-radius:7px;white-space:nowrap}
+    padding:4px 9px;border-radius:9px;white-space:nowrap}
   .badge.ok{border:1px solid rgba(62,207,142,.4);background:rgba(62,207,142,.08);color:var(--green)}
   .badge.partial{border:1px solid rgba(255,206,107,.4);background:rgba(255,206,107,.07);color:var(--amber)}
   .badge.gap{border:1px solid rgba(255,107,107,.4);background:rgba(255,107,107,.08);color:var(--red)}
-  .mini{height:7px;border-radius:5px;background:#1b2433;overflow:hidden;margin-top:8px;max-width:120px}
+  .mini{height:7px;border-radius:4px;background:#1b2433;overflow:hidden;margin-top:8px;max-width:120px}
   .mini i{display:block;height:100%}
   .mini i.ok{background:var(--green)}.mini i.partial{background:var(--amber)}.mini i.gap{background:var(--red)}
-  .foot{font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.5}
+  .foot{font-size:13px;color:var(--muted);margin-top:14px;line-height:1.5}
   .empty{color:var(--muted);font-size:14px;padding:24px;text-align:center}
   @media(max-width:560px){
     table{table-layout:fixed}
@@ -78,6 +81,16 @@
     .badge{white-space:normal}
   }
   @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+  /* Системное кольцо фокуса: одинаковое на всех экранах (DESIGN.md, Components). */
+  a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,
+  textarea:focus-visible,summary:focus-visible,[tabindex]:focus-visible{
+    outline:3px solid #5b9dffaa;outline-offset:2px;border-radius:4px}
+  /* Правило большого пальца (DESIGN.md, Layout): текстовая ссылка ростом 16px
+     непопадаема в перчатке. Зона нажатия растягивается по вертикали до 44px
+     псевдоэлементом — размер и положение самой ссылки не меняются. */
+  a.back,a.nav{position:relative}
+  a.back::after,a.nav::after{content:"";position:absolute;left:0;right:0;top:50%;
+    transform:translateY(-50%);height:44px}
 </style>
 </head>
 <body>
@@ -108,7 +121,7 @@
   <div class="big">
     <div class="ttl">Общая химическая готовность <span style="color:#7d8aa0">(по данным системы)</span></div>
     <div><span class="pct" id="pct">—</span><small id="psub">выберите площадку</small></div>
-    <div class="pbar"><i id="pbar" style="width:0%"></i></div>
+    <div class="pbar"><i id="pbar"></i></div>
     <div class="pcap" id="pcap">—</div>
   </div>
 
@@ -181,7 +194,7 @@
 
   async function loadPlant(name){
     if(!name){ $('rows').innerHTML='<tr><td colspan="3" class="empty">Выберите площадку, чтобы построить дашборд.</td></tr>';
-      $('pct').textContent='—';$('psub').textContent='выберите площадку';$('pbar').style.width='0%';$('pcap').textContent='—';$('foot').textContent=''; return; }
+      $('pct').textContent='—';$('psub').textContent='выберите площадку';$('pbar').style.transform='scaleX(0)';$('pcap').textContent='—';$('foot').textContent=''; return; }
     $('pcap').textContent='считаем готовность…';
     let d;
     try{ d=await(await fetch(base()+'/inspection/'+encodeURIComponent(name),{signal:AbortSignal.timeout(8000)})).json(); }
@@ -193,7 +206,7 @@
     $('pct').textContent=pct+'%';
     $('pct').style.color = pct>=80?'var(--green)':pct>0?'var(--amber)':'var(--red)';
     $('psub').textContent='химической готовности по данным';
-    $('pbar').style.width=Math.max(pct,1)+'%';
+    $('pbar').style.transform='scaleX('+Math.max(pct,1)/100+')';
     const ok=(d.metrics||[]).filter(m=>m.status==='ok').length, tot=(d.metrics||[]).length;
     $('pcap').textContent=`${esc(d.plant)} · ${fmt(d.substances_total)} веществ · ${ok} из ${tot} метрик закрыто`;
     $('rows').innerHTML=(d.metrics||[]).map(metricRow).join('')||'<tr><td colspan="3" class="empty">нет метрик</td></tr>';
