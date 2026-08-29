@@ -126,6 +126,22 @@ if [ -f data/plants.json ] && [ -f scripts/sync_denylist.py ]; then
   fi
 fi
 
+# 6д. Сообщения коммитов — такой же публичный текст, как файлы, и утечь может там же.
+#     Найдено на живом примере: сообщение о правке само перечисляло компании, чьи имена
+#     эта правка убирала. git grep по дереву такое не видит.
+if [ -f .private/entities-denylist.txt ]; then
+  msg_leak=0
+  msgs=$(git log --all --format='%B' 2>/dev/null)
+  while IFS= read -r nm; do
+    case "$nm" in ''|'#'*) continue ;; esac
+    if printf '%s' "$msgs" | grep -qiF -e "$nm"; then
+      msg_leak=1; report '      ' "название организации в сообщении коммита: $nm"
+    fi
+  done < .private/entities-denylist.txt
+  [ "$msg_leak" = 1 ] && bad "названий организаций нет в сообщениях коммитов" \
+                      || ok "названий организаций нет в сообщениях коммитов"
+fi
+
 # 7. Обязательные файлы публичного репозитория.
 missing=""
 for f in LICENSE DATA-LICENSE.md DISCLAIMER.md LIMITATIONS.md SECURITY.md CONTRIBUTING.md \
