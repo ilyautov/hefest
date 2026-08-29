@@ -14,7 +14,7 @@ scipy>=1.11
 # --- реранкер (кросс-энкодер bge-reranker-v2-m3) ---
 # ВНИМАНИЕ: sentence-transformers НЕ использовать — тянет torchcodec -> ffmpeg (libavutil);
 # реранкер загружается напрямую через transformers (см. engine/reranker_model.py).
-torch>=2.2                 # MPS на Apple Silicon / CUDA
+torch>=2.13.0                 # MPS на Apple Silicon / CUDA
 transformers>=4.40
 
 # --- OCR грязных PDF (аудит-спринт) ---
