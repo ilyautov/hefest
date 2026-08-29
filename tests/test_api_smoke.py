@@ -115,9 +115,13 @@ class TestИнструментыЗавода:
         assert тело["class"] is None
         assert тело["needs_review"] is True
 
-    def test_режим_инспектора_не_выдаёт_себя_за_надзорный_чеклист(self, client):
-        ответ = client.get("/inspection/ПЛОЩАДКА")
+    def test_режим_инспектора_отвечает_и_без_реестра(self, client):
+        """Реестр площадок в поставку не входит: эндпоинт обязан объяснить это, а не упасть."""
+        ответ = client.get("/inspection/любая-площадка")
         assert ответ.status_code == 200
+        тело = ответ.json()
+        if "error" in тело:
+            assert "реестр" in тело["error"] or "не найдена" in тело["error"]
 
     def test_карточка_диспетчера_отдаёт_зону_с_методикой(self, client):
         ответ = client.get("/dispatch/хлор")

@@ -36,12 +36,11 @@ class HybridRetriever:
         c = json.load(open(os.path.join(DATA, os.getenv("CORPUS_FILE", "corpus_full_clean.json")),encoding="utf-8"))
         self.chunks = c["chunks"]
         self.subs = json.load(open(os.path.join(DATA, os.getenv("SUBS_FILE", "substances_clean.json")),encoding="utf-8"))
-        # PLANTS_FILE позволяет подменить реестр предприятий: собственный реестр завода
-        # при внедрении или обезличенный plants_linked_demo.json для публичной демонстрации
-        # (см. DATA-LICENSE.md, раздел 4, и engine/anonymize_plants.py).
-        pl = json.load(open(os.path.join(DATA, os.getenv("PLANTS_FILE", "plants_linked.json")),
-                            encoding="utf-8"))
-        self.plants = {p["plant"].lower(): p for p in pl["plants"]}
+        # Реестр предприятий НЕОБЯЗАТЕЛЕН и в поставку не входит: публичный репозиторий не
+        # содержит сведений о юридических лицах (см. DATA-LICENSE.md, раздел 4). Пользователь
+        # подключает собственный реестр через PLANTS_FILE; без него функции по площадке честно
+        # сообщают, что реестр не подключён, а всё остальное работает как обычно.
+        self.plants = self._load_plants()
         texts = [f'{x["text"]} {x["substance"]} {x["section"]}' for x in self.chunks]
         # лексические сигналы (char+word TF-IDF + BM25) — тяжёлые на 26010 чанков.
         # семантическому ретриверу не нужны: lexical=False пропускает их построение.
@@ -76,6 +75,20 @@ class HybridRetriever:
             self.entity[s["name"]] = (stems, set(SYN_ENTITY.get(nm, [])), exact)
         self.doc_sub = [x["substance"] for x in self.chunks]
         self.plant_triggers = self._build_plant_triggers()
+
+
+    # ------------------------------------------------------------------------------------
+    # Реестр площадок. Отсутствие файла — штатное состояние поставки, а не ошибка.
+    # ------------------------------------------------------------------------------------
+    @staticmethod
+    def _load_plants():
+        path = os.path.join(DATA, os.getenv("PLANTS_FILE", "plants_linked.json"))
+        try:
+            with open(path, encoding="utf-8") as fh:
+                registry = json.load(fh)
+        except (FileNotFoundError, json.JSONDecodeError, ValueError):
+            return {}
+        return {p["plant"].lower(): p for p in registry.get("plants", []) if p.get("plant")}
 
 
     # ------------------------------------------------------------------------------------

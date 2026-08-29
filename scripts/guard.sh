@@ -76,27 +76,42 @@ else
   ok "крупные файлы только через Git LFS"
 fi
 
-# 6. Инвариант обезличивания: названия площадок живут в данных, не в рантайм-коде.
-if [ -f data/plant_aliases.json ]; then
-  leak=0
-  python3 -c "
-import json
-d = json.load(open('data/plant_aliases.json', encoding='utf-8'))
-print('\n'.join(sorted({v for v in d.get('aliases', {}).values() if len(v) > 5})))
-" 2>/dev/null > /tmp/hefest_guard_names.txt || : > /tmp/hefest_guard_names.txt
-  while IFS= read -r nm; do
-    [ -z "$nm" ] && continue
-    # shellcheck disable=SC2086
-    if git grep -liF -e "$nm" -- $RUNTIME_PY >/dev/null 2>&1; then
-      leak=1
-      # shellcheck disable=SC2086
-      git grep -liF -e "$nm" -- $RUNTIME_PY | sed "s/^/         «$nm» → /"
-    fi
-  done < /tmp/hefest_guard_names.txt
-  rm -f /tmp/hefest_guard_names.txt
-  [ "$leak" = 1 ] && bad "названий площадок нет в рантайм-коде" || ok "названий площадок нет в рантайм-коде"
+# 6. Главный инвариант публикации: сведений о ЮРИДИЧЕСКИХ ЛИЦАХ в репозитории нет.
+#    Ни реестра площадок, ни ИНН, ни названий организаций — ни в данных, ни в коде, ни в
+#    примерах интерфейса, ни в наборах для eval (см. DATA-LICENSE.md, раздел 4).
+
+# 6а. Реестр площадок и производные от него файлы не трекаются.
+registry_leak=$(git ls-files | grep -E '^data/(plants(_linked)?(_demo)?\.json|plant_aliases\.json|plants_local.*\.json)$' || true)
+if [ -n "$registry_leak" ]; then
+  bad "реестр площадок не трекается"; echo "$registry_leak" | sed 's/^/         /'
 else
-  ok "названий площадок нет в рантайм-коде"
+  ok "реестр площадок не трекается"
+fi
+
+# 6б. ИНН: поле в данных или голая последовательность из 10/12 цифр рядом со словом ИНН.
+inn_leak=$(git grep -lE '"inn"[[:space:]]*:[[:space:]]*"[0-9]{10,12}"|ИНН[[:space:]]*:?[[:space:]]*[0-9]{10,12}' -- . ":!$self" || true)
+if [ -n "$inn_leak" ]; then
+  bad "ИНН в трекаемых файлах"; echo "$inn_leak" | sed 's/^/         /'
+else
+  ok "ИНН в трекаемых файлах"
+fi
+
+# 6в. Названия организаций. Денайлист хранится ВНЕ репозитория (.private/ в .gitignore),
+#     чтобы сам сторож не носил в публичном коде список реальных компаний. Нет файла —
+#     проверка пропускается: она защищает владельца, а не форкнувшего.
+if [ -f .private/entities-denylist.txt ]; then
+  entity_leak=0
+  while IFS= read -r nm; do
+    case "$nm" in ''|'#'*) continue ;; esac
+    if git grep -liF -e "$nm" -- . ":!$self" >/dev/null 2>&1; then
+      entity_leak=1
+      git grep -liF -e "$nm" -- . ":!$self" | sed 's/^/         название организации в: /' 
+    fi
+  done < .private/entities-denylist.txt
+  [ "$entity_leak" = 1 ] && bad "названий организаций нет в трекаемых файлах" \
+                         || ok "названий организаций нет в трекаемых файлах"
+else
+  ok "названий организаций нет (денайлист не задан — проверка пропущена)"
 fi
 
 # 7. Обязательные файлы публичного репозитория.

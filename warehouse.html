@@ -164,15 +164,15 @@
       const opts=d.plants.map(p=>`<option value="${esc(p.plant)}">${esc(p.plant)} — ${p.substances} вещ.${p.forbidden_pairs?' · ⚠'+p.forbidden_pairs+' опасн.':''}</option>`).join('');
       $('plant').innerHTML='<option value="">— выберите завод —</option>'+opts;
       // 1) ?plant= из URL имеет приоритет (точное совпадение, иначе подстрока);
-      // 2) иначе — автовыбор пилота с готовой демо-раскладкой (ПЛОЩАДКА), чтобы экран
-      //    сразу показывал ценность аудита, а не пустую раскладку.
+      // 2) иначе — первая площадка подключённого реестра, чтобы экран сразу показывал
+      //    ценность аудита, а не пустую раскладку. Названий юрлиц в коде нет.
       const q=(new URLSearchParams(location.search).get('plant')||'').trim();
       let target=null;
       if(q){
         target=d.plants.find(p=>p.plant===q)
             || d.plants.find(p=>p.plant.toLowerCase().includes(q.toLowerCase()));
       }
-      if(!target) target=d.plants.find(p=>/ПЛОЩАДКА/i.test(p.plant));
+      if(!target) target=d.plants[0]||null;
       if(target){$('plant').value=target.plant;loadPlant(target.plant);}
     }catch(e){$('plant').innerHTML='<option>ошибка загрузки</option>';}
   }
