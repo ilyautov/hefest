@@ -79,16 +79,24 @@ def _grade_pair(a: dict, b: dict):
 
 
 def _load_layouts() -> dict:
-    """Читает шаблон раскладок -> {inn: layout}. Пустой словарь, если файла нет."""
+    """Читает шаблон раскладок -> {название площадки в нижнем регистре: layout}.
+
+    Адресация по названию, а не по ИНН: идентификаторов юридических лиц в проекте нет
+    (см. DATA-LICENSE.md, раздел 4). Пустой словарь, если файла нет."""
     try:
         with open(_ZONES_FILE, encoding="utf-8") as f:
             data = json.load(f)
     except (OSError, ValueError):
         return {}
-    return {str(l.get("plant_inn")): l for l in data.get("layouts", [])}
+    return {str(l.get("plant", "")).strip().lower(): l
+            for l in data.get("layouts", []) if l.get("plant")}
 
 
 _GROUP_KEYS = {disp: key for key, disp in compat.GROUPS.items()}  # рус. название -> ключ группы
+
+# Демонстрационная раскладка показывается для любой площадки, пока объект не завёл свою.
+# Отключается переменной окружения, когда на объекте появились реальные раскладки.
+_DEMO_LAYOUT_FALLBACK = os.getenv("WAREHOUSE_DEMO_LAYOUT", "1") not in ("0", "false", "no")
 
 
 def _sub_view(name: str, subs_by_name: dict) -> dict:
@@ -133,7 +141,11 @@ def _zone_conflicts(names, subs_by_name):
 def audit(plant_obj: dict, subs_by_name: dict) -> dict:
     """Зональный аудит склада завода. Совместим по сигнатуре с registry.summary."""
     layouts = _load_layouts()
-    layout = layouts.get(str(plant_obj.get("inn")))
+    layout = layouts.get(str(plant_obj.get("plant", "")).strip().lower())
+    if layout is None and len(layouts) == 1 and _DEMO_LAYOUT_FALLBACK:
+        # Единственная раскладка в шаблоне — демонстрационная. Показываем её для любой
+        # площадки, но статус остаётся "template": видно, что это пример, а не факт объекта.
+        layout = next(iter(layouts.values()))
 
     if layout:
         zones_src = layout.get("zones", [])
@@ -198,18 +210,21 @@ def audit(plant_obj: dict, subs_by_name: dict) -> dict:
 
 
 if __name__ == "__main__":
-    # Самопроверка: гоняем аудит на пилотном заводе из шаблона и печатаем сводку.
+    # Самопроверка. Реестр площадок в поставку не входит, поэтому площадку берём из
+    # демонстрационной раскладки: самотест обязан работать на чистом клоне.
     import sys
     base = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data")
     subs = json.load(open(os.path.join(base, "substances_clean.json"), encoding="utf-8"))
-    plants = json.load(open(os.path.join(base, "plants_linked.json"), encoding="utf-8"))["plants"]
     sb = {s["name"].lower(): s for s in subs}
 
-    pilot = next((p for p in plants if p.get("inn") == "0000000000"), None)
-    assert pilot, "пилотный завод (ИНН 0000000000) не найден в plants_linked.json"
+    layouts = _load_layouts()
+    assert layouts, "нет ни одной раскладки в data/warehouse_zones.json"
+    demo = next(iter(layouts.values()))
+    вещества = [n for z in demo.get("zones", []) for n in z.get("substances", [])]
+    pilot = {"plant": demo["plant"], "matched_substances": вещества, "unmatched_substances": []}
     r = audit(pilot, sb)
 
-    print(f"Завод: {r['plant']} (ИНН {r['inn']})  layout={r['layout_status']}")
+    print(f"Площадка: {r['plant']}  layout={r['layout_status']}")
     print(f"Зон: {r['zones_total']}  размещено веществ: {r['substances_placed']}  "
           f"не размещено: {len(r['unplaced'])}")
     print(f"ИТОГО пар: forbidden={r['forbidden_pairs']}  caution={r['caution_pairs']}\n")

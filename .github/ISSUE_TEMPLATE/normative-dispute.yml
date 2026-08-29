@@ -1,0 +1,60 @@
+name: Спор о нормативном значении
+description: Оспорить ПДК, класс опасности, номер ООН, IDLH, раздел ГОСТ или иное нормативное значение.
+title: "норматив: "
+labels: ["данные", "требует сверки"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Это самый ценный вид вклада в проект: сверка с бумажным первоисточником.
+        Не прикладывайте паспорта безопасности предприятия и персональные данные.
+        Уязвимости контура честности — в SECURITY.md, не сюда.
+  - type: input
+    id: substance
+    attributes:
+      label: Вещество и поле
+      description: Название вещества (или CAS) и какое именно значение оспаривается.
+      placeholder: "хлор (CAS 7782-50-5), ПДК рабочей зоны"
+    validations:
+      required: true
+  - type: input
+    id: shown
+    attributes:
+      label: Что показывает система
+      description: Значение с единицами, как оно выводится сейчас.
+    validations:
+      required: true
+  - type: input
+    id: expected
+    attributes:
+      label: Какое значение верно
+      description: Значение с единицами. Если верного значения нет — напишите «нет данных».
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Первоисточник
+      description: |
+        Документ, редакция, пункт/таблица/строка. Ссылка на официальную публикацию, если есть.
+        «Я так помню» и пересказ агрегатора источником не считаются.
+      placeholder: "ГН 2.2.5.3532-18, таблица 1, строка 1234; СанПиН 1.2.3685-21, редакция от ..."
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Как воспроизвести
+      description: Команда или запрос, по которому мейнтейнер увидит то же самое.
+      placeholder: "curl -s localhost:8012/substance/хлор | jq .pdk_mgm3"
+    validations:
+      required: true
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Подтверждение
+      options:
+        - label: Я сверил значение с первоисточником, а не с другой информационной системой.
+          required: true
+        - label: В issue нет паспортов предприятия и персональных данных.
+          required: true

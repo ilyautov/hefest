@@ -40,11 +40,16 @@ def fmt_pdk(p):
 def build_sections(s):
     """Из структурной карточки вещества собрать разделы паспорта безопасности (ГОСТ 30333)."""
     name, f, cas = s["name"], s.get("formula",""), s.get("cas","")
+    # Пропуск обязан читаться как пропуск. Прочерк из таблицы ГН («-») и пустое поле — это
+    # «нет данных», а не идентификатор: «регистрационный номер CAS -.» вводит в заблуждение.
+    cas_текст = f"регистрационный номер CAS {cas}" if str(cas).strip() not in ("", "-", "—") \
+        else "регистрационный номер CAS не указан в источнике"
+    формула_текст = f"Химическая формула {f}, " if str(f).strip() not in ("", "-", "—") else ""
     fp = s.get("flash_point_c")
     ghs = ", ".join(s.get("ghs", [])) or "см. классификацию по ГОСТ 12.1.007"
     sec = {}
     sec["Раздел 1. Идентификация вещества"] = (
-        f"{name}. Химическая формула {f}, регистрационный номер CAS {cas}. "
+        f"{name}. {формула_текст}{cas_текст}. "
         f"Класс опасности по ГОСТ 12.1.007: {hazard_label(s.get('hazard_class'))}. "
         f"Уровень достоверности данных: {s.get('confidence','n/a')}, источник {s.get('source_tier','n/a')}.")
     sec["Раздел 2. Идентификация опасности"] = (
@@ -104,7 +109,12 @@ def main():
             })
 
     # линковка заводов
-    plants = load("plants.json")
+    # Реестр предприятий необязателен и в публичную поставку не входит.
+    try:
+        plants = load(os.getenv("PLANTS_SOURCE_FILE", "plants.json"))
+    except FileNotFoundError:
+        plants = []
+        print("реестр предприятий не подключён — линковка завод↔вещество пропущена")
     sub_keys = set(by_name.keys())
     linked, coverage = [], {"matched":0,"unmatched":0,"unmatched_list":[]}
     for p in plants:

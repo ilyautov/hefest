@@ -8,14 +8,15 @@
   :root{
     --bg:#0f1419; --panel:#1a2230; --panel2:#222c3a; --line:#2b3647;
     --txt:#eef2f7; --muted:#a8b3c2;
-    --blue:#5b9dff; --blue-d:#2563eb; --orange:#f9a23b; --red:#ff6b6b; --green:#3ecf8e; --amber:#ffce6b;
-    --r:14px; --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    --blue:#5b9dff; --blue-d:#2563eb; --orange:#f9a23b; --orange-d:#b9472f;
+    --red:#ff6b6b; --red-d:#b91c1c; --green:#3ecf8e; --green-d:#0e9f6e; --amber:#ffce6b; --amber-d:#b45309;
+    --r:14px; --mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono",Menlo,Consolas,monospace;
     --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   }
   *{box-sizing:border-box}
   body{margin:0;background:radial-gradient(1200px 520px at 75% -12%,#13233c,transparent 62%),var(--bg);
     color:var(--txt);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;min-height:100dvh}
-  .wrap{max-width:820px;margin:0 auto;padding:32px 18px 80px}
+  .wrap{max-width:860px;margin:0 auto;padding:32px 18px 80px}
   h1{font-size:23px;margin:0;font-weight:700}
   a.back{color:var(--muted);text-decoration:none;font-size:13px}
   a.back:hover{color:var(--blue)}
@@ -23,7 +24,7 @@
   .btn{cursor:pointer;background:var(--panel);border:1px solid var(--line);border-radius:9px;color:var(--txt);
     padding:11px 15px;font:14px var(--sans);font-weight:600;display:inline-flex;align-items:center;gap:7px}
   .btn:hover{border-color:var(--blue);background:var(--panel2)}
-  .btn.pr{background:var(--blue);border-color:var(--blue);color:#fff}.btn.pr:hover{background:var(--blue-d)}
+  .btn.pr{background:var(--orange);border-color:var(--orange);color:#241204}.btn.pr:hover{filter:brightness(1.07)}
   .btn.sm{padding:8px 12px;font-size:13px}
   input.q,input.f{background:var(--panel);border:1px solid var(--line);border-radius:9px;color:var(--txt);
     padding:10px 12px;font:15px var(--sans)}
@@ -35,23 +36,24 @@
   .crow{display:flex;gap:10px;align-items:center;margin-bottom:9px}
   .crow .q{flex:1;min-width:0}
   .crow .f{width:108px}
-  .crow .unit{font-size:12.5px;color:var(--muted);white-space:nowrap}
-  .crow .rm{cursor:pointer;background:none;border:none;color:var(--muted);font-size:20px;line-height:1;padding:0 4px}
+  .crow .unit{font-size:13px;color:var(--muted);white-space:nowrap}
+  .crow .rm{cursor:pointer;background:none;border:none;color:var(--muted);font-size:20px;line-height:1;
+    padding:0 8px;min-height:34px;display:inline-flex;align-items:center}
   .crow .rm:hover{color:var(--red)}
   .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
-  .hint{font-size:12.5px;color:var(--muted);margin-top:8px}
+  .hint{font-size:13px;color:var(--muted);margin-top:8px}
   .exrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0 0}
-  .exrow .lbl{font-size:12.5px;color:var(--muted)}
+  .exrow .lbl{font-size:13px;color:var(--muted)}
   .exchip{cursor:pointer;font-size:13px;background:var(--panel2);border:1px solid var(--line);color:var(--txt);
-    padding:6px 11px;border-radius:8px}
+    padding:6px 11px;border-radius:9px}
   .exchip:hover{border-color:var(--blue)}
 
   /* БОЛЬШАЯ ПЛАШКА «требует эколога» */
-  .ecologist{display:flex;gap:14px;align-items:flex-start;background:#2a1d10;border:1px solid #6b4a18;
+  .ecologist{display:flex;gap:14px;align-items:flex-start;background:#2a1d10;border:1px solid #5a4920;
     border-radius:var(--r);padding:16px 18px;margin-bottom:18px}
   .ecologist .ic{flex:none;width:30px;height:30px;color:var(--amber)}
   .ecologist b{color:var(--amber)}
-  .ecologist .t{font-size:13.5px;line-height:1.5;color:#f0e3cc}
+  .ecologist .t{font-size:14px;line-height:1.5;color:#f0e3cc}
 
   /* ИТОГ */
   .verdict{border-radius:var(--r);padding:18px 20px;margin-bottom:16px;border:1px solid var(--line)}
@@ -60,20 +62,20 @@
   .verdict .big{font-size:21px;font-weight:800;margin:0 0 4px}
   .verdict.gap .big{color:var(--amber)}
   .verdict.calc .big{color:var(--green)}
-  .verdict .sub{font-size:13.5px;color:var(--muted);line-height:1.55}
+  .verdict .sub{font-size:14px;color:var(--muted);line-height:1.55}
   .kv{font-family:var(--mono);font-size:13px;color:var(--muted);margin-top:8px}
 
-  .comp{border:1px solid var(--line);border-radius:11px;padding:13px 15px;margin-bottom:10px;background:var(--panel2)}
+  .comp{border:1px solid var(--line);border-radius:14px;padding:13px 15px;margin-bottom:10px;background:var(--panel2)}
   .comp .nm{font-weight:700;font-size:15px}
   .comp .nm .cas{font-family:var(--mono);font-size:12px;color:var(--muted);font-weight:400;margin-left:6px}
-  .comp .wi{float:right;font-family:var(--mono);font-size:12.5px;color:var(--amber);
-    background:#2a1d10;border:1px solid #6b4a18;border-radius:6px;padding:2px 8px}
-  .comp .notfound .wi{color:var(--red);background:#2a1414;border-color:#6b2a2a}
+  .comp .wi{float:right;font-family:var(--mono);font-size:13px;color:var(--amber);
+    background:#2a1d10;border:1px solid #5a4920;border-radius:9px;padding:2px 8px}
+  .comp .notfound .wi{color:var(--red);background:#3a1518;border-color:#5a2025}
   .ind{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
-  .pill{font-size:12px;border-radius:7px;padding:3px 9px;border:1px solid var(--line);font-family:var(--mono)}
+  .pill{font-size:12px;border-radius:9px;padding:3px 9px;border:1px solid var(--line);font-family:var(--mono)}
   .pill.has{background:#15233a;border-color:#2b4a72;color:#bcd6ff}
   .pill.miss{background:#241a1a;border-color:#5a3030;color:#e3a6a6}
-  .comp .reason{font-size:12.5px;color:var(--muted);margin-top:9px;line-height:1.45}
+  .comp .reason{font-size:13px;color:var(--muted);margin-top:9px;line-height:1.45}
 
   .miss-overall{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;margin-bottom:16px}
   .miss-overall h3{font-size:14px;margin:0 0 10px}
@@ -84,8 +86,19 @@
   .miss-overall.why h3{color:var(--orange);font-size:15px}
   .why .why-lead{font-size:13px;color:var(--muted);line-height:1.55;margin:0 0 11px}
   .why .why-lead b{color:var(--txt)}
-  .frame{font-size:12.5px;color:var(--muted);font-family:var(--mono);margin-top:14px;line-height:1.6}
+  .frame{font-size:13px;color:var(--muted);font-family:var(--mono);margin-top:14px;line-height:1.6}
   .frame b{color:var(--txt)}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  /* Системное кольцо фокуса: одинаковое на всех экранах (DESIGN.md, Components). */
+  a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,
+  textarea:focus-visible,summary:focus-visible,[tabindex]:focus-visible{
+    outline:3px solid #5b9dffaa;outline-offset:2px;border-radius:4px}
+  /* Правило большого пальца (DESIGN.md, Layout): текстовая ссылка ростом 16px
+     непопадаема в перчатке. Зона нажатия растягивается по вертикали до 44px
+     псевдоэлементом — размер и положение самой ссылки не меняются. */
+  a.back,a.nav{position:relative}
+  a.back::after,a.nav::after{content:"";position:absolute;left:0;right:0;top:50%;
+    transform:translateY(-50%);height:44px}
 </style>
 </head>
 <body>
@@ -201,7 +214,7 @@
       return `<div class="comp ${pc.matched?'':'notfound'}">
           <span class="wi">${wi}</span>
           <div class="nm">${esc(pc.substance)}${pc.cas?`<span class="cas">CAS ${esc(pc.cas)}</span>`:''}
-            ${pc.matched?'':'<span style="color:var(--red);font-size:12.5px;font-weight:400"> · не найдено в базе</span>'}</div>
+            ${pc.matched?'':'<span style="color:var(--red);font-size:13px;font-weight:400"> · не найдено в базе</span>'}</div>
           <div class="ind">${has}${miss}</div>
           ${pc.reason?`<div class="reason">⚠ ${esc(pc.reason)}</div>`:''}
         </div>`;

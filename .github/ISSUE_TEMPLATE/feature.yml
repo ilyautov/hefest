@@ -1,0 +1,28 @@
+name: Предложение
+description: Предложить возможность или изменение поведения.
+title: "предложение: "
+labels: ["предложение"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Какую задачу это решает
+      description: Начните с задачи специалиста (эколог, ОТ/ПБ, мастер смены, диспетчер), а не с решения.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Предлагаемое поведение
+    validations:
+      required: true
+  - type: textarea
+    id: safety
+    attributes:
+      label: Влияние на контур честности
+      description: |
+        Обязательный пункт. Требует ли предложение выводить значение, которого нет в источнике,
+        пересчитывать единицы, присваивать класс при неполных данных или показывать типовое
+        как паспортное? Если да — объясните, почему это безопасно.
+    validations:
+      required: true

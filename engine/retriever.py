@@ -33,11 +33,14 @@ SECTION_INTENT = {
 
 class HybridRetriever:
     def __init__(self, lexical=True):
-        c = json.load(open(os.path.join(DATA, os.getenv("CORPUS_FILE","corpus_full.json")),encoding="utf-8"))
+        c = json.load(open(os.path.join(DATA, os.getenv("CORPUS_FILE", "corpus_full_clean.json")),encoding="utf-8"))
         self.chunks = c["chunks"]
-        self.subs = json.load(open(os.path.join(DATA, os.getenv("SUBS_FILE","substances_all.json")),encoding="utf-8"))
-        pl = json.load(open(os.path.join(DATA,"plants_linked.json"),encoding="utf-8"))
-        self.plants = {p["plant"].lower(): p for p in pl["plants"]}
+        self.subs = json.load(open(os.path.join(DATA, os.getenv("SUBS_FILE", "substances_clean.json")),encoding="utf-8"))
+        # Реестр предприятий НЕОБЯЗАТЕЛЕН и в поставку не входит: публичный репозиторий не
+        # содержит сведений о юридических лицах (см. DATA-LICENSE.md, раздел 4). Пользователь
+        # подключает собственный реестр через PLANTS_FILE; без него функции по площадке честно
+        # сообщают, что реестр не подключён, а всё остальное работает как обычно.
+        self.plants = self._load_plants()
         texts = [f'{x["text"]} {x["substance"]} {x["section"]}' for x in self.chunks]
         # лексические сигналы (char+word TF-IDF + BM25) — тяжёлые на 26010 чанков.
         # семантическому ретриверу не нужны: lexical=False пропускает их построение.
@@ -71,14 +74,58 @@ class HybridRetriever:
             if s.get("cas"): exact.add(s["cas"])
             self.entity[s["name"]] = (stems, set(SYN_ENTITY.get(nm, [])), exact)
         self.doc_sub = [x["substance"] for x in self.chunks]
-        self.plant_triggers = {
-            "ПЛОЩАДКА":"ПЛОЩАДКА","корунд":"ПЛОЩАДКА","ПЛОЩАДКА":"ПЛОЩАДКА","тосол":"ПЛОЩАДКА",
-            "ПЛОЩАДКА":"ПЛОЩАДКА","ПЛОЩАДКА":"ПЛОЩАДКА (ПЛОЩАДКА)","синтанол":"ПЛОЩАДКА (ПЛОЩАДКА)",
-            "пкж":"ПЛОЩАДКА","карбонильн":"ПЛОЩАДКА","ПЛОЩАДКА":"ПЛОЩАДКА","ПЛОЩАДКА":"ПЛОЩАДКА",
-            "ПЛОЩАДКА":"ПЛОЩАДКАа","ПЛОЩАДКА":"ПЛОЩАДКА (ПЛОЩАДКА)","св-хим":"ПЛОЩАДКА (ПЛОЩАДКА)",
-            "перекисн":"ПЛОЩАДКА",
-            "ПЛОЩАДКА":"ПЛОЩАДКА (ПЛОЩАДКА)","акрилов":"ПЛОЩАДКА (ПЛОЩАДКА)",
-        }
+        self.plant_triggers = self._build_plant_triggers()
+
+
+    # ------------------------------------------------------------------------------------
+    # Реестр площадок. Отсутствие файла — штатное состояние поставки, а не ошибка.
+    # ------------------------------------------------------------------------------------
+    @staticmethod
+    def _load_plants():
+        path = os.path.join(DATA, os.getenv("PLANTS_FILE", "plants_linked.json"))
+        try:
+            with open(path, encoding="utf-8") as fh:
+                registry = json.load(fh)
+        except (FileNotFoundError, json.JSONDecodeError, ValueError):
+            return {}
+        return {p["plant"].lower(): p for p in registry.get("plants", []) if p.get("plant")}
+
+
+    # ------------------------------------------------------------------------------------
+    # Распознавание площадки в запросе. Названия предприятий НЕ хардкодятся в коде: они
+    # приходят из реестра (PLANTS_FILE) плюс необязательный словарь разговорных псевдонимов
+    # data/plant_aliases.json. Благодаря этому подмена реестра на обезличенный действительно
+    # обезличивает систему целиком, а не только выдачу (см. engine/anonymize_plants.py).
+    # ------------------------------------------------------------------------------------
+    _СТОП_СЛОВА = {"завод", "гк", "ооо", "оао", "пао", "ао", "зао", "опытный", "химическое",
+                   "предприятие", "комбинат", "им", "имени", "групп", "группа"}
+
+    def _build_plant_triggers(self):
+        triggers = {}
+
+        # 1. Автотриггеры из самих названий: значимые токены длиной от 4 символов.
+        for key, plant in self.plants.items():
+            triggers.setdefault(key, key)
+            for token in re.split(r"[^\w-]+", key):
+                token = token.strip("-")
+                if len(token) >= 4 and token not in self._СТОП_СЛОВА:
+                    triggers.setdefault(token, key)
+
+        # 2. Разговорные псевдонимы из данных — только если цель есть в загруженном реестре.
+        try:
+            path = os.path.join(DATA, os.getenv("PLANT_ALIASES_FILE", "plant_aliases.json"))
+            with open(path, encoding="utf-8") as fh:
+                aliases = json.load(fh).get("aliases", {})
+        except (FileNotFoundError, json.JSONDecodeError, ValueError):
+            aliases = {}
+        for alias, key in aliases.items():
+            if key in self.plants:
+                triggers[alias.lower()] = key
+
+        # Порядок критичен: совпадение ищется перебором подстрок, первое выигрывает. Более
+        # длинный (специфичный) триггер обязан проверяться раньше короткого — иначе составное
+        # название площадки перехватывается общим токеном, который есть и у соседней площадки.
+        return dict(sorted(triggers.items(), key=lambda пара: (-len(пара[0]), пара[0])))
 
     def _entity_hits(self, ql):
         hits = set()
@@ -130,7 +177,7 @@ class SemanticRetriever(HybridRetriever):
         self.scope_in, self.scope_out = scope_in, scope_out
         self.reranker = reranker          # опц. кросс-энкодер: retrieve top-N косинусом -> реранк -> top-k
         self.rerank_n = rerank_n
-        M = np.load(emb_path or os.path.join(DATA, os.getenv("EMB_FILE", "embeddings.npy"))).astype(np.float32)
+        M = np.load(emb_path or os.path.join(DATA, os.getenv("EMB_FILE", "embeddings_clean.npy"))).astype(np.float32)
         self.chunks = self.chunks[:len(M)]                       # выравниваем на длину индекса
         self.subs_arr = np.array([c["substance"] for c in self.chunks])
         self.Mn = M / (np.linalg.norm(M, axis=1, keepdims=True) + 1e-9)
@@ -161,6 +208,12 @@ class SemanticRetriever(HybridRetriever):
 
 if __name__ == "__main__":
     r = HybridRetriever()
-    for q in ["как хранить серную кислоту","антидот при отравлении цианидом","что опасного на заводе Корунд"]:
+    # Демо-запросы. Название площадки берётся из загруженного реестра, а не зашивается в код,
+    # чтобы самотест работал и на обезличенном, и на собственном реестре предприятия.
+    площадка = next(iter(r.plants), None)
+    примеры = ["как хранить серную кислоту", "антидот при отравлении цианидом"]
+    if площадка:
+        примеры.append(f"что опасного на площадке {площадка}")
+    for q in примеры:
         top = r.query(q, k=1)[0]
         print(f"{q[:40]:40} -> {top[0]['substance']} / {top[0]['section'][:28]} ({top[1]:.2f})")

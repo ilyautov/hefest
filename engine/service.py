@@ -457,7 +457,7 @@ def plant(name: str):
         if trig in name.lower(): key = k; break
     prof = R.plants.get(key) if key else None
     if not prof:
-        return {"error": "завод не найден", "known": list(R.plant_triggers.values())}
+        return _plant_missing(name)
     subs = []
     for sn in prof.get("matched_substances", []):
         s = SUBS.get(sn.lower(), {})
@@ -844,6 +844,35 @@ def audit(n: int = 50):
     """Последние записи аудит-лога запросов (комплаенс)."""
     return {"recent": hygiene.audit_tail(n)}
 
+# ---------------------------------------------------------------------------------------------------
+# Реестр площадок в публичную поставку НЕ входит: репозиторий не содержит сведений о юридических
+# лицах (см. DATA-LICENSE.md, раздел 4). Пользователь подключает собственный реестр через
+# PLANTS_FILE. Пока он не подключён, функции по площадке обязаны объяснять положение дел, а не
+# изображать «завод не найден» — иначе человек будет искать опечатку в названии.
+# ---------------------------------------------------------------------------------------------------
+REGISTRY_ABSENT = {
+    "error": "реестр площадок не подключён",
+    "detail": ("В поставку HEFEST реестр предприятий не входит — публичный репозиторий не содержит "
+               "сведений о юридических лицах. Подключите собственный реестр: положите файл в data/ "
+               "и укажите его в переменной окружения PLANTS_FILE. Схема и пример — "
+               "data/plants.example.json, порядок — DATA-LICENSE.md, раздел 4."),
+    "plants": [],
+}
+
+
+def _registry_connected() -> bool:
+    return bool(R.plants)
+
+
+def _plant_missing(name=None):
+    """Ответ на запрос по площадке: либо реестра нет вовсе, либо в нём нет такой площадки."""
+    if not _registry_connected():
+        return dict(REGISTRY_ABSENT)
+    return {"error": "площадка не найдена в подключённом реестре",
+            "requested": name,
+            "known": [x["plant"] for x in R.plants.values()]}
+
+
 def _resolve_plant(name: str):
     key = name.lower().strip()
     if key in R.plants:
@@ -858,7 +887,11 @@ def _resolve_plant(name: str):
 
 @app.get("/registry")
 def registry_list():
-    """Список площадок с числом веществ и опасных пар (авто-аудит совместимости)."""
+    """Список площадок с числом веществ и опасных пар (авто-аудит совместимости).
+
+    Без подключённого реестра возвращает пустой список с объяснением — см. REGISTRY_ABSENT."""
+    if not _registry_connected():
+        return dict(REGISTRY_ABSENT)
     out = []
     for p in R.plants.values():
         s = registry.summary(p, SUBS)
@@ -872,7 +905,7 @@ def registry_plant(name: str):
     """Реестр веществ площадки + опасные пары для совместного хранения."""
     p = _resolve_plant(name)
     if not p:
-        return {"error": "завод не найден", "known": [x["plant"] for x in R.plants.values()]}
+        return _plant_missing(name)
     return registry.summary(p, SUBS)
 
 @app.get("/export/registry.csv")
@@ -880,7 +913,10 @@ def export_registry(plant: str = Query(...)):
     """Экспорт реестра площадки в CSV (для 1С / Excel)."""
     p = _resolve_plant(plant)
     if not p:
-        return Response("plant not found", status_code=404)
+        # Причина отказа важна и здесь: без реестра выгружать нечего в принципе.
+        сообщение = ("реестр площадок не подключён — см. DATA-LICENSE.md, раздел 4"
+                     if not _registry_connected() else "площадка не найдена в подключённом реестре")
+        return Response(сообщение, status_code=404, media_type="text/plain; charset=utf-8")
     rows = registry.registry(p, SUBS)
     buf = io.StringIO(); buf.write("﻿")  # BOM для Excel-кириллицы
     w = csv.writer(buf, delimiter=";")
@@ -919,7 +955,7 @@ def warehouse_map(name: str):
     """Карта склада: зональный аудит совместимости (раскладка — demo-шаблон, вердикты из compat)."""
     p = _resolve_plant(name)
     if not p:
-        return {"error": "завод не найден", "known": [x["plant"] for x in R.plants.values()]}
+        return _plant_missing(name)
     return warehouse.audit(p, SUBS)
 
 @app.get("/inspection/{plant}")
@@ -927,7 +963,7 @@ def inspection_readiness(plant: str):
     """Режим инспектора: химическая готовность площадки ПО ДАННЫМ системы (не проверочный лист надзора)."""
     p = _resolve_plant(plant)
     if not p:
-        return {"error": "завод не найден", "known": [x["plant"] for x in R.plants.values()]}
+        return _plant_missing(plant)
     return inspection.plant_readiness(p, SUBS, assemble=_assemble)
 
 class WasteComponentIn(BaseModel):

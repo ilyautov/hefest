@@ -1,0 +1,46 @@
+name: Ошибка в работе
+description: Система падает, отвечает не так, как заявлено, или ведёт себя непредсказуемо.
+title: "баг: "
+labels: ["баг"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Неверное нормативное ЗНАЧЕНИЕ — это отдельный шаблон «Спор о нормативном значении».
+        Здесь — про поведение программы.
+  - type: textarea
+    id: what
+    attributes:
+      label: Что происходит и что ожидалось
+      description: Точный текст ошибки, если он короткий.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Как воспроизвести
+      description: Минимальная последовательность команд или запросов.
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: Окружение
+      description: ОС, версия Python, режим запуска (лексический / семантический).
+      placeholder: "macOS 15, Python 3.11, лексический режим"
+    validations:
+      required: true
+  - type: textarea
+    id: health
+    attributes:
+      label: Вывод /health и /quality
+      description: Помогает понять, на какой базе воспроизводится. Секреты уберите.
+      render: json
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Подтверждение
+      options:
+        - label: Офлайн-сьют прогнан (`make test`), результат приложен или описан.
+        - label: В issue нет паспортов предприятия, ключей и персональных данных.
+          required: true

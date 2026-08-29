@@ -10,14 +10,14 @@
 
 ```bash
 # зависимости тем же python, что увидит Cowork:
-/opt/homebrew/opt/python@3.11/bin/python3.11 -m pip install mcp httpx
+<путь-к-python3.11> -m pip install mcp httpx
 
 # модели Ollama (один раз):
 ollama pull bge-m3        # эмбеддинги, сильный русский
 ollama pull qwen2.5:7b    # генерация, хороший русский
 
 # проверка, что сервер стартует:
-/opt/homebrew/opt/python@3.11/bin/python3.11 /Users/ilyautov/personal/pilots/rag-sds/ollama-mcp/server.py
+<путь-к-python3.11> <путь-к-репозиторию>/ollama-mcp/server.py
 # (должен запуститься без ошибок; Ctrl+C чтобы остановить)
 ```
 
@@ -30,8 +30,8 @@ ollama pull qwen2.5:7b    # генерация, хороший русский
 {
   "mcpServers": {
     "ollama-bridge": {
-      "command": "/opt/homebrew/opt/python@3.11/bin/python3.11",
-      "args": ["/Users/ilyautov/personal/pilots/rag-sds/ollama-mcp/server.py"],
+      "command": "<путь-к-python3.11>",
+      "args": ["<путь-к-репозиторию>/ollama-mcp/server.py"],
       "env": { "OLLAMA_HOST": "http://127.0.0.1:11434" }
     }
   }

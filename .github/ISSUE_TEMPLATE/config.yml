@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Вопрос по установке и использованию
+    url: https://github.com/ilyautov/hefest/discussions
+    about: Спросите в обсуждениях, не публикуя данные предприятия.
+  - name: Уязвимость или подозрение на утечку данных
+    url: https://github.com/ilyautov/hefest/security/advisories/new
+    about: Сообщайте приватно. Не создавайте публичный issue.
