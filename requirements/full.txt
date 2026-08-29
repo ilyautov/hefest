@@ -15,7 +15,7 @@ scipy>=1.11
 # ВНИМАНИЕ: sentence-transformers НЕ использовать — тянет torchcodec -> ffmpeg (libavutil);
 # реранкер загружается напрямую через transformers (см. engine/reranker_model.py).
 torch>=2.2                 # MPS на Apple Silicon / CUDA
-transformers>=4.40
+transformers>=5.15.1
 
 # --- OCR грязных PDF (аудит-спринт) ---
 pymupdf>=1.24              # растеризация PDF без системного poppler
