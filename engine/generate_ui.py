@@ -4,7 +4,12 @@ import json, os
 HERE = os.path.dirname(os.path.abspath(__file__)); DATA = os.path.join(HERE,"..","data")
 corpus = json.load(open(os.path.join(DATA,"corpus_full.json"),encoding="utf-8"))
 subs = json.load(open(os.path.join(DATA,"substances_all.json"),encoding="utf-8"))
-linked = json.load(open(os.path.join(DATA,"plants_linked.json"),encoding="utf-8"))
+# Реестр предприятий необязателен: в публичной поставке его нет.
+try:
+    linked = json.load(open(os.path.join(DATA, os.getenv("PLANTS_FILE", "plants_linked.json")),
+                            encoding="utf-8"))
+except (FileNotFoundError, json.JSONDecodeError, ValueError):
+    linked = {"plants": [], "substance_to_plants": {}}
 
 # Showcase-UI держим на verified-ядре (быстро, качество 88%). Полная база (2601) живёт
 # в данных и сервисе; в браузер 26к чанков не грузим (тяжело + лексика на масштабе просаживается).

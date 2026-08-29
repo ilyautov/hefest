@@ -55,9 +55,19 @@ engine/*.htm.html
 data/corpus_full.json
 data/embed_ids.json
 
-# --- Обезличенный реестр площадок (генерируется engine/anonymize_plants.py) ---
+# --- Приватные материалы владельца (денайлист организаций для scripts/guard.sh) ----
+.private/
+
+# --- Реестр предприятий: в публичную поставку НЕ входит ---------------------------
+# Публичный репозиторий не содержит сведений о юридических лицах (см. DATA-LICENSE.md,
+# раздел 4). Реестр — приватные данные внедрения: он остаётся в контуре пользователя.
+# В репозитории публикуется только схема с вымышленным примером: data/plants.example.json.
+data/plants.json
+data/plants_linked.json
+data/plant_aliases.json
 data/plants_demo.json
 data/plants_linked_demo.json
+data/plants_local*.json
 
 # --- Сгенерированный showcase-UI (engine/generate_ui.py) ---
 index_pro.html

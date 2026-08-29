@@ -109,7 +109,12 @@ def main():
             })
 
     # линковка заводов
-    plants = load("plants.json")
+    # Реестр предприятий необязателен и в публичную поставку не входит.
+    try:
+        plants = load(os.getenv("PLANTS_SOURCE_FILE", "plants.json"))
+    except FileNotFoundError:
+        plants = []
+        print("реестр предприятий не подключён — линковка завод↔вещество пропущена")
     sub_keys = set(by_name.keys())
     linked, coverage = [], {"matched":0,"unmatched":0,"unmatched_list":[]}
     for p in plants:

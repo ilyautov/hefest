@@ -140,8 +140,9 @@
     $('plant').innerHTML='<option value="">— выберите площадку —</option>'+
       ps.map(p=>`<option value="${esc(p.plant)}">${esc(p.plant)} (${p.substances} в-в)</option>`).join('');
 
-    // Чипы-быстрого перехода: показательная площадка + крупнейшие по числу веществ
-    const DEMO='ПЛОЩАДКА';
+    // Чипы быстрого перехода: крупнейшие площадки по числу веществ. Названий юрлиц в коде
+    // нет — реестр подключает пользователь (см. DATA-LICENSE.md, раздел 4).
+    const DEMO=(ps[0]&&ps[0].plant)||'';
     const bySubs=ps.slice().sort((a,b)=>(b.substances||0)-(a.substances||0));
     const chips=[]; const seen=new Set();
     const pick=n=>{ if(n&&!seen.has(n)){ seen.add(n); chips.push(n); } };

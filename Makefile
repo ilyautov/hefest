@@ -45,7 +45,8 @@ run-semantic:
 	RETRIEVER=semantic LLM_BACKEND=ollama OLLAMA_LLM=qwen2.5:7b \
 	$(PY) -m uvicorn service:app --app-dir engine --port 8012
 
-# Публичный показ без привязки к реальным юрлицам (см. DATA-LICENSE.md, раздел 4).
+# Публичный показ на СВОЁМ реестре без раскрытия юрлиц: обезличивает копию и поднимает
+# сервис на ней. Требует подключённого реестра — в поставку он не входит (DATA-LICENSE.md, §4).
 demo:
 	$(PY) engine/anonymize_plants.py
 	PLANTS_FILE=plants_linked_demo.json \

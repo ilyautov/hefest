@@ -72,7 +72,7 @@ jobs:
       - name: Самотесты модулей без сети
         run: |
           set -e
-          for m in cas compat ghs_map rd_zone hygiene normative; do
+          for m in cas compat ghs_map rd_zone hygiene normative warehouse waste_calc; do
             echo "--- engine/$m.py"
             python engine/$m.py > /dev/null
           done
