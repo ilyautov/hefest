@@ -1,14 +1,30 @@
 [English] · [Русский](README.md)
 
-# HEFEST — a RAG assistant for chemical safety data sheets (Russian regulatory domain)
+<div align="center">
+
+<img src="assets/brand/hefest-lockup.png" alt="HEFEST" width="300">
+
+### Chemical safety for an industrial plant — from question to action, fully offline
+
+Retrieval over safety data sheets is the foundation here, not the product. Twelve working
+screens sit on top of it: what to wear, what may be stored next to what, where people must
+not go, which waste class, what to do when a measurement runs over the limit.
 
 [![tests](https://github.com/ilyautov/hefest/actions/workflows/ci.yml/badge.svg)](https://github.com/ilyautov/hefest/actions/workflows/ci.yml)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10--3.13-blue.svg)](https://www.python.org/)
 
-> **HEFEST** (Hephaestus, the smith god): out of a heap of PDF safety data sheets the system
-> forges a verifiable substance card. *Answers from the sheet, stays silent when unsure, the
-> signature belongs to a human.*
+<img src="assets/screens/demo-shift.gif" alt="Exposure check: the ratio is computed only when units match" width="700">
+
+<sub>A shift supervisor enters a measurement. At 3 mg/m³ the system computes the ratio to the
+occupational limit. At 15 ppm it refuses and says why: the units differ, and converting ppm to
+mg/m³ is forbidden here.</sub>
+
+</div>
+
+**HEFEST** (Hephaestus, the smith god): out of a heap of PDF safety data sheets the system
+forges a verifiable substance card. *Answers from the sheet, stays silent when unsure, the
+signature belongs to a human.*
 
 A plain-language question — "antidote for cyanide poisoning", "how to store sulfuric acid",
 "what is hazardous at this site" — returns an answer naming the substance, the section of the
@@ -26,6 +42,25 @@ judge whether the engineering is interesting to them.
 > before any use beyond a demo. Both are in Russian; the short version is that the shipped
 > database is a demonstration corpus, most records are unsigned by any expert, and the document
 > form of the sheets is generated rather than digitised from real plant documents.
+
+## Not a document search box
+
+Asking in plain language is the entrance, not the product. An answer on its own changes
+nothing — a shift needs an action. An applied layer sits on top of retrieval, and each tool
+in it runs its own computation rather than paraphrasing retrieved text:
+
+| Tool | The question on the floor | What is behind it |
+|---|---|---|
+| **Emergency card** | Chlorine spill — what now? | UN number, ADR placards, IDLH, ERG‑2024 isolation and evacuation distances, first aid, a QR code for the drum |
+| **Hazard zone** | Where must people not go? | Plume depth per RD 52.04.253‑90; 11 substances with verified coefficients, anything outside the list is refused |
+| **Storage map** | May these stand side by side? | Segregation-group compatibility matrix plus Section 10 of the sheets, with automatic auditing of dangerous pairs |
+| **PPE selection** | What do I put on? | Hazard class, physical state and chemical family → gloves, respiratory and skin protection |
+| **Exposure check** | Is 3 mg/m³ a lot? | Ratio to the occupational limit, computed only when units match |
+| **Waste class** | Where does this go? | Preliminary class per the federal waste catalogue; without indicators no class is assigned |
+| **Inspector mode** | What will an audit see? | A walk through the site as the inspector sees it: provenance, gaps, outdated references |
+
+Search and answer is `console.html` — **one screen out of eighteen**. The other seventeen work
+off the same base but answer questions people put to an engineer, not to a search box.
 
 ## What is engineering-interesting here
 
