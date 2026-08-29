@@ -23,7 +23,7 @@ jobs:
       matrix:
         python-version: ["3.10", "3.11", "3.12", "3.13"]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           lfs: false   # эмбеддинги (~106 МБ) для офлайн-сьюта не нужны
       - uses: actions/setup-python@v5
@@ -43,7 +43,7 @@ jobs:
     # Кросс-платформенность: пути от __file__, отсутствие Ollama, песочница сокетов на darwin.
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           lfs: false
       - uses: actions/setup-python@v5
@@ -60,7 +60,7 @@ jobs:
     # Это свойство легко потерять незаметно, поэтому проверяется отдельной ногой.
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           lfs: false
       - uses: actions/setup-python@v5
