@@ -18,7 +18,7 @@ from conftest import DATA
 КОРЕНЬ = os.path.abspath(os.path.join(DATA, ".."))
 
 ОБЯЗАТЕЛЬНЫЕ_ФАЙЛЫ = [
-    "LICENSE", "DATA-LICENSE.md", "DISCLAIMER.md", "LIMITATIONS.md",
+    "LICENSE", "NOTICE", "DATA-LICENSE.md", "DISCLAIMER.md", "LIMITATIONS.md",
     "SECURITY.md", "CONTRIBUTING.md", "CODE_OF_CONDUCT.md", "GOVERNANCE.md",
     "SUPPORT.md", "README.md", "Makefile", "scripts/guard.sh",
     ".github/PULL_REQUEST_TEMPLATE.md", ".github/workflows/ci.yml",
@@ -46,10 +46,19 @@ class TestОбязательныеДокументы:
         assert os.path.exists(os.path.join(КОРЕНЬ, имя)), f"для публичного репозитория нужен {имя}"
 
     def test_лицензия_разделяет_код_и_данные(self):
-        текст = _прочитать("LICENSE")
-        assert "MIT License" in текст
-        assert "DATA-LICENSE.md" in текст, "лицензия обязана отсылать к условиям на данные"
-        assert "DISCLAIMER.md" in текст, "safety-предупреждение должно быть видно из лицензии"
+        # LICENSE держим каноническим MIT дословно: любые приписки ломают детектор
+        # лицензий GitHub, репозиторий уходит в NOASSERTION, лицензия перестаёт
+        # показываться в сайдбаре и репо выпадает из поиска с фильтром по лицензии.
+        # Разделение кода и данных живёт в NOTICE рядом с лицензией (обычная практика)
+        # и продублировано в README, что проверяет test_readme_ведёт_к_границам_применения.
+        лицензия = _прочитать("LICENSE")
+        assert "MIT License" in лицензия
+        assert "DATA-LICENSE" not in лицензия, (
+            "приписки в LICENSE ломают определение лицензии на GitHub, "
+            "оговорки место в NOTICE")
+        notice = _прочитать("NOTICE")
+        assert "DATA-LICENSE.md" in notice, "NOTICE обязан отсылать к условиям на данные"
+        assert "DISCLAIMER.md" in notice, "safety-предупреждение должно быть видно из NOTICE"
 
     def test_readme_ведёт_к_границам_применения(self):
         текст = _прочитать("README.md")
