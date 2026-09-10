@@ -19,18 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----
-
-NOTE ON DATA / О ДАННЫХ
-
-This MIT license covers the SOURCE CODE of the project. Datasets under `data/`
-have separate provenance and terms — see DATA-LICENSE.md.
-
-Настоящая лицензия MIT распространяется на ИСХОДНЫЙ КОД. Наборы данных в `data/`
-имеют собственное происхождение и условия использования — см. DATA-LICENSE.md.
-
-SAFETY NOTICE / ПРЕДУПРЕЖДЕНИЕ О БЕЗОПАСНОСТИ: this software is decision support,
-not a certified safety data sheet. See DISCLAIMER.md before any operational use.
-Программа — поддержка принятия решений, а не паспорт безопасности. Перед любым
-эксплуатационным применением прочитайте DISCLAIMER.md.

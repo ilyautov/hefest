@@ -1,0 +1,18 @@
+HEFEST
+======
+
+NOTE ON DATA / О ДАННЫХ
+
+The MIT license in LICENSE covers the SOURCE CODE of the project. Datasets under
+`data/` have separate provenance and terms — see DATA-LICENSE.md.
+
+Лицензия MIT в файле LICENSE распространяется на ИСХОДНЫЙ КОД. Наборы данных в
+`data/` имеют собственное происхождение и условия использования — см. DATA-LICENSE.md.
+
+SAFETY NOTICE / ПРЕДУПРЕЖДЕНИЕ О БЕЗОПАСНОСТИ
+
+This software is decision support, not a certified safety data sheet. See
+DISCLAIMER.md before any operational use.
+
+Программа — поддержка принятия решений, а не паспорт безопасности. Перед любым
+эксплуатационным применением прочитайте DISCLAIMER.md.
