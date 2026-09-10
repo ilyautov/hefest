@@ -9,7 +9,7 @@ lxml
 
 # --- семантический стек ---
 qdrant-client>=1.10        # векторная БД (локальный режим или Docker-сервер)
-scipy>=1.11
+scipy>=1.18.1
 
 # --- реранкер (кросс-энкодер bge-reranker-v2-m3) ---
 # ВНИМАНИЕ: sentence-transformers НЕ использовать — тянет torchcodec -> ffmpeg (libavutil);
