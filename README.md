@@ -392,4 +392,4 @@ make check    # то и другое + компиляция
 - [**consilium-principis**](https://github.com/ilyautov/consilium-principis): совет мыслителей, где каждая цитата сверяется дословно
 - [**cordon**](https://github.com/ilyautov/cordon): детерминированный слой между недоверенным контентом и действиями агента
 
-Все проекты: [github.com/ilyautov](https://github.com/ilyautov). Пригодилось, поставьте звезду: по ней это находят другие.
+Все проекты одним списком, разобранные по назначению: [ilyautov.github.io](https://ilyautov.github.io/). Исходники: [github.com/ilyautov](https://github.com/ilyautov). Пригодилось, поставьте звезду: по ней это находят другие.
