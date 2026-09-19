@@ -19,4 +19,4 @@ transformers>=4.40
 
 # --- OCR грязных PDF (аудит-спринт) ---
 pymupdf>=1.28.2              # растеризация PDF без системного poppler
-easyocr>=1.7               # OCR ru+en на torch/MPS, on-prem
+easyocr>=1.7.2               # OCR ru+en на torch/MPS, on-prem
