@@ -7,4 +7,4 @@ numpy>=1.26
 scikit-learn>=1.4
 rank-bm25>=0.2.2
 httpx>=0.28.1
-segno>=1.6          # QR для этикеток/карточек, чистый python
+segno>=1.6.6          # QR для этикеток/карточек, чистый python
